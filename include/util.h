@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 /**
- * Returns the string in lower case.
+ * Returns the string in lower case
  */
 char* stringToLower(char*);
 
