@@ -9,6 +9,22 @@ void prompt()
 }
 
 /**
+ * Clean result of fgets, remove "\n" and flush stdin
+ * @param buffer string to clean
+ */ 
+void clean(const char *buffer)
+{
+    char *p = strchr(buffer,'\n');
+    if (p != NULL)
+        *p = 0;
+    else
+    {
+        int c;
+        while ((c = fgetc(stdin)) != '\n' && c != EOF);
+    }
+}
+
+/**
  * Reads a string as a command
  * @param command string to be read as a command
  */
@@ -41,7 +57,8 @@ int main(int argc, char** argv)
     while(strcmp(stringToLower(commandLine),EXIT_STRING) != 0)
     {
         prompt();
-        scanf("%s", commandLine);
+        fgets(commandLine, sizeof(commandLine), stdin);
+        clean(commandLine);
         readCommand(commandLine);
     }
 
