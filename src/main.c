@@ -23,7 +23,7 @@ void readCommand(char* command)
     }
     else
     {
-        printf("Your entered command: %s\n", command);
+        printf("Your entered command: %s\n", stringToLower(command));
     }
 }
 
@@ -43,7 +43,6 @@ int main(int argc, char** argv)
         prompt();
         scanf("%s", commandLine);
         readCommand(commandLine);
-        break;
     }
 
     return EXIT_SUCCESS;
