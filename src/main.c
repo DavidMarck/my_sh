@@ -9,16 +9,23 @@ int main(int argc, char** argv)
 {
     char commandLine[255];
 
-    printf("=== PROJET : MiniShell my_sh ===\n");
+    int pid = fork();
 
-    while(strcmp(stringToLower(commandLine),EXIT_STRING) != 0)
-    {
-        print_prompt();
-        fgets(commandLine, sizeof(commandLine), stdin);
-        clean(commandLine);
-        readCommand(commandLine);
+    if(pid == 0) {
+        execlp("clear", NULL);
     }
+    else {
+        wait(NULL);
 
-    printf("It's done !");
+        printf("=== PROJET : MiniShell my_sh ===\n");
+        
+        while(strcmp(stringToLower(commandLine),EXIT_STRING) != 0)
+        {
+            print_prompt();
+            fgets(commandLine, sizeof(commandLine), stdin);
+            clean(commandLine);
+            readCommand(commandLine);
+        }
+    }
     return EXIT_SUCCESS;
 }
