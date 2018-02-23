@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "../src/util.c"
+#include "../src/commands.c"
 
 #define EXIT_STRING "exit"
 
