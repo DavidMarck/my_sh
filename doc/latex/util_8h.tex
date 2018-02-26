@@ -1,0 +1,52 @@
+\hypertarget{util_8h}{}\section{include/util.h File Reference}
+\label{util_8h}\index{include/util.\+h@{include/util.\+h}}
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+Include dependency graph for util.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{util_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{util_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{util_8h_aad64c4f968f08a586219a998eeec3b0b}{string\+To\+Lower}} (char $\ast$)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{util_8h_aad64c4f968f08a586219a998eeec3b0b}\label{util_8h_aad64c4f968f08a586219a998eeec3b0b}} 
+\index{util.\+h@{util.\+h}!string\+To\+Lower@{string\+To\+Lower}}
+\index{string\+To\+Lower@{string\+To\+Lower}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{string\+To\+Lower()}{stringToLower()}}
+{\footnotesize\ttfamily char$\ast$ string\+To\+Lower (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Returns the string in lower case
+
+Returns a string in lower case 
+\begin{DoxyParams}{Parameters}
+{\em string} & string to be returned in lower case \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+8 \{
+9     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < strlen(\textcolor{keywordtype}{string}); i++)
+10     \{
+11         \textcolor{keywordtype}{string}[i] = tolower(\textcolor{keywordtype}{string}[i]);
+12     \}
+13 
+14     \textcolor{keywordflow}{return} string;
+15 \}
+\end{DoxyCode}

@@ -1,0 +1,58 @@
+\hypertarget{main_8c}{}\section{src/main.c File Reference}
+\label{main_8c}\index{src/main.\+c@{src/main.\+c}}
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+Include dependency graph for main.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}\label{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{main.\+c@{main.\+c}!main@{main}}
+\index{main@{main}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+Progam 
+\begin{DoxyParams}{Parameters}
+{\em argc} & arguments count \\
+\hline
+{\em argv} & array of arguments \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+9 \{
+10     \textcolor{keywordtype}{char} commandLine[255];
+11 
+12     \textcolor{keywordtype}{int} pid = fork();
+13 
+14     \textcolor{keywordflow}{if}(pid == 0) \{
+15         execlp(\textcolor{stringliteral}{"clear"}, NULL);
+16     \}
+17     \textcolor{keywordflow}{else} \{
+18         wait(NULL);
+19 
+20         printf(\textcolor{stringliteral}{"=== PROJET : MiniShell my\_sh ===\(\backslash\)n"});
+21         
+22         \textcolor{keywordflow}{while}(strcmp(\mbox{\hyperlink{util_8c_ac3baffacb2ab73c47735eb93071f52c7}{stringToLower}}(commandLine),\mbox{\hyperlink{main_8h_ad0317e5f6fe6b1e06e91cbc06dcc849d}{EXIT\_STRING}}) != 0)
+23         \{
+24             \mbox{\hyperlink{commands_8c_a21579a20737c3b2b24e18bb5e51d8140}{print\_prompt}}();
+25             fgets(commandLine, \textcolor{keyword}{sizeof}(commandLine), stdin);
+26             \mbox{\hyperlink{commands_8c_acce1050daf9e9625b1f56bd366ee3282}{clean}}(commandLine);
+27             \mbox{\hyperlink{commands_8c_a5a114d1ac4082ff08a0976b3627d4c35}{parseCommand}}(commandLine);
+28         \}
+29     \}
+30     \textcolor{keywordflow}{return} EXIT\_SUCCESS;
+31 \}
+\end{DoxyCode}

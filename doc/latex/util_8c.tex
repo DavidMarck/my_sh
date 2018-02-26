@@ -1,0 +1,41 @@
+\hypertarget{util_8c}{}\section{src/util.c File Reference}
+\label{util_8c}\index{src/util.\+c@{src/util.\+c}}
+{\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+Include dependency graph for util.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{util_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{util_8c_ac3baffacb2ab73c47735eb93071f52c7}{string\+To\+Lower}} (char $\ast$string)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{util_8c_ac3baffacb2ab73c47735eb93071f52c7}\label{util_8c_ac3baffacb2ab73c47735eb93071f52c7}} 
+\index{util.\+c@{util.\+c}!string\+To\+Lower@{string\+To\+Lower}}
+\index{string\+To\+Lower@{string\+To\+Lower}!util.\+c@{util.\+c}}
+\subsubsection{\texorpdfstring{string\+To\+Lower()}{stringToLower()}}
+{\footnotesize\ttfamily char$\ast$ string\+To\+Lower (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Returns a string in lower case 
+\begin{DoxyParams}{Parameters}
+{\em string} & string to be returned in lower case \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+8 \{
+9     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < strlen(\textcolor{keywordtype}{string}); i++)
+10     \{
+11         \textcolor{keywordtype}{string}[i] = tolower(\textcolor{keywordtype}{string}[i]);
+12     \}
+13 
+14     \textcolor{keywordflow}{return} string;
+15 \}
+\end{DoxyCode}

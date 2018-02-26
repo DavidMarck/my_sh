@@ -1,0 +1,140 @@
+\hypertarget{commands_8c}{}\section{src/commands.c File Reference}
+\label{commands_8c}\index{src/commands.\+c@{src/commands.\+c}}
+{\ttfamily \#include \char`\"{}commands.\+h\char`\"{}}\newline
+Include dependency graph for commands.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{commands_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{commands_8c_a21579a20737c3b2b24e18bb5e51d8140}{print\+\_\+prompt}} ()
+\item 
+void \mbox{\hyperlink{commands_8c_a5a114d1ac4082ff08a0976b3627d4c35}{parse\+Command}} (char $\ast$command)
+\item 
+void \mbox{\hyperlink{commands_8c_acce1050daf9e9625b1f56bd366ee3282}{clean}} (const char $\ast$buffer)
+\item 
+void \mbox{\hyperlink{commands_8c_a843d7e1ae89c521fe1b1187ed4c0bf8e}{read\+Command}} (char $\ast$command)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{commands_8c_acce1050daf9e9625b1f56bd366ee3282}\label{commands_8c_acce1050daf9e9625b1f56bd366ee3282}} 
+\index{commands.\+c@{commands.\+c}!clean@{clean}}
+\index{clean@{clean}!commands.\+c@{commands.\+c}}
+\subsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily void clean (\begin{DoxyParamCaption}\item[{const char $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+Clean result of fgets, remove \char`\"{}\textbackslash{}n\char`\"{} and flush stdin 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & string to clean \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+60 \{
+61     \textcolor{keywordtype}{char} *p = strchr(buffer,\textcolor{charliteral}{'\(\backslash\)n'});
+62     \textcolor{keywordflow}{if} (p != NULL)
+63         *p = 0;
+64     \textcolor{keywordflow}{else}
+65     \{
+66         \textcolor{keywordtype}{int} c;
+67         \textcolor{keywordflow}{while} ((c = fgetc(stdin)) != \textcolor{charliteral}{'\(\backslash\)n'} && c != EOF);
+68     \}
+69 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8c_a5a114d1ac4082ff08a0976b3627d4c35}\label{commands_8c_a5a114d1ac4082ff08a0976b3627d4c35}} 
+\index{commands.\+c@{commands.\+c}!parse\+Command@{parse\+Command}}
+\index{parse\+Command@{parse\+Command}!commands.\+c@{commands.\+c}}
+\subsubsection{\texorpdfstring{parse\+Command()}{parseCommand()}}
+{\footnotesize\ttfamily void parse\+Command (\begin{DoxyParamCaption}\item[{char $\ast$}]{command }\end{DoxyParamCaption})}
+
+Parse the text of the command\+Line 
+\begin{DoxyParams}{Parameters}
+{\em command} & command line to parse \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+16 \{   
+17 
+18     \textcolor{comment}{// Returns first token }
+19     \textcolor{keywordtype}{char} *token = strtok(command, \textcolor{stringliteral}{" "});
+20    
+21     \textcolor{comment}{// Keep printing tokens while one of the}
+22     \textcolor{comment}{// delimiters present in str[].}
+23     \textcolor{keywordflow}{while} (token != NULL)
+24     \{
+25         printf(\textcolor{stringliteral}{"%s\(\backslash\)n"}, token);
+26         token = strtok(NULL, \textcolor{stringliteral}{" "});
+27     \}
+28     \textcolor{comment}{//Début d'amélioration pour le parser}
+29     \textcolor{comment}{/*}
+30 \textcolor{comment}{    char* word;}
+31 \textcolor{comment}{    int len = 0;}
+32 \textcolor{comment}{    printf("Caractère actuel");}
+33 \textcolor{comment}{    }
+34 \textcolor{comment}{    while(*command != '\(\backslash\)0')}
+35 \textcolor{comment}{    \{}
+36 \textcolor{comment}{        printf("Caractère actuel : %c", *command);}
+37 \textcolor{comment}{        if(*command != ' ') }
+38 \textcolor{comment}{        \{}
+39 \textcolor{comment}{            word[len] = *command;}
+40 \textcolor{comment}{            word[len+1] = '\(\backslash\)0';}
+41 \textcolor{comment}{            len = strlen(word);}
+42 \textcolor{comment}{        \}}
+43 \textcolor{comment}{        else\{}
+44 \textcolor{comment}{            word[len+1] = '\(\backslash\)0';}
+45 \textcolor{comment}{            printf("%s\(\backslash\)n", word);}
+46 \textcolor{comment}{            len = 0;}
+47 \textcolor{comment}{            word = "";}
+48 \textcolor{comment}{        \}}
+49 \textcolor{comment}{        }
+50 \textcolor{comment}{        *command++; }
+51 \textcolor{comment}{    \} }
+52 \textcolor{comment}{    */}
+53 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8c_a21579a20737c3b2b24e18bb5e51d8140}\label{commands_8c_a21579a20737c3b2b24e18bb5e51d8140}} 
+\index{commands.\+c@{commands.\+c}!print\+\_\+prompt@{print\+\_\+prompt}}
+\index{print\+\_\+prompt@{print\+\_\+prompt}!commands.\+c@{commands.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+prompt()}{print\_prompt()}}
+{\footnotesize\ttfamily void print\+\_\+prompt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Prints the command lines starter 
+\begin{DoxyCode}
+7 \{
+8     printf(\textcolor{stringliteral}{"my\_sh > "});
+9 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8c_a843d7e1ae89c521fe1b1187ed4c0bf8e}\label{commands_8c_a843d7e1ae89c521fe1b1187ed4c0bf8e}} 
+\index{commands.\+c@{commands.\+c}!read\+Command@{read\+Command}}
+\index{read\+Command@{read\+Command}!commands.\+c@{commands.\+c}}
+\subsubsection{\texorpdfstring{read\+Command()}{readCommand()}}
+{\footnotesize\ttfamily void read\+Command (\begin{DoxyParamCaption}\item[{char $\ast$}]{command }\end{DoxyParamCaption})}
+
+Reads a string as a command 
+\begin{DoxyParams}{Parameters}
+{\em command} & string to be read as a command \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+76 \{
+77     \textcolor{keywordtype}{int} commandLength = strlen(command);
+78 
+79     \textcolor{keywordflow}{if}(commandLength > 255)
+80     \{
+81         printf(\textcolor{stringliteral}{"Your command exceeds 255 characters. Please enter a shorter command."});
+82         exit(EXIT\_FAILURE);
+83     \}
+84     \textcolor{keywordflow}{else}
+85     \{
+86         printf(\textcolor{stringliteral}{"Your entered command: %s\(\backslash\)n"}, \mbox{\hyperlink{util_8c_ac3baffacb2ab73c47735eb93071f52c7}{stringToLower}}(command));
+87     \}
+88 \}
+\end{DoxyCode}
