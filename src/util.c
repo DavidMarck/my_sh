@@ -1,4 +1,4 @@
-#include "../include/util.h"
+#include "util.h"
 
 /**
  * Returns a string in lower case
