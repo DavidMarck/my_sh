@@ -10,10 +10,46 @@ void print_prompt()
 
 /**
  * Parse the text of the commandLine
+ * @param command command line to parse
  */ 
-void parseCommand()
-{
+void parseCommand(char* command)
+{   
 
+    // Returns first token 
+    char *token = strtok(command, " ");
+   
+    // Keep printing tokens while one of the
+    // delimiters present in str[].
+    while (token != NULL)
+    {
+        printf("%s\n", token);
+        token = strtok(NULL, " ");
+    }
+    //Début d'amélioration pour le parser
+    /*
+    char* word;
+    int len = 0;
+    printf("Caractère actuel");
+    
+    while(*command != '\0')
+    {
+        printf("Caractère actuel : %c", *command);
+        if(*command != ' ') 
+        {
+            word[len] = *command;
+            word[len+1] = '\0';
+            len = strlen(word);
+        }
+        else{
+            word[len+1] = '\0';
+            printf("%s\n", word);
+            len = 0;
+            word = "";
+        }
+        
+        *command++; 
+    } 
+    */
 }
 
 /**

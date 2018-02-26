@@ -24,7 +24,7 @@ int main(int argc, char** argv)
             print_prompt();
             fgets(commandLine, sizeof(commandLine), stdin);
             clean(commandLine);
-            readCommand(commandLine);
+            parseCommand(commandLine);
         }
     }
     return EXIT_SUCCESS;

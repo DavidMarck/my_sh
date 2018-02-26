@@ -9,7 +9,7 @@ void print_prompt();
 /**
  * Parse the text of the commandLine
  */ 
-void parseCommand();
+void parseCommand(char*);
 
 /**
  * Clean result of fgets, remove "\n" and flush stdin
