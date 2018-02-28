@@ -15,41 +15,34 @@ void print_prompt()
 void parseCommand(char* command)
 {   
 
-    // Returns first token 
-    char *token = strtok(command, " ");
-   
-    // Keep printing tokens while one of the
-    // delimiters present in str[].
-    while (token != NULL)
-    {
-        printf("%s\n", token);
-        token = strtok(NULL, " ");
-    }
-    //Début d'amélioration pour le parser
-    /*
-    char* word;
-    int len = 0;
-    printf("Caractère actuel");
-    
-    while(*command != '\0')
-    {
-        printf("Caractère actuel : %c", *command);
-        if(*command != ' ') 
-        {
-            word[len] = *command;
-            word[len+1] = '\0';
-            len = strlen(word);
-        }
-        else{
-            word[len+1] = '\0';
-            printf("%s\n", word);
-            len = 0;
-            word = "";
-        }
-        
-        *command++; 
-    } 
-    */
+	char ** res  = NULL;
+	char *  p    = strtok (command, " ");
+	int n_spaces = 0, i;
+
+
+	/* split string and append tokens to 'res' */
+
+	while (p) {
+	  res = realloc (res, sizeof (char*) * ++n_spaces);
+
+	  if (res == NULL)
+		exit (-1); /* memory allocation failed */
+
+	  res[n_spaces-1] = p;
+
+	  p = strtok (NULL, " ");
+	}
+
+	/* realloc one extra element for the last NULL */
+
+	res = realloc (res, sizeof (char*) * (n_spaces+1));
+	res[n_spaces] = 0;
+
+	/* print the result */
+
+	for (i = 0; i < (n_spaces+1); ++i) {
+	  printf ("res[%d] = %s\n", i, res[i]);
+	}    
 }
 
 /**
