@@ -53,6 +53,15 @@ void parseCommand(char* command)
 }
 
 /**
+ * Function parsing words by spaces
+ * @param str string to parse in words
+ */
+void parseSpace(char* str)
+{
+    
+}
+
+/**
  * Clean result of fgets, remove "\n" and flush stdin
  * @param buffer string to clean
  */ 
