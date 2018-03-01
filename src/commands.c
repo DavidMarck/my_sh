@@ -1,17 +1,10 @@
 #include "commands.h"
 
-/**
- * Prints the command lines starter
- */
 void print_prompt()
 {
     printf("my_sh > ");
 }
 
-/**
- * Parse the text of the commandLine
- * @param command command line to parse
- */ 
 void parseCommand(char* command)
 {   
 
@@ -45,19 +38,11 @@ void parseCommand(char* command)
 	}    
 }
 
-/**
- * Function parsing words by spaces
- * @param str string to parse in words
- */
 void parseSpace(char* str)
 {
     
 }
 
-/**
- * Clean result of fgets, remove "\n" and flush stdin
- * @param buffer string to clean
- */ 
 void clean(const char *buffer)
 {
     char *p = strchr(buffer,'\n');
@@ -70,10 +55,6 @@ void clean(const char *buffer)
     }
 }
 
-/**
- * Reads a string as a command
- * @param command string to be read as a command
- */
 void readCommand(char* command)
 {
     int commandLength = strlen(command);

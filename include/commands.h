@@ -13,6 +13,7 @@ void print_prompt();
 
 /**
  * Parse the text of the commandLine
+ * @param command command line to parse
  */ 
 void parseCommand(char*);
 
