@@ -6,36 +6,95 @@ void print_prompt()
 }
 
 void parseCommand(char* command)
-{   
+{
+    //char** argv = NULL;
+    int argc = 0; // arguments count
+    int i = 0; // will serve as an index in the command string
+    int awaitingClosingQuote = FALSE;
 
-	char ** res  = NULL;
-	char *  p    = strtok (command, " ");
-	int n_spaces = 0, i;
+    if(command[i] == '\0') return; // no arguments
+    //else if(command[i] != ' ') argc++; //no space as first argument
+
+    // if there are any spaces before first argument we increment the index
+    while(command[i] == ' ')
+    {
+        i++;
+        //if(command[i] != ' ') argc++;
+    }
+
+    // if NULL here, means the user pressed enter after only white spaces
+    if(command[i] == '\0') return;
+    // otherwise at least one argument
+    argc++;
+
+    while(command[i] != '\0')
+    {
+        if(command[i] == ' ')
+        {
+            if(awaitingClosingQuote == TRUE) 
+            {
+                i++;
+                continue;
+            }
+
+            // if next char after white space is not a white space as well
+            // we increment the arg count
+            if(command[i+1] != ' ') argc++;
+        }
+        else if(command[i] == '"')
+        {
+            if(awaitingClosingQuote == FALSE) awaitingClosingQuote = TRUE;
+            else 
+            {
+                awaitingClosingQuote = FALSE;
+            }
+        }
+        i++;
+    }
+    //argc++;
+
+    printf("arg count : %d\n",argc);
+
+	// char ** argv  = NULL;
+	// char *  p    = strtok (command, " ");
+	// int n_spaces = 0;
 
 
-	/* split string and append tokens to 'res' */
+	// /* split string and append tokens to 'argv' */
 
-	while (p) {
-	  res = realloc (res, sizeof (char*) * ++n_spaces);
+	// while (p) {
+    //     argv = realloc (argv, sizeof (char*) * ++n_spaces);
 
-	  if (res == NULL)
-		exit (-1); /* memory allocation failed */
+    //     if (argv == NULL) exit (-1); /* memory allocation failed */
 
-	  res[n_spaces-1] = p;
+    //     if(p[0] == '"')
+    //     {            
+    //         p = strtok(NULL, "\"");
+    //         argv[n_spaces-1] = p;
+    //         /*for(int i = 0; i < n_spaces; i++)
+    //         {
+    //             strtok(command," ");
+    //         }*/
+    //     }
+    //     else
+    //     {
+    //         argv[n_spaces-1] = p;
+    //     }
+        
+    //     //if(p[0] == '"') printf("%s",strtok(argv[n_spaces-1],"\""));
 
-	  p = strtok (NULL, " ");
-	}
+    //     p = strtok (NULL, " ");
+	// }
 
-	/* realloc one extra element for the last NULL */
+	// /* realloc one extra element for the last NULL */
+	// argv = realloc (argv, sizeof (char*) * (n_spaces+1));
+	// argv[n_spaces] = 0;
 
-	res = realloc (res, sizeof (char*) * (n_spaces+1));
-	res[n_spaces] = 0;
+	// /* print the result */
 
-	/* print the result */
-
-	for (i = 0; i < (n_spaces+1); ++i) {
-	  printf ("res[%d] = %s\n", i, res[i]);
-	}    
+	// for (int i = 0; i < (n_spaces+1); ++i) {
+	//   printf ("argv[%d] = %s\n", i, argv[i]);
+	// }    
 }
 
 void parseSpace(char* str)

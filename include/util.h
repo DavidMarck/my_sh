@@ -4,6 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "typedef.h"
+
 /**
  * Returns a string in lower case
  * @param string string to be returned in lower case
@@ -15,6 +17,6 @@ char* stringToLower(char*);
  * @ param str string in which the sequence has to be searched
  * @ param seq sequence to look for in string
  */
-bool contains(char*, char*);
+int contains(char*, char*);
 
 #endif

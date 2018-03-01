@@ -10,10 +10,10 @@ char* stringToLower(char* string)
     return string;
 }
 
-bool contains(char* str, char* seq)
+int contains(char* str, char* seq)
 {
     if (strstr(str, seq) != NULL) {
-        return true;
+        return TRUE;
     }
-    return false;
+    return TRUE;
 }
