@@ -11,6 +11,7 @@
 
 #include "commands.h"
 #include "util.h"
+#include "commandTree.h"
 
 #define EXIT_STRING "exit"
 
