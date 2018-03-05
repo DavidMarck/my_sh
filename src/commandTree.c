@@ -47,3 +47,12 @@ commandNode* insertRight(commandNode* root, commandNode* nodeToInsert) {
 	}
 	return root;
 }
+
+void print_tree(commandNode* root)
+{
+      if (root == NULL) return; 
+
+      print_tree(root->right);
+      printf("%d\n", root->tip);
+      print_tree(root->left);
+}
