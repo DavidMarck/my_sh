@@ -1,8 +1,6 @@
-#include "typedef.h"
-#include <stdlib.h>
+#include "commandTree.h"
 
-
-commandNode* newNode(char* value)
+commandNode* new_node(char* value)
 {
 	commandNode* cmdNode;
 	cmdNode = malloc(sizeof(struct commandNode));
@@ -13,7 +11,7 @@ commandNode* newNode(char* value)
 	return cmdNode;
 }
 
-commandNode* insertLeft(commandNode* root, commandNode* nodeToInsert) {
+commandNode* insert_left(commandNode* root, commandNode* nodeToInsert) {
 	if(root == NULL)
 	{
 		return nodeToInsert;
@@ -21,7 +19,7 @@ commandNode* insertLeft(commandNode* root, commandNode* nodeToInsert) {
 	
 	if(root->left != NULL)
 	{
-		root->left = insertLeft(root->left, nodeToInsert);
+		root->left = insert_left(root->left, nodeToInsert);
 	}
 	else
 	{
@@ -31,7 +29,7 @@ commandNode* insertLeft(commandNode* root, commandNode* nodeToInsert) {
 	return root;
 }
 
-commandNode* insertRight(commandNode* root, commandNode* nodeToInsert) {
+commandNode* insert_right(commandNode* root, commandNode* nodeToInsert) {
 	if(root == NULL)
 	{
 		return nodeToInsert;
@@ -39,7 +37,7 @@ commandNode* insertRight(commandNode* root, commandNode* nodeToInsert) {
 	
 	if(root->right != NULL)
 	{
-		root->right = insertLeft(root->right, nodeToInsert);
+		root->right = insert_left(root->right, nodeToInsert);
 	}
 	else
 	{

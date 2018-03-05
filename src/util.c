@@ -1,6 +1,6 @@
 #include "util.h"
 
-char* stringToLower(char* string)
+char* string_to_lower(char* string)
 {
     for(int i = 0; i < strlen(string); i++)
     {

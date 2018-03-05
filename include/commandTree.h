@@ -1,6 +1,8 @@
 #ifndef COMMANDTREE_H
 #define COMMANDTREE_H
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "typedef.h"
 
 /**
@@ -8,7 +10,7 @@
  * @param value the String value of the node
  * @return the node created
  */
-commandNode* newNode(char* value);
+commandNode* new_node(char* value);
 
 /**
  * Insert a node to the left
@@ -16,7 +18,7 @@ commandNode* newNode(char* value);
  * @param nodeToInsert the node to insert
  * @return the node attached
  */
-commandNode* insertLeft(commandNode* root, commandNode* nodeToInsert);
+commandNode* insert_left(commandNode* root, commandNode* nodeToInsert);
 
 /**
  * Insert a node to the right
@@ -24,7 +26,7 @@ commandNode* insertLeft(commandNode* root, commandNode* nodeToInsert);
  * @param nodeToInsert the node to insert
  * @return the node attached
  */
-commandNode* insertRight(commandNode* root, commandNode* nodeToInsert);
+commandNode* insert_right(commandNode* root, commandNode* nodeToInsert);
 
 /**
  * Print the entire tree

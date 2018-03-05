@@ -10,7 +10,7 @@
  * Returns a string in lower case
  * @param string string to be returned in lower case
  */
-char* stringToLower(char*);
+char* string_to_lower(char*);
 
 /**
  * Returns true whether a string contains a certain sequence or not

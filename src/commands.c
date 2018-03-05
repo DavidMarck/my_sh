@@ -5,7 +5,7 @@ void print_prompt()
     printf("my_sh > ");
 }
 
-void parseCommand(char* command)
+void parse_command(char* command, char** argv, int* argc)
 {
     // char** argv = NULL; // array of arguments
     // int argc = 0; // arguments count
@@ -70,7 +70,7 @@ void parseCommand(char* command)
 
     // printf("arg count : %d\n",argc);
 
-	char ** argv  = NULL;
+	argv  = NULL;
 	char *  p    = strtok (command, " ");
 	int n_spaces = 0;
 
@@ -144,7 +144,7 @@ void parseCommand(char* command)
 	}    
 }
 
-void parseSpace(char* str)
+void execute_command(char** argv, int argc)
 {
     
 }
@@ -161,7 +161,7 @@ void clean(const char *buffer)
     }
 }
 
-void readCommand(char* command)
+void read_command(char* command)
 {
     int commandLength = strlen(command);
 
@@ -172,6 +172,6 @@ void readCommand(char* command)
     }
     else
     {
-        printf("Your entered command: %s\n", stringToLower(command));
+        printf("Your entered command: %s\n", string_to_lower(command));
     }
 }

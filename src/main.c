@@ -19,12 +19,15 @@ int main(int argc, char** argv)
 
         printf("=== PROJET : MiniShell my_sh ===\n");
         
-        while(strcmp(stringToLower(commandLine),EXIT_STRING) != 0)
+        while(strcmp(string_to_lower(commandLine),EXIT_STRING) != 0)
         {
             print_prompt();
             fgets(commandLine, sizeof(commandLine), stdin);
             clean(commandLine);
-            parseCommand(commandLine);
+
+            char** argv = NULL;
+            int argc = 0;
+            parse_command(commandLine,argv,&argc);
         }
     }
     return EXIT_SUCCESS;
