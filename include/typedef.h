@@ -7,8 +7,8 @@
 typedef struct commandNode
 {
 	char* value;
-	struct commandNode *left;
-	struct commandNode *right;
+	struct commandNode* left;
+	struct commandNode* right;
 } commandNode;
 
 #endif
