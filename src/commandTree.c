@@ -53,6 +53,6 @@ void print_tree(commandNode* root)
       if (root == NULL) return; 
 
       print_tree(root->right);
-      printf("%d\n", root->tip);
+      printf("%s\n", root->value);
       print_tree(root->left);
 }
