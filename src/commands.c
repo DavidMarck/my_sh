@@ -95,6 +95,12 @@ void parseCommand(char* command)
 
         if((p[0] == '"') && (awaitingClosingQuote != TRUE))
         {
+            if(p[strlen(p) - 1] == '"')
+            {
+                argv[n_spaces-1] = p;
+                p = strtok (NULL, " ");
+                continue;
+            }
             awaitingClosingQuote = TRUE;
             tmp = strdup(p);
             p = strtok(NULL, " ");
@@ -110,15 +116,12 @@ void parseCommand(char* command)
         }        
         
         argv[n_spaces-1] = p;
-
         p = strtok (NULL, " ");
 	}
 
 	/* realloc one extra element for the last NULL */
 	argv = realloc (argv, sizeof (char*) * (n_spaces+1));
 	argv[n_spaces] = 0;
-
-    free(tmp);
 
 	/* print the result */
 
