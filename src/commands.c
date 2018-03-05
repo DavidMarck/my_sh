@@ -81,10 +81,13 @@ void parseCommand(char* command)
 	/* split string and append tokens to 'argv' */
 
 	while (p) {
+        // reallocating memory as the arg count augments
+        // (only reallocating once if arg between quotes, i.e. spaces ignored)
         if(awaitingClosingQuote != TRUE) argv = realloc (argv, sizeof (char*) * ++n_spaces);
 
         if (argv == NULL) exit (-1); /* memory allocation failed */
 
+        // if still waiting for closing quote
         if(awaitingClosingQuote == TRUE)
         {
             int spaceNeeded = (strlen(tmp) * sizeof(char)) + ((strlen(p) + 1) * sizeof(char)) + 1;
@@ -93,19 +96,23 @@ void parseCommand(char* command)
             strcat(tmp,p);
         }
 
+        // if current argument starts quotes
         if((p[0] == '"') && (awaitingClosingQuote != TRUE))
         {
+            // only one word between quotes = normal token
             if(p[strlen(p) - 1] == '"')
             {
                 argv[n_spaces-1] = p;
                 p = strtok (NULL, " ");
                 continue;
             }
+
             awaitingClosingQuote = TRUE;
             tmp = strdup(p);
             p = strtok(NULL, " ");
             continue;
         }
+        // if ending quote reached
         else if((p[strlen(p) - 1] == '"') && (awaitingClosingQuote == TRUE))
         {
             awaitingClosingQuote = FALSE;
@@ -113,13 +120,20 @@ void parseCommand(char* command)
             p = strtok(NULL, " ");
             tmp = "";
             continue;
-        }        
+        }
+        else if((awaitingClosingQuote == TRUE) && (p[strlen(p)] == '\0'))
+        {
+            argv[n_spaces-1] = tmp;
+            p = strtok(NULL, " ");
+            continue;
+        }   
         
         argv[n_spaces-1] = p;
         p = strtok (NULL, " ");
 	}
 
-	/* realloc one extra element for the last NULL */
+	/* realloc one extra element for the last NULL 
+     (necessary for exec fucntion)*/
 	argv = realloc (argv, sizeof (char*) * (n_spaces+1));
 	argv[n_spaces] = 0;
 
