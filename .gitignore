@@ -1,5 +1,5 @@
 bin/*
-*.o
+src/*.o
 *.stackdump
 .vscode/*
 *.code-workspace
