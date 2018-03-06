@@ -1,5 +1,8 @@
 #include "commands.h"
 
+const char* built_in_commands[] = {"cd", "pwd", "echo", "exit"};
+int n_built_in = sizeof(built_in_commands) / sizeof(const char*);
+
 void print_prompt()
 {
     char buffer[1024];
@@ -147,5 +150,12 @@ void read_command(char* command)
 
 int isbuiltin(char* command)
 {
-    return 0;
+    for(int i = 0; i < n_built_in; i++)
+    {
+        if(strcmp(command,built_in_commands[i]) == 0)
+        {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }

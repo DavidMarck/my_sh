@@ -38,9 +38,16 @@ int main(int args_count, char** argv)
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
 
+            // case no arguments (i.e. empty command line)
             if(args_count == 0)
             {
                 continue;
+            }
+            
+            // 
+            if(isbuiltin(arguments[0]))
+            {
+                printf("youhou");
             }
 
             for (int i = 0; i < (args_count + 1); i++) {
@@ -54,6 +61,7 @@ int main(int args_count, char** argv)
             
             execute_command(arguments, args_count);
 
+            // TO-DO free elements of arguments array
             free(arguments);
         }
     }
