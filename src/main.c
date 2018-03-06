@@ -2,10 +2,10 @@
 
 /**
  * Progam
- * @param argc arguments count
+ * @param args_count arguments count
  * @param argv array of arguments
  */
-int main(int argc, char** argv)
+int main(int args_count, char** argv)
 {
     char commandLine[255];
 
@@ -25,9 +25,21 @@ int main(int argc, char** argv)
             fgets(commandLine, sizeof(commandLine), stdin);
             clean(commandLine);
 
-            char** argv = NULL;
-            int argc = 0;
-            parse_command(commandLine,argv,&argc);
+            int args_count = 0;
+            char** arguments = parse_command(commandLine,&args_count);
+
+            for (int i = 0; i < (args_count+1); ++i) {
+                printf ("arguments[%d] = %s\n", i, arguments[i]);
+            }
+
+            if(strcmp(arguments[0],EXIT_STRING) == 0)
+            {
+                return EXIT_SUCCESS;
+            }
+            
+            execute_command(arguments, args_count);
+
+            free(arguments);
         }
     }
     return EXIT_SUCCESS;

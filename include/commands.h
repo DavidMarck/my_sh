@@ -17,17 +17,16 @@ void print_prompt();
 /**
  * Parse the text of the commandLine
  * @param command command line to parse
- * @param argv array that will contain the arguments
  * @param argc argument count
  */ 
-void parse_command(char*, char**, int*);
+char** parse_command(char*, int*);
 
 /**
  * Execute a command using argv and argc
  * @param argv array of arguments
  * @param argc arguments count
  */
-void execute_command(char**, int);
+int execute_command(char**, int);
 
 /**
  * Clean result of fgets, remove "\n" and flush stdin

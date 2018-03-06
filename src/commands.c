@@ -5,7 +5,7 @@ void print_prompt()
     printf("my_sh > ");
 }
 
-void parse_command(char* command, char** argv, int* argc)
+char** parse_command(char* command, int* argc)
 {
     // char** argv = NULL; // array of arguments
     // int argc = 0; // arguments count
@@ -70,7 +70,7 @@ void parse_command(char* command, char** argv, int* argc)
 
     // printf("arg count : %d\n",argc);
 
-	argv  = NULL;
+	char** argv  = NULL;
 	char *  p    = strtok (command, " ");
 	int n_spaces = 0;
 
@@ -139,14 +139,36 @@ void parse_command(char* command, char** argv, int* argc)
 
 	/* print the result */
 
-	for (int i = 0; i < (n_spaces+1); ++i) {
-	  printf ("argv[%d] = %s\n", i, argv[i]);
-	}    
+	// for (int i = 0; i < (n_spaces+1); ++i) {
+	//   printf ("argv[%d] = %s\n", i, argv[i]);
+	// }
+
+    *argc = n_spaces;
+
+    return argv;
 }
 
-void execute_command(char** argv, int argc)
+int execute_command(char** args, int argc)
 {
-    
+    if(args[0] == NULL)
+    {
+        return EXIT_SUCCESS;
+    }
+
+    char* bin = "/bin/";
+    char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(args[0]) + 1) * sizeof(char));
+    //char* path = malloc((strlen(args[0]) + 1) * sizeof(char));
+    strcat(path,bin);
+    strcat(path,args[0]);
+
+    if (execv(path, args) == -1) {
+        perror("execv");
+        return EXIT_FAILURE;
+    }
+
+    free(path);
+
+    return EXIT_SUCCESS;
 }
 
 void clean(const char *buffer)
