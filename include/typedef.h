@@ -6,6 +6,7 @@
 
 typedef struct commandNode
 {
+	struct commandNode* mainRoot;
 	char* value;
 	struct commandNode* left;
 	struct commandNode* right;

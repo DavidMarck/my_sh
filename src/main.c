@@ -7,6 +7,16 @@
  */
 int main(int args_count, char** argv)
 {
+
+	printf("########################################TEST Arbre############################################\n");
+	commandNode* cmdNode = new_node("&&");
+	cmdNode = insert_left(cmdNode, new_node("|"));
+	cmdNode = insert_left(cmdNode, new_node("cat toto.txt"));
+	cmdNode = insert_right(cmdNode, new_node("grep ^root"));
+	cmdNode = cmdNode->mainRoot;
+	cmdNode = insert_right(cmdNode, new_node("echo 'bitch'"));
+	print_tree(cmdNode->mainRoot);
+	freeTree(cmdNode->mainRoot);
     char commandLine[255];
 
     int pid = fork();
