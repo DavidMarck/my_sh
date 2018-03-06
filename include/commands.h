@@ -11,6 +11,7 @@
 #include "typedef.h"
 
 #include "util.h"
+#include "built-in.h"
 
 /**
  * Prints the command lines starter
@@ -29,7 +30,7 @@ char** parse_command(char*, int*);
  * @param argv array of arguments
  * @param argc arguments count
  */
-int execute_command(char**, int);
+void execute_command(char** argv, int argc);
 
 /**
  * Clean result of fgets, remove "\n" and flush stdin

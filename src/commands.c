@@ -1,75 +1,18 @@
 #include "commands.h"
+#include <errno.h>
 
 void print_prompt()
 {
-    printf("my_sh > ");
+    char buffer[1024];
+    char* dir = getcwd(buffer,sizeof(buffer));
+
+    char* prompt = strcat(dir," > ");
+    printf(prompt);
+    //printf("my_sh > ");
 }
 
 char** parse_command(char* command, int* argc)
 {
-    // char** argv = NULL; // array of arguments
-    // int argc = 0; // arguments count
-    // char* nbChar = ""; // char count for memory allocation
-    // int i = 0; // will serve as an index in the command string
-    // int awaitingClosingQuote = FALSE; // wheter or not a string between quotes is being read
-
-    // if(command[i] == '\0') return; // no arguments
-
-    // // if there are any spaces before first argument we increment the index
-    // while(command[i] == ' ')
-    // {
-    //     i++;
-    // }
-
-    // // if NULL here, means the user pressed enter after a bunch white spaces
-    // if(command[i] == '\0') return;
-    // // otherwise at least one argument in command line
-    // argc++;
-    // argv = realloc(argv,argc * sizeof(char*));
-
-    // while(command[i] != '\0')
-    // {
-    //     if(command[i] == ' ')
-    //     {
-    //         // Ignoring space if between quotes
-    //         if(awaitingClosingQuote == TRUE) 
-    //         {
-    //             //TO DO add space to current arg string
-    //             //arg = strcat(arg,&command[i]);
-    //             i++;
-    //             continue;
-    //         }
-
-    //         // if next char after white space is not a white space as well,
-    //         // new argument found
-    //         if(command[i+1] != ' ') 
-    //         {
-    //             argv[argc - 1] = arg;
-    //             arg = "";
-    //             argc++;
-    //             argv = realloc(argv,argc * sizeof(char*));
-    //             i++;
-    //             continue;
-    //         }
-    //     }
-    //     else if(command[i] == '"')
-    //     {
-    //         if(awaitingClosingQuote == FALSE) awaitingClosingQuote = TRUE;
-    //         else 
-    //         {
-    //             awaitingClosingQuote = FALSE;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         //TO DO add current char to arg str
-    //         //arg = strcat(arg,&command[i]);
-    //     }
-    //     i++;
-    // }
-
-    // printf("arg count : %d\n",argc);
-
 	char** argv  = NULL;
 	char *  p    = strtok (command, " ");
 	int n_spaces = 0;
@@ -137,22 +80,29 @@ char** parse_command(char* command, int* argc)
 	argv = realloc (argv, sizeof (char*) * (n_spaces+1));
 	argv[n_spaces] = 0;
 
-	/* print the result */
-
-	// for (int i = 0; i < (n_spaces+1); ++i) {
-	//   printf ("argv[%d] = %s\n", i, argv[i]);
-	// }
-
     *argc = n_spaces;
 
     return argv;
 }
 
-int execute_command(char** args, int argc)
+void execute_command(char** args, int argc)
 {
     if(args[0] == NULL)
     {
-        return EXIT_SUCCESS;
+        return;
+    }
+    else if(!strcmp(args[0],"cd"))
+    {
+        errno = 0;
+        if(cd(args[1]) != 0)
+        {
+            perror("cd");
+            return;
+        }
+        else
+        {
+            return;  
+        }
     }
 
     char* bin = "/bin/";
@@ -163,12 +113,12 @@ int execute_command(char** args, int argc)
 
     if (execv(path, args) == -1) {
         perror("execv");
-        return EXIT_FAILURE;
+        return;
     }
 
     free(path);
 
-    return EXIT_SUCCESS;
+    return;
 }
 
 void clean(const char *buffer)
