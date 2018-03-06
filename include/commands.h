@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "typedef.h"
 
@@ -43,5 +44,11 @@ void clean(const char*);
  * @param command string to be read as a command
  */
 void read_command(char*);
+
+/**
+ * Indicates wether or not the command is a built-in command
+ * @param command
+ */
+int isbuiltin(char* command);
 
 #endif

@@ -1,5 +1,4 @@
 #include "commands.h"
-#include <errno.h>
 
 void print_prompt()
 {
@@ -93,7 +92,6 @@ void execute_command(char** args, int argc)
     }
     else if(!strcmp(args[0],"cd"))
     {
-        errno = 0;
         if(cd(args[1]) != 0)
         {
             perror("cd");
@@ -107,7 +105,6 @@ void execute_command(char** args, int argc)
 
     char* bin = "/bin/";
     char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(args[0]) + 1) * sizeof(char));
-    //char* path = malloc((strlen(args[0]) + 1) * sizeof(char));
     strcat(path,bin);
     strcat(path,args[0]);
 
@@ -146,4 +143,9 @@ void read_command(char* command)
     {
         printf("Your entered command: %s\n", string_to_lower(command));
     }
+}
+
+int isbuiltin(char* command)
+{
+    return 0;
 }

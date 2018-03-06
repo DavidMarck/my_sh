@@ -38,7 +38,12 @@ int main(int args_count, char** argv)
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
 
-            for (int i = 0; i < (args_count+1); ++i) {
+            if(args_count == 0)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < (args_count + 1); i++) {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);
             }
 
