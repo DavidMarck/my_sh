@@ -12,7 +12,7 @@ int main(int args_count, char** argv)
     int pid = fork();
 
     if(pid == 0) {
-        execlp("clear", NULL);
+        execlp("/bin/clear","clear", NULL);
     }
     else {
         wait(NULL);
