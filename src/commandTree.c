@@ -61,7 +61,7 @@ void print_tree(commandNode* root)
       
 }
 
-void freeTree(commandNode* root){          
+void free_tree(commandNode* root){          
 	if( root ){
      freeTree(root->left);
      freeTree(root->right);

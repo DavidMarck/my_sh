@@ -34,4 +34,10 @@ commandNode* insert_right(commandNode* root, commandNode* nodeToInsert);
  */
 void print_tree(commandNode* root);
 
+/**
+ * Free the memory allocation of a tree
+ * @param root the root of the tree to free
+ */
+void free_tree(commandNode* root);
+
 #endif

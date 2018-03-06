@@ -16,7 +16,7 @@ int main(int args_count, char** argv)
 	cmdNode = cmdNode->mainRoot;
 	cmdNode = insert_right(cmdNode, new_node("echo 'bitch'"));
 	print_tree(cmdNode->mainRoot);
-	freeTree(cmdNode->mainRoot);
+	free_tree(cmdNode->mainRoot);
     char commandLine[255];
 
     int pid = fork();
