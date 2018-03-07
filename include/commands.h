@@ -34,6 +34,13 @@ char** parse_command(char*, int*);
 void execute_command(char** argv, int argc);
 
 /**
+ * Execute a buitl-in command using argv and argc
+ * @param argv array of arguments
+ * @param argc arguments count
+ */
+int execute_builtin(char** args, int argc);
+
+/**
  * Clean result of fgets, remove "\n" and flush stdin
  * @param buffer string to clean
  */ 

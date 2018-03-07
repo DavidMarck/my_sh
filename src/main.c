@@ -43,12 +43,6 @@ int main(int args_count, char** argv)
             {
                 continue;
             }
-            
-            // 
-            if(isbuiltin(arguments[0]))
-            {
-                printf("youhou");
-            }
 
             for (int i = 0; i < (args_count + 1); i++) {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);

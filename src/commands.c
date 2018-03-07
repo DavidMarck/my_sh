@@ -47,6 +47,7 @@ char** parse_command(char* command, int* argc)
             // only one word between quotes = normal token
             if(p[strlen(p) - 1] == '"')
             {
+                p = str_replace("\"","",p);
                 argv[n_spaces-1] = p;
                 p = strtok (NULL, " ");
                 continue;
@@ -61,6 +62,7 @@ char** parse_command(char* command, int* argc)
         else if((p[strlen(p) - 1] == '"') && (awaitingClosingQuote == TRUE))
         {
             awaitingClosingQuote = FALSE;
+            tmp = str_replace("\"","",tmp);
             argv[n_spaces-1] = tmp;
             p = strtok(NULL, " ");
             tmp = "";
@@ -87,38 +89,31 @@ char** parse_command(char* command, int* argc)
     return argv;
 }
 
-void execute_command(char** args, int argc)
+void execute_command(char** argv, int argc)
 {
-    if(args[0] == NULL)
+    if(argv[0] == NULL)
     {
         return;
     }
-    else if(!strcmp(args[0],"cd"))
+    else if(isbuiltin(argv[0]))
     {
-        if(cd(args[1]) != 0)
+        if(execute_builtin(argv,argc) != 0)
         {
-            perror("cd");
             return;
-        }
-        else
-        {
-            return;  
         }
     }
 
     char* bin = "/bin/";
-    char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(args[0]) + 1) * sizeof(char));
+    char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));
     strcat(path,bin);
-    strcat(path,args[0]);
+    strcat(path,argv[0]);
 
-    if (execv(path, args) == -1) {
+    if (execv(path, argv) == -1) {
         perror("execv");
         return;
     }
 
     free(path);
-
-    return;
 }
 
 void clean(const char *buffer)
@@ -146,6 +141,34 @@ void read_command(char* command)
     {
         printf("Your entered command: %s\n", string_to_lower(command));
     }
+}
+
+int execute_builtin(char** argv, int argc)
+{
+    int code;
+
+    if(!isbuiltin(argv[0]))
+    {
+        code = -1;
+    }
+    else if(strcmp(argv[0],"cd") == 0)
+    {
+        code = cd(argv,argc);
+    }
+    else if(strcmp(argv[0],"pwd") == 0)
+    {
+        //code = pwd(argv,argc);
+    }
+    else if(strcmp(argv[0],"echo") == 0)
+    {
+        //code = echo(argv,argc);
+    }
+    else if(strcmp(argv[0],"exit") == 0)
+    {
+        //code = exit();
+    }
+
+    return code;
 }
 
 int isbuiltin(char* command)
