@@ -107,7 +107,14 @@ void execute_command(char** argv, int argc)
     strcat(path,argv[0]);
 
     if (execv(path, argv) == -1) {
-        perror("execv");
+        if(errno == ENOENT)
+        {
+            fprintf(stderr,"%s: Command not found\n",argv[0]);
+        }
+        else
+        {
+            perror("execv");
+        }
         return;
     }
 
