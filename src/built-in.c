@@ -24,14 +24,7 @@ int cd(char** argv, int argc)
 
     if(returnCode != 0)
     {
-        if(returnCode == ENOENT)
-        {
-            fprintf(stderr,"cd: No such file or directory\n");
-        }
-        else
-        {
-            perror("cd");
-        }
+        perror("cd");
     }
 
     return returnCode;
