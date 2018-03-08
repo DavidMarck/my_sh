@@ -6,17 +6,7 @@
  * @param argv array of arguments
  */
 int main(int args_count, char** argv)
-{
-
-	printf("########################################TEST Arbre############################################\n");
-	commandNode* cmdNode = new_node("&&");
-	cmdNode = insert_left(cmdNode, new_node("|"));
-	cmdNode = insert_left(cmdNode, new_node("cat toto.txt"));
-	cmdNode = insert_right(cmdNode, new_node("grep ^root"));
-	cmdNode = cmdNode->mainRoot;
-	cmdNode = insert_right(cmdNode, new_node("echo 'bitch'"));
-	print_tree(cmdNode->mainRoot);
-	free_tree(cmdNode->mainRoot);
+{	
     char commandLine[255];
 
     int pid = fork();
@@ -37,10 +27,12 @@ int main(int args_count, char** argv)
 
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
-
-            for (int i = 0; i < (args_count+1); ++i) {
+			parse_to_tree(arguments, args_count);
+			//print_tree(tree_arguments);
+            /*for (int i = 0; i < (args_count+1); ++i) {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);
-            }
+            }	
+            
 
             if(strcmp(arguments[0],EXIT_STRING) == 0)
             {
@@ -48,7 +40,8 @@ int main(int args_count, char** argv)
             }
             
             execute_command(arguments, args_count);
-
+*/
+			//free_tree(tree_arguments);
             free(arguments);
         }
     }
