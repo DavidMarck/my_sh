@@ -7,10 +7,8 @@ void print_prompt()
 {
     char buffer[1024];
     char* dir = getcwd(buffer,sizeof(buffer));
-
     char* prompt = strcat(dir," > ");
     printf(prompt);
-    //printf("my_sh > ");
 }
 
 char** parse_command(char* command, int* argc)
@@ -150,30 +148,30 @@ void read_command(char* command)
 
 int execute_builtin(char** argv, int argc)
 {
-    int code;
+    int returnCode;
 
     if(!isbuiltin(argv[0]))
     {
-        code = -1;
+        returnCode = -1;
     }
     else if(strcmp(argv[0],"cd") == 0)
     {
-        code = cd(argv,argc);
+        returnCode = cd(argv,argc);
     }
     else if(strcmp(argv[0],"pwd") == 0)
     {
-        //code = pwd(argv,argc);
+        returnCode = pwd(argv,argc);
     }
     else if(strcmp(argv[0],"echo") == 0)
     {
-        //code = echo(argv,argc);
+        //returnCode = echo(argv,argc);
     }
     else if(strcmp(argv[0],"exit") == 0)
     {
-        //code = exit();
+        //returnCode = exit();
     }
 
-    return code;
+    return returnCode;
 }
 
 int isbuiltin(char* command)
