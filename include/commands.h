@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "typedef.h"
 
@@ -33,6 +34,13 @@ char** parse_command(char*, int*);
 void execute_command(char** argv, int argc);
 
 /**
+ * Execute a buitl-in command using argv and argc
+ * @param argv array of arguments
+ * @param argc arguments count
+ */
+int execute_builtin(char** args, int argc);
+
+/**
  * Clean result of fgets, remove "\n" and flush stdin
  * @param buffer string to clean
  */ 
@@ -43,5 +51,11 @@ void clean(const char*);
  * @param command string to be read as a command
  */
 void read_command(char*);
+
+/**
+ * Indicates wether or not the command is a built-in command
+ * @param command
+ */
+int isbuiltin(char* command);
 
 #endif

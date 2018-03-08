@@ -30,6 +30,14 @@ int main(int args_count, char** argv)
 			parse_to_tree(arguments, args_count);
 			//print_tree(tree_arguments);
             /*for (int i = 0; i < (args_count+1); ++i) {
+
+            // case no arguments (i.e. empty command line)
+            if(args_count == 0)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < (args_count + 1); i++) {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);
             }	
             
@@ -42,6 +50,8 @@ int main(int args_count, char** argv)
             execute_command(arguments, args_count);
 */
 			//free_tree(tree_arguments);
+
+            // TO-DO free elements of arguments array
             free(arguments);
         }
     }
