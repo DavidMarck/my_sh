@@ -4,12 +4,14 @@ commandNode* new_node(char* value)
 {
 	commandNode* cmdNode;
 	cmdNode = malloc(sizeof(commandNode));
-	cmdNode->value = realloc(cmdNode->value, sizeof(char) * (strlen(value)+1));
+	//printf("Création du noeud %s\n", value);
+	cmdNode->value = malloc(sizeof(char) * (strlen(value)+1));
+	//printf("Valeur du pointeur : %p\n", cmdNode->value);
 	cmdNode->mainRoot = cmdNode;
 	strcpy(cmdNode->value, value);
 	cmdNode->left = NULL;
 	cmdNode->right = NULL;
-	
+	//printf("Création effectuée \n");
 	return cmdNode;
 }
 
@@ -56,6 +58,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 	int last_string_limit = args_count;
 	int string_index;
 	int i;
+	char* command = malloc(sizeof(char));
 	
 	
 	commandNode* cmdNode = NULL;
@@ -70,24 +73,28 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				string_index = index+1;
 			else
 				string_index = index;
+			strcpy(command,"");
 			
-			
-			char* command = malloc(sizeof(char));
-			//command = "\0";
-			printf("Malloc : valeur du malloc = %s\n", command);
 			for(i = string_index; i < last_string_limit; i++)
 			{
-				printf("Value : %s\n", command);
-				int spaceNeeded = (strlen(command) * sizeof(char)) + ((strlen(arguments[i]) + 1) * sizeof(char)) + 1;
+				printf("taille de la commande avant : %d\n", (strlen(command)+1));
+				//printf("Espace qui va être ajouté : %d\n", ((strlen(arguments[i]) + 1) * sizeof(char)) + 1);
+				int spaceNeeded = ((strlen(command)) * sizeof(char)) + ((strlen(arguments[i]) + 1) * sizeof(char));
+				// if we're don't at the last string, we had 1 space for the whitespace
+				if(i != string_index)
+					spaceNeeded++;
+					
 				realloc(command,spaceNeeded);
+			
 				if(i != string_index)
 					strcat(command, " ");
 					
 				strcat(command, arguments[i]);
-				
+				printf("Espace actuel de la commande après concatenation : %d\n", spaceNeeded);
+				printf("Value : %s\n", command);
 			}
 			
-			/*
+			
 			if(index == 0)
 			{
 				cmdNode = add_left(operatorNode, new_node(command));
@@ -111,13 +118,15 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				redirectionNode = new_node(arguments[index]);
 				add_right(redirectionNode, new_node(command));
 			}
-			*/
-			//free(command);
+			
 			last_string_limit = index;
-		}
+		} 
 		index--;
 	}
-	//return cmdNode->mainRoot;
+	//printf("Fin de l'engraissage, commande retenue : %s\n", command);
+	free(command);
+	//printf("Free effectué");
+	return cmdNode->mainRoot;
 }
 
 int is_special_string(char* argument)
@@ -181,12 +190,14 @@ void print_tree(commandNode* root)
       
 }
 
-void free_tree(commandNode* root){          
+void free_tree(commandNode* root){         
 	if( root ){
      free_tree(root->left);
      free_tree(root->right);
+     printf("Nettoyage de l'arbre : %s\n", root->value);
      free(root->value); 
      free(root);
+     printf("Fin du nettoyage de l'arbre\n");
    }
 }
 
