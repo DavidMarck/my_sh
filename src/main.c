@@ -28,7 +28,8 @@ int main(int args_count, char** argv)
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
 			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-			print_tree(tree_arguments);
+			execute_tree(tree_arguments);
+			//print_tree(tree_arguments);
             /*for (int i = 0; i < (args_count+1); ++i) {
 
             // case no arguments (i.e. empty command line)
