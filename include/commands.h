@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "var.h"
 #include "typedef.h"
 
 #include "util.h"
@@ -45,12 +46,6 @@ int execute_builtin(char** args, int argc);
  * @param buffer string to clean
  */ 
 void clean(const char*);
-
-/**
- * Reads a string as a command
- * @param command string to be read as a command
- */
-void read_command(char*);
 
 /**
  * Indicates wether or not the command is a built-in command

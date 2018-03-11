@@ -11,10 +11,12 @@ int main(int args_count, char** argv)
 
     int pid = fork();
 
-    if(pid == 0) {
+    if(pid == 0) 
+    {
         execlp("/bin/clear","clear", NULL);
     }
-    else {
+    else 
+    {
         wait(NULL);
 
         printf("=== PROJET : MiniShell my_sh ===\n");
@@ -27,17 +29,18 @@ int main(int args_count, char** argv)
 
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
-			parse_to_tree(arguments, args_count);
+			//parse_to_tree(arguments, args_count);
 			//print_tree(tree_arguments);
-            /*for (int i = 0; i < (args_count+1); ++i) {
+            //for (int i = 0; i < (args_count+1); ++i) {
 
-            // case no arguments (i.e. empty command line)
+            //case no arguments (i.e. empty command line)
             if(args_count == 0)
             {
                 continue;
             }
 
-            for (int i = 0; i < (args_count + 1); i++) {
+            for (int i = 0; i < (args_count + 1); i++) 
+            {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);
             }	
             
@@ -48,7 +51,7 @@ int main(int args_count, char** argv)
             }
             
             execute_command(arguments, args_count);
-*/
+
 			//free_tree(tree_arguments);
 
             // TO-DO free elements of arguments array
