@@ -113,7 +113,7 @@ void execute_command(char** argv, int argc)
         {
             perror("execv");
         }
-        return;
+        exit(EXIT_FAILURE);
     }
 
     free(path);

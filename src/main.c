@@ -29,7 +29,8 @@ int main(int args_count, char** argv)
 
             int args_count = 0;
             char** arguments = parse_command(commandLine,&args_count);
-			//parse_to_tree(arguments, args_count);
+			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
+			execute_tree(tree_arguments);
 			//print_tree(tree_arguments);
             //for (int i = 0; i < (args_count+1); ++i) {
 
@@ -52,7 +53,7 @@ int main(int args_count, char** argv)
             
             execute_command(arguments, args_count);
 
-			//free_tree(tree_arguments);
+			free_tree(tree_arguments);
 
             // TO-DO free elements of arguments array
             free(arguments);
