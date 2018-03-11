@@ -16,11 +16,6 @@
 #include "built-in.h"
 
 /**
- * Prints the command lines starter
- */
-void print_prompt();
-
-/**
  * Parse the text of the commandLine
  * @param command command line to parse
  * @param argc argument count
@@ -38,18 +33,16 @@ void execute_command(char** argv, int argc);
  * Execute a buitl-in command using argv and argc
  * @param argv array of arguments
  * @param argc arguments count
+ * 
+ * @return 0 on success, -1 on failure
  */
 int execute_builtin(char** args, int argc);
 
 /**
- * Clean result of fgets, remove "\n" and flush stdin
- * @param buffer string to clean
- */ 
-void clean(const char*);
-
-/**
  * Indicates wether or not the command is a built-in command
  * @param command
+ * 
+ * @return true or false
  */
 int isbuiltin(char* command);
 

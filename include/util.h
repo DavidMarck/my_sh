@@ -15,11 +15,22 @@
 char* string_to_lower(char*);
 
 /**
- * Returns true whether a string contains a certain sequence or not
+ * Indicates wether or not a string contains a certain sequence
  * @ param str string in which the sequence has to be searched
  * @ param seq sequence to look for in string
+ * 
+ * @return true or false
  */
 int contains(char* str, char* seq);
+
+/**
+ * Count occurences of a certain character in a string
+ * @param str string to look into
+ * @param search char seq to find and count
+ * 
+ * @return count
+ */
+int strcount(char* str, char* search);
 
 /**
  * Replaces all found instances of the passed substring in the passed string.

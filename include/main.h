@@ -16,6 +16,4 @@
 #include "commandTree.h"
 #include "ui.h"
 
-#define EXIT_STRING "exit"
-
 #endif

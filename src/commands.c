@@ -3,14 +3,6 @@
 const char* built_in_commands[] = {"cd", "pwd", "echo", "exit"};
 int n_built_in = sizeof(built_in_commands) / sizeof(const char*);
 
-void print_prompt()
-{
-    char buffer[1024];
-    char* dir = getcwd(buffer,sizeof(buffer));
-    char* prompt = strcat(dir," > ");
-    printf(prompt);
-}
-
 char** parse_command(char* command, int* argc)
 {
 	char** argv  = NULL;
@@ -117,18 +109,6 @@ void execute_command(char** argv, int argc)
     }
 
     free(path);
-}
-
-void clean(const char *buffer)
-{
-    char *p = strchr(buffer,'\n');
-    if (p != NULL)
-        *p = 0;
-    else
-    {
-        int c;
-        while ((c = fgetc(stdin)) != '\n' && c != EOF);
-    }
 }
 
 int execute_builtin(char** argv, int argc)
