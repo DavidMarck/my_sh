@@ -26,9 +26,14 @@ int main(int args_count, char** argv)
             clean(commandLine);
 
             int args_count = 0;
+            
+            //printf("Parsing de la string en tableau.....\n");
             char** arguments = parse_command(commandLine,&args_count);
+            //printf("Parsing du tableau en arbre.....\n\n");
 			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
+			//printf("\nExécution de l'arbre....\n\n");
 			execute_tree(tree_arguments);
+			//printf("\nFin.....\n");
 			//print_tree(tree_arguments);
             /*for (int i = 0; i < (args_count+1); ++i) {
 

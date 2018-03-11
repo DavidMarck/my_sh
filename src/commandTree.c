@@ -67,13 +67,14 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 	
 	while (index > -1)
 	{
+		//printf("Noeud actuel : %s\n", arguments[index]);
 		if(is_special_string(arguments[index]) == TRUE || index == 0) 
 		{
 			if(index != 0) 
 				string_index = index+1;
 			else
 				string_index = index;
-			strcpy(command,"");
+			command = strcpy(command,"");
 			
 			for(i = string_index; i < last_string_limit; i++)
 			{
@@ -84,17 +85,17 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				if(i != string_index)
 					spaceNeeded++;
 					
-				realloc(command,spaceNeeded);
+				command = realloc(command,spaceNeeded);
 			
 				if(i != string_index)
-					strcat(command, " ");
+					command = strcat(command, " ");
 					
-				strcat(command, arguments[i]);
+				command = strcat(command, arguments[i]);
 				//printf("Espace actuel de la commande après concatenation : %d\n", spaceNeeded);
 				//printf("Value : %s\n", command);
 			}
 			
-			
+			//printf("Fin de la concaténation\n");
 			if(index == 0)
 			{
 				cmdNode = new_node(command);
@@ -196,6 +197,7 @@ void execute_tree(commandNode* root)
 	  exit(EXIT_FAILURE);
   }
   
+  
   if(pid == 0) 
   {
 	  interpret_node(root);
@@ -253,13 +255,16 @@ void execute_fork_node(commandNode* node)
 				if(WIFEXITED(status) && WEXITSTATUS(status) == 0) 
 				{		
 					interpret_node(node->right);
+					exit(EXIT_SUCCESS);
 				}
+				
 			}
 			else
 			{
 				if(WIFEXITED(status) && WEXITSTATUS(status) != 0) 
 				{		
 					interpret_node(node->right);
+					exit(EXIT_SUCCESS);
 				}
 			}
 		}
