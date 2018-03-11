@@ -113,7 +113,7 @@ void execute_command(char** argv, int argc)
         {
             perror("execv");
         }
-        exit(EXIT_FAILURE);
+        return;
     }
 
     free(path);
@@ -128,21 +128,6 @@ void clean(const char *buffer)
     {
         int c;
         while ((c = fgetc(stdin)) != '\n' && c != EOF);
-    }
-}
-
-void read_command(char* command)
-{
-    int commandLength = strlen(command);
-
-    if(commandLength > 255)
-    {
-        printf("Your command exceeds 255 characters. Please enter a shorter command.");
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        printf("Your entered command: %s\n", string_to_lower(command));
     }
 }
 

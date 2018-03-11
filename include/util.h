@@ -5,6 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "var.h"
 #include "typedef.h"
 
 /**
