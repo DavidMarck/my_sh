@@ -23,22 +23,16 @@ int main(int args_count, char** argv)
         while(print_prompt())
         {
             char commandLine[MAX_SIZE];
-            
+
+            fgets(commandLine, sizeof(commandLine), stdin);
+            //commandLine[strlen(commandLine) - 1] = '\0';
+            //clean(commandLine);            
             read_command_line(commandLine);
 
             int args_count = 0;
-            
-            //printf("Parsing de la string en tableau.....\n");
             char** arguments = parse_command(commandLine,&args_count);
-            //printf("Parsing du tableau en arbre.....\n\n");
-			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-			//printf("\nExécution de l'arbre....\n\n");
-			execute_tree(tree_arguments);
-			//printf("\nFin.....\n");
-			//print_tree(tree_arguments);
-            /*for (int i = 0; i < (args_count+1); ++i) {
 
-            //case no arguments (i.e. empty command line)
+            // case no arguments (i.e. empty command line)
             if(args_count == 0)
             {
                 continue;
@@ -46,21 +40,20 @@ int main(int args_count, char** argv)
 
 			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
 			execute_tree(tree_arguments);
-			//print_tree(tree_arguments);
             
 
-            // for (int i = 0; i < (args_count + 1); i++) 
-            // {
-            //     printf ("arguments[%d] = %s\n", i, arguments[i]);
-            // }	
-            
-
-            if(strcmp(arguments[0],EXIT_STRING) == 0)
+            for (int i = 0; i < (args_count + 1); i++) 
             {
-                return EXIT_SUCCESS;
-            }
+                printf ("arguments[%d] = %s\n", i, arguments[i]);
+            }	
             
-            execute_command(arguments, args_count);
+
+            // if(strcmp(arguments[0],EXIT_STRING) == 0)
+            // {
+            //     return EXIT_SUCCESS;
+            // }
+            
+            // execute_command(arguments, args_count);
 
 			free_tree(tree_arguments);
 

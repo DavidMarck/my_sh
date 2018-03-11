@@ -25,10 +25,10 @@ int print_prompt();
 void clean(const char*);
 
 /**
- * Reads a command line from the shell prompt
- * @param buffer to put the line into
+ * Reads a command line
+ * @param commandLine
  */
-void read_command_line(char* buffer);
+void read_command_line(char* commandLine);
 
 /**
  * Make the shell wait for specified character sequence

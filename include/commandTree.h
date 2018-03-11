@@ -3,10 +3,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include "string.h"
 
 #include "var.h"
 #include "typedef.h"
-#include "string.h"
+#include "commands.h"
 
 /**
  * Declare and allocate a new node
@@ -43,11 +47,43 @@ commandNode* insert_right(commandNode* root, commandNode* nodeToInsert);
 commandNode* parse_to_tree(char** arguments, int args_count);
 
 /**
- * Check if a string is an operator
+ * Check if a string is a special argument
  * @param argument the string to check
- * @return true/false(0/1) depending if this is an operator
+ * @return true/false depending if this is a special argument
  */
-int is_operator(char* argument);
+int is_special_string(char* argument);
+
+/**
+ * Check if a string is a potential fork
+ * @param argument the string to check
+ * @return true/false depending if this is a potential fork
+ */
+int is_fork(char* argument);
+
+/**
+ * Check if a string is a special argument without fork
+ * @param argument the string to check
+ * @return true/false 
+ */
+int is_redirection_without_fork(char* argument); 
+
+/**
+ * Execute a command line based on a tree
+ * @param root the tree to execute
+ */
+void execute_tree(commandNode* root);
+
+/**
+ * Intertpret a Node to execute in a tree (recursive call)
+ * @param node the node to interpret
+ */
+void interpret_node(commandNode* node);
+
+/**
+ * Execute a node which include a fork
+ * @param node the node to execute
+ */
+void execute_fork_node(commandNode* node);
 
 /**
  * Print the entire tree

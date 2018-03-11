@@ -22,20 +22,22 @@ void clean(const char *buffer)
     }
 }
 
-void read_command_line(char* buffer)
+void read_command_line(char* commandLine)
 {
-    fgets(buffer, sizeof(buffer), stdin);
-    clean(buffer);
-    
-    // if(contains(buffer,"\""))
-    // {
-    //     while((strcount(buffer,"\"") % 2) != 0)
-    //     {
-    //         printf("yolo");
-    //     }
-    // }
+    if(contains(commandLine,"\""))
+    {
+        while((strcount(commandLine,"\"") % 2) != 0)
+        {
+            printf(" > ");
+            char c[MAX_SIZE];
+            fgets(c,sizeof(c),stdin);
+            //commandLine = realloc(commandLine,strlen(c) + strlen(commandLine) + sizeof(char));
+            //printf("%ld",sizeof(commandLine));
+            strcat(commandLine,c);
+        }
+    }
 
-    
+    commandLine[strlen(commandLine) - 1] = '\0';
 }
 
 int wait_for_delim(char* delim)
