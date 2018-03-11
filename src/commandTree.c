@@ -230,16 +230,48 @@ void execute_fork_node(commandNode* node)
 	int status;
 	int pid;
 	
-	if(strcmp(node->value, "|") == TRUE)
+	// If we have a pipe
+	if(strcmp(node->value, "|") == 0)
 	{
-		//TODO Implement pipe
+		int pipeDescs[2];         
+		if(pipe(pipeDescs) == -1)
+		{
+		   perror("Pipe error");
+		   exit(EXIT_FAILURE);
+		}
+		
+		if((pid = fork()) < 0)
+		{
+			perror("Fork error");
+			exit(EXIT_FAILURE);
+		}
+		
+		if (pid ==0) 
+		{			 
+			close(pipeDescs[0]);  	
+			dup2(pipeDescs[1], STDOUT);  
+			
+			interpret_node(node->left);
+		}
+		else 
+		{
+			close(pipeDescs[1]); // On ferme l'entrée du pipe
+			dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
+				
+			interpret_node(node->right);
+	  }
+
+		
+		
+		
 	}
+	
 	
 	else
 	{
 		if((pid = fork()) < 0)
 		{
-			perror("Error");
+			perror("Fork error");
 			exit(EXIT_FAILURE);
 		}
 		
