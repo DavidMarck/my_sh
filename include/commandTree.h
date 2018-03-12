@@ -6,6 +6,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+       
 #include "string.h"
 
 #include "var.h"
@@ -84,6 +87,12 @@ void interpret_node(commandNode* node);
  * @param node the node to execute
  */
 void execute_fork_node(commandNode* node);
+
+/**
+ * Execute a node with a redirection which don't requires a fork
+ * @param node the node to execute
+ */
+void execute_redirection_without_fork(commandNode* node);
 
 /**
  * Print the entire tree
