@@ -9,6 +9,8 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include "util.h"
+
 /**
  * Sets new current/working directory
  * @param argv array of arguments
