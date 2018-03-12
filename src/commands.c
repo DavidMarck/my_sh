@@ -108,6 +108,8 @@ void execute_command(char** argv, int argc)
         return;
     }
 
+    printf("\n");
+
     free(path);
 }
 
@@ -129,12 +131,14 @@ int execute_builtin(char** argv, int argc)
     }
     else if(strcmp(argv[0],"echo") == 0)
     {
-        //returnCode = echo(argv,argc);
+        returnCode = echo(argv,argc);
     }
     else if(strcmp(argv[0],"exit") == 0)
     {
-        //returnCode = exit();
+        builtin_exit();
     }
+
+    printf("\n");
 
     return returnCode;
 }

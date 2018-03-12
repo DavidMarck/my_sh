@@ -62,3 +62,33 @@ int pwd(char** argv, int argc)
 
     return returnCode;
 }
+
+int echo(char** argv, int argc)
+{
+    int returnCode = 0;
+
+    for(int i = 1; i < argc; i++)
+    {
+        //if((argv[i] != NULL) && (contains(argv[i],"\\"))) argv[i] = str_replace("\\","",argv[i]);
+        for(int j = 0; j < strlen(argv[i]); j++)
+        {
+            if(argv[i][j] == '\\')
+            {
+                if((printf("%c",argv[i][j+1]) < 0)) returnCode = -1;
+                j++;
+                continue;
+            }
+            if((printf("%c",argv[i][j]) < 0)) returnCode = -1;
+        }
+        printf(" ");
+    }
+
+    printf("\n");
+    
+    return returnCode;
+}
+
+void builtin_exit()
+{
+    exit(0);
+}
