@@ -103,7 +103,7 @@ void execute_command(char** argv, int argc)
         }
         else
         {
-            perror("execv");
+            perror(argv[0]);
         }
         return;
     }
