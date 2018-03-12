@@ -109,6 +109,7 @@ int main(int argc, char** argv)
     {
         int pid = fork();
 
+        if(pid == 0)
         {
             execlp("/bin/clear","clear", NULL);
         }
@@ -120,6 +121,12 @@ int main(int argc, char** argv)
             
             while(print_prompt())
             {
+                char commandLine[MAX_SIZE];
+
+                fgets(commandLine, sizeof(commandLine), stdin);
+                //commandLine[strlen(commandLine) - 1] = '\0';
+                //clean(commandLine);            
+                read_command_line(commandLine);
 
                 int args_count = 0;
                 char** arguments = parse_command(commandLine,&args_count);
