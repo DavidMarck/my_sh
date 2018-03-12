@@ -223,6 +223,10 @@ void interpret_node(commandNode* node)
 		execute_fork_node(node);
 	}
 	
+	else if(is_redirection_without_fork(node->value) == TRUE)
+	{
+		execute_redirection_without_fork(node);
+	}
 }
 
 void execute_fork_node(commandNode* node)
@@ -301,6 +305,21 @@ void execute_fork_node(commandNode* node)
 			}
 		}
 	}
+}
+
+void execute_redirection_without_fork(commandNode* node)
+{
+	if(strcmp(node->value, ">") == 0)
+	{
+		int fileDescriptor;
+		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR)) == -1)
+		{
+			perror("File error");
+			exit(EXIT_FAILURE);
+		}
+		dup2(fileDescriptor, STDOUT);
+	}
+	interpret_node(node->left);
 }
 
 void print_tree(commandNode* root)
