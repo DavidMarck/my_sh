@@ -74,11 +74,11 @@ int echo(char** argv, int argc)
         {
             if(argv[i][j] == '\\')
             {
-                printf("%c",argv[i][j+1]);
+                if((printf("%c",argv[i][j+1]) < 0)) returnCode = -1;
                 j++;
                 continue;
             }
-            printf("%c",argv[i][j]);
+            if((printf("%c",argv[i][j]) < 0)) returnCode = -1;
         }
         printf(" ");
     }
@@ -86,4 +86,9 @@ int echo(char** argv, int argc)
     printf("\n");
     
     return returnCode;
+}
+
+void builtin_exit()
+{
+    exit(0);
 }

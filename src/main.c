@@ -38,6 +38,12 @@ int main(int args_count, char** argv)
                 continue;
             }
 
+            // call to exit
+            if(strcmp(arguments[0],EXIT_STRING) == 0)
+            {
+                execute_command(arguments,args_count);
+            }
+            // call to any other command
 			commandNode* tree_arguments = parse_to_tree(arguments, args_count);
 			execute_tree(tree_arguments);
             
@@ -45,13 +51,7 @@ int main(int args_count, char** argv)
             for (int i = 0; i < (args_count + 1); i++) 
             {
                 printf ("arguments[%d] = %s\n", i, arguments[i]);
-            }	
-            
-
-            // if(strcmp(arguments[0],EXIT_STRING) == 0)
-            // {
-            //     return EXIT_SUCCESS;
-            // }
+            }
             
             // execute_command(arguments, args_count);
 

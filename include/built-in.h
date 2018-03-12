@@ -40,11 +40,7 @@ int echo(char** argv, int argc);
 
 /**
  * Cause normal process termination
- * @param argv array of arguments
- * @param argc arguments count
- * 
- * @return 0 on success and -1 on error
  */
-int builtin_exit(char** argv, int argc);
+void builtin_exit();
 
 #endif
