@@ -312,13 +312,24 @@ void execute_redirection_without_fork(commandNode* node)
 	if(strcmp(node->value, ">") == 0)
 	{
 		int fileDescriptor;
-		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR)) == -1)
+		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR)) == -1)
 		{
 			perror("File error");
 			exit(EXIT_FAILURE);
 		}
 		dup2(fileDescriptor, STDOUT);
 	}
+	
+		if(strcmp(node->value, ">>") == 0)
+		{
+			int fileDescriptor;
+			if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR)) == -1)
+			{
+				perror("File error");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fileDescriptor, STDOUT);
+		}
 	interpret_node(node->left);
 }
 

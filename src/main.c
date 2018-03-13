@@ -146,11 +146,12 @@ int main(int argc, char** argv)
                 commandNode* tree_arguments = parse_to_tree(arguments, args_count);
                 execute_tree(tree_arguments);
 
+/*
                 for (int i = 0; i < (args_count + 1); i++) 
                 {
                     printf ("arguments[%d] = %s\n", i, arguments[i]);
                 }
-                
+  */              
                 //execute_command(arguments, args_count);
 
                 free_tree(tree_arguments);
