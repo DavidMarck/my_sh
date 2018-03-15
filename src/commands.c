@@ -87,8 +87,8 @@ void execute_command(char** argv, int argc)
     }
     else if(isbuiltin(argv[0]))
     {
-        execute_builtin(argv,argc);
-        return;
+        if(execute_builtin(argv,argc) == 0) exit(EXIT_SUCCESS);
+        else exit(EXIT_FAILURE);
     }
 
     char* bin = "/bin/";
