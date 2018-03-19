@@ -105,7 +105,7 @@ void execute_command(char** argv, int argc)
         {
             perror(argv[0]);
         }
-        return;
+        exit(EXIT_FAILURE);
     }
 
     printf("\n");
