@@ -24,6 +24,22 @@ char* string_to_lower(char*);
 int contains(char* str, char* seq);
 
 /**
+ * Indicates wether or not a string represents a signed or unsigner numeric
+ * @param s string to test
+ * 
+ * @return true if string is numeric, false otherwise
+ */
+int isNumeric (const char * s);
+
+/**
+ * Converts a string to an integer
+ * @param str string to convert
+ * 
+ * @return resulting integer
+ */
+int strtonum(const char * str);
+
+/**
  * Count occurences of a certain character in a string
  * @param str string to look into
  * @param search char seq to find and count

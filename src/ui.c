@@ -5,6 +5,7 @@ int print_prompt()
     char buffer[1024];
     char* dir = getcwd(buffer,sizeof(buffer));
     char* prompt = strcat(dir," > ");
+    printf("\n");
     printf(prompt);
 
     return TRUE;

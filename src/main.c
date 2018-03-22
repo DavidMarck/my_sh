@@ -161,10 +161,6 @@ int main(int argc, char** argv)
                 printf("Fin...\n");
 				printf("Exécution de l'arbre\n");
                 execute_tree(tree_arguments);
-                printf("Fin...\n");
-                //print_tree(tree_arguments);                
-                
-                //execute_command(arguments, args_count);
 
                 free_tree(tree_arguments);
 

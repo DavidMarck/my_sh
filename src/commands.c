@@ -108,7 +108,7 @@ void execute_command(char** argv, int argc)
         exit(EXIT_FAILURE);
     }
 
-    printf("\n");
+    printf("\n\n");
 
     free(path);
 }
@@ -135,7 +135,7 @@ int execute_builtin(char** argv, int argc)
     }
     else if(strcmp(argv[0],"exit") == 0)
     {
-        builtin_exit();
+        builtin_exit(argv,argc);
     }
 
     printf("\n");

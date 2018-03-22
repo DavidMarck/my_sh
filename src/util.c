@@ -18,6 +18,31 @@ int contains(char* str, char* seq)
     return TRUE;
 }
 
+int isNumeric (const char * s)
+{
+    if (s == NULL || *s == '\0' || isspace(*s))
+      return 0;
+    char * p;
+    strtod (s, &p);
+    return *p == '\0';
+}
+
+int strtonum(const char * str)
+{
+	int  i, len;
+
+	int result = 0;
+
+	len = strlen(str);
+
+	for(i = 0; i < len; i++)
+	{
+		result = result * 10 + ( str[i] - '0' );
+	}
+
+	return result;
+}
+
 int strcount(char* str, char* search)
 {
 	int i, j, found, count;
