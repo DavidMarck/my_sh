@@ -162,6 +162,7 @@ int main(int argc, char** argv)
 				printf("Exécution de l'arbre\n");
                 execute_tree(tree_arguments);
 
+
                 free_tree(tree_arguments);
 
                 // TO-DO free elements of arguments array

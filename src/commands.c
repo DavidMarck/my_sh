@@ -26,7 +26,7 @@ char** parse_command(char* command, int* argc)
         if(awaitingClosingQuote == TRUE)
         {
             int spaceNeeded = (strlen(tmp) * sizeof(char)) + ((strlen(p) + 1) * sizeof(char)) + 1;
-            realloc(tmp,spaceNeeded);
+            tmp = realloc(tmp,spaceNeeded);
             strcat(tmp," ");
             strcat(tmp,p);
         }
