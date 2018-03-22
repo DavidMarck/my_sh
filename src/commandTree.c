@@ -294,16 +294,16 @@ void execute_fork_node(commandNode* node)
 				if(WIFEXITED(status) && WEXITSTATUS(status) == 0) 
 				{		
 					interpret_node(node->right);
-					exit(EXIT_SUCCESS);
-				}				
+				} 
+				exit(EXIT_SUCCESS);
 			}
 			else
 			{
 				if(WIFEXITED(status) && WEXITSTATUS(status) != 0) 
 				{		
 					interpret_node(node->right);
-					exit(EXIT_SUCCESS);
 				}
+				exit(EXIT_SUCCESS);
 			}
 		}
 	}
