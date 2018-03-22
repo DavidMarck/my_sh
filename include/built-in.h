@@ -8,6 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include "util.h"
 
@@ -39,8 +40,10 @@ int pwd(char** argv, int argc);
 int echo(char** argv, int argc);
 
 /**
- * Cause normal process termination
+ * Cause normal process termination * 
+ * @param argv array of arguments
+ * @param argc arguments count
  */
-void builtin_exit();
+void builtin_exit(char** argv, int argc);
 
 #endif

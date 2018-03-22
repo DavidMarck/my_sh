@@ -149,9 +149,7 @@ int main(int argc, char** argv)
                 }
                 // call to any other command
                 commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-                execute_tree(tree_arguments);                
-                
-                //execute_command(arguments, args_count);
+                execute_tree(tree_arguments);
 
                 free_tree(tree_arguments);
 
