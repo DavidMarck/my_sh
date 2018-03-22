@@ -92,7 +92,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 					
 				command = strcat(command, arguments[i]);
 				//printf("Espace actuel de la commande après concatenation : %d\n", spaceNeeded);
-				//printf("Value : %s\n", command);
+				//printf("Commande détectée : %s\n", command);
 			}
 			
 			//printf("Fin de la concaténation\n");
@@ -101,14 +101,15 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				cmdNode = new_node(command);
 				if(redirectionNode != NULL)
 				{	
-					add_left(redirectionNode, cmdNode);
 					add_left(operatorNode, redirectionNode);
+					add_left(redirectionNode, cmdNode);
 				}
 				else
 					cmdNode = add_left(operatorNode, cmdNode);
 			}
 			else if(is_fork(arguments[index]) == TRUE)
 			{
+				//printf("Fork détecté : %s\n", arguments[index]);
 				operatorNode = add_left(operatorNode, new_node(arguments[index]));
 				
 				if(redirectionNode != NULL) 
@@ -123,6 +124,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 			
 			else if(is_redirection_without_fork(arguments[index]) == TRUE)
 			{
+				//printf("Redirections détectée : %s\n", arguments[index]);
 				redirectionNode = new_node(arguments[index]);
 				add_right(redirectionNode, new_node(command));
 			}
@@ -134,6 +136,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 	//printf("Fin de l'engraissage, dernière commande : %s\n", command);
 	free(command);
 	//printf("Free effectué\n");
+	//printf("Racine de l'arbre : %s\n", cmdNode->mainRoot->value);
 	return cmdNode->mainRoot;
 }
 
@@ -211,6 +214,10 @@ void execute_tree(commandNode* root)
 
 void interpret_node(commandNode* node)
 {
+//	printf("valeur du noeud : %s\n", node->value);
+//	printf("Fils gauche : %s\n", node->left->value);
+//	printf("Fils droit : %s\n\n", node->right->value);
+
 	if(is_special_string(node->value) == FALSE)
 	{
 		int args_count = 0;
@@ -264,10 +271,6 @@ void execute_fork_node(commandNode* node)
 				
 			interpret_node(node->right);
 	  }
-
-		
-		
-		
 	}
 	
 	
@@ -292,8 +295,7 @@ void execute_fork_node(commandNode* node)
 				{		
 					interpret_node(node->right);
 					exit(EXIT_SUCCESS);
-				}
-				
+				}				
 			}
 			else
 			{
@@ -320,16 +322,16 @@ void execute_redirection_without_fork(commandNode* node)
 		dup2(fileDescriptor, STDOUT);
 	}
 	
-		if(strcmp(node->value, ">>") == 0)
+	if(strcmp(node->value, ">>") == 0)
+	{
+		int fileDescriptor;
+		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR)) == -1)
 		{
-			int fileDescriptor;
-			if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR)) == -1)
-			{
-				perror("File error");
-				exit(EXIT_FAILURE);
-			}
-			dup2(fileDescriptor, STDOUT);
+			perror("File error");
+			exit(EXIT_FAILURE);
 		}
+		dup2(fileDescriptor, STDOUT);
+	}
 	interpret_node(node->left);
 }
 
