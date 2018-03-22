@@ -73,7 +73,7 @@ int main(int argc, char** argv)
                 break;
         }
     }
-
+    
     /**
      * Checking binary requirements
      * (could be defined in a separate function)
@@ -93,15 +93,19 @@ int main(int argc, char** argv)
         strcat(bin_command_param,"\n");
         read_command_line(bin_command_param);
         int args_count = 0;
+       
         char** arguments = parse_command(bin_command_param,&args_count);
-/*
+
+/*	
         for (int i = 0; i < (args_count + 1); i++) 
         {
             printf ("arguments[%d] = %s\n", i, arguments[i]);
         }
-*/
+*/		
         commandNode* tree_arguments = parse_to_tree(arguments, args_count);
+
 	    execute_tree(tree_arguments);
+
         free_tree(tree_arguments);
         free(arguments);
     }
@@ -122,14 +126,17 @@ int main(int argc, char** argv)
             while(print_prompt())
             {
                 char commandLine[MAX_SIZE];
-
+				
                 fgets(commandLine, sizeof(commandLine), stdin);
                 //commandLine[strlen(commandLine) - 1] = '\0';
                 //clean(commandLine);            
+       
                 read_command_line(commandLine);
 
                 int args_count = 0;
+                printf("Parsing de la commande en tableau\n");
                 char** arguments = parse_command(commandLine,&args_count);
+                printf("Fin...\n");
 /*
                 for (int i = 0; i < (args_count + 1); i++) 
                 {
@@ -149,8 +156,12 @@ int main(int argc, char** argv)
                     execute_command(arguments,args_count);
                 }
                 // call to any other command
+                printf("Parsing de la commande en arbre\n");
                 commandNode* tree_arguments = parse_to_tree(arguments, args_count);
+                printf("Fin...\n");
+				printf("Exécution de l'arbre\n");
                 execute_tree(tree_arguments);
+                printf("Fin...\n");
                 //print_tree(tree_arguments);                
                 
                 //execute_command(arguments, args_count);
