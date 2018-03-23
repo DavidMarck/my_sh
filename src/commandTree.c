@@ -103,7 +103,6 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 			}
 			
 			//printf("Fin de la concaténation\n");
-			l
 			// if we reach the begin of the function...
 			if(index == 0)
 			{
@@ -348,6 +347,19 @@ void execute_redirection_without_fork(commandNode* node)
 			exit(EXIT_FAILURE);
 		}
 		dup2(fileDescriptor, STDOUT);
+	}
+	
+	if(strcmp(node->value, "<") == 0)
+	{
+		int fileDescriptor;
+		
+		if ((fileDescriptor = open(node->right->value, O_RDONLY)) == -1)
+		{
+			perror("File error");
+			exit(EXIT_FAILURE);
+		}
+		
+		dup2(fileDescriptor, STDIN);
 	}
 	interpret_node(node->left);
 }
