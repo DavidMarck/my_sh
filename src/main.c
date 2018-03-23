@@ -134,9 +134,9 @@ int main(int argc, char** argv)
                 read_command_line(commandLine);
 
                 int args_count = 0;
-                printf("Parsing de la commande en tableau\n");
+                //printf("Parsing de la commande en tableau\n");
                 char** arguments = parse_command(commandLine,&args_count);
-                printf("Fin...\n");
+                //printf("Fin...\n");
 /*
                 for (int i = 0; i < (args_count + 1); i++) 
                 {
@@ -156,12 +156,11 @@ int main(int argc, char** argv)
                     execute_command(arguments,args_count);
                 }
                 // call to any other command
-                printf("Parsing de la commande en arbre\n");
+                //printf("Parsing de la commande en arbre\n");
                 commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-                printf("Fin...\n");
-				printf("Exécution de l'arbre\n");
+                //printf("Fin...\n");
+				//printf("Exécution de l'arbre\n");
                 execute_tree(tree_arguments);
-
 
                 free_tree(tree_arguments);
 

@@ -4,14 +4,15 @@ commandNode* new_node(char* value)
 {
 	commandNode* cmdNode;
 	cmdNode = malloc(sizeof(commandNode));
-	//printf("Création du noeud %s\n", value);
+	
 	cmdNode->value = malloc(sizeof(char) * (strlen(value)+1));
-	//printf("Valeur du pointeur : %p\n", cmdNode->value);
 	cmdNode->mainRoot = cmdNode;
+	
 	strcpy(cmdNode->value, value);
+	
 	cmdNode->left = NULL;
 	cmdNode->right = NULL;
-	//printf("Création effectuée \n");
+	
 	return cmdNode;
 }
 
@@ -54,32 +55,38 @@ commandNode* add_right(commandNode* root, commandNode* nodeToInsert) {
 
 commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le "&" !
 {
-	int index = args_count-1;
-	int last_string_limit = args_count;
-	int string_index;
+	// initialisation of the cursors (we'll start from the last index to the first(0))
+	int index = args_count-1;                          // current index
+	int last_string_limit = args_count;                // this cursor go to the last "special index" (it concerned all operators and redirection), by default this is the "null"
+	int string_index;                                  // this cursor will be use in order to concatenate some strings
 	int i;
+	
+	// this variable will concatenate all strings between 2 specials indexes
 	char* command = malloc(sizeof(char));
 	
-	
+	// these variables concerned the tree building
 	commandNode* cmdNode = NULL;
 	commandNode* operatorNode = NULL;
 	commandNode* redirectionNode = NULL; 
 	
+	
 	while (index > -1)
 	{
+		// when we have a special string (or the begin of the commmand), we concatenate all strings until we get the "special" index (or the end of the command)
 		//printf("Noeud actuel : %s\n", arguments[index]);
 		if(is_special_string(arguments[index]) == TRUE || index == 0) 
 		{
+			// if we are not at the first element, we don't take the "special" string into the concatenation
 			if(index != 0) 
 				string_index = index+1;
 			else
 				string_index = index;
 			command = strcpy(command,"");
 			
+			// these loop will concatenate all string until the "special" index 
 			for(i = string_index; i < last_string_limit; i++)
 			{
-				//printf("taille de la commande avant : %d\n", (strlen(command)+1));
-				//printf("Espace qui va être ajouté : %d\n", ((strlen(arguments[i]) + 1) * sizeof(char)) + 1);
+				// we realloc the space and we make the concatenation
 				int spaceNeeded = ((strlen(command)) * sizeof(char)) + ((strlen(arguments[i]) + 1) * sizeof(char));
 				// if we're don't at the last string, we had 1 space for the whitespace
 				if(i != string_index)
@@ -90,38 +97,48 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				if(i != string_index)
 					command = strcat(command, " ");
 					
+				
 				command = strcat(command, arguments[i]);
-				//printf("Espace actuel de la commande après concatenation : %d\n", spaceNeeded);
 				//printf("Commande détectée : %s\n", command);
 			}
 			
 			//printf("Fin de la concaténation\n");
+			l
+			// if we reach the begin of the function...
 			if(index == 0)
 			{
+				// ... we create a new "cmdNode" which contains the value of the last concatenate string
 				cmdNode = new_node(command);
+				
+				// ... if there is a redirection Node without fork ('>', '>>', '<', '<<'), whe add the cmdNode at the left of this one (and we had the redirection node at the left of the operator)
 				if(redirectionNode != NULL)
 				{	
 					add_left(operatorNode, redirectionNode);
 					add_left(redirectionNode, cmdNode);
 				}
+				// ... else we add the cmdNode at the left of the last "operatorNode" which include a fork ('&&', '||', '|'), if there is no operator, the cmd node become the root of the tree 
 				else
 					cmdNode = add_left(operatorNode, cmdNode);
 			}
+			// if our index is a future fork...
 			else if(is_fork(arguments[index]) == TRUE)
 			{
+				// ... we initiate an operatorNode and we add it at the left of the last operatorNode (or it becomes the main root)
 				//printf("Fork détecté : %s\n", arguments[index]);
 				operatorNode = add_left(operatorNode, new_node(arguments[index]));
 				
+				// if there was a redirectionNode,  we add it to this node and we add a node which contains the last concatenante string and we turn the redirectionNode variable to null 
 				if(redirectionNode != NULL) 
 				{
-					add_left(redirectionNode, new_node(command));
 					add_right(operatorNode, redirectionNode);
+					add_left(redirectionNode, new_node(command));
 					redirectionNode = NULL;
 				}
+				// else we just add the node with the concatenate string at the right of this node
 				else
 					add_right(operatorNode, new_node(command));
 			}
-			
+			// if we have a redirection without fork, we declare it, and we add a node which contains the last concatenate string at its right
 			else if(is_redirection_without_fork(arguments[index]) == TRUE)
 			{
 				//printf("Redirections détectée : %s\n", arguments[index]);
