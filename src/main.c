@@ -29,7 +29,7 @@ char* dup_optarg_str()
 void process_command_line(char* commandLine, int batch_mode)
 {
     int argc = 0;
-    char** argv = parse_command(commandLine,&argc);
+    char** argv = parse_to_argv(commandLine,&argc);
 
     int bg = includes_background(argv,argc);
     printf("%d\n",bg);

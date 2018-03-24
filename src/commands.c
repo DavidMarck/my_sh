@@ -3,7 +3,7 @@
 const char* built_in_commands[] = {"cd", "pwd", "echo", "exit"};
 int n_built_in = sizeof(built_in_commands) / sizeof(const char*);
 
-char** parse_command(char* command, int* argc)
+char** parse_to_argv(char* command, int* argc)
 {
 	char** argv  = NULL;
 	char *  p    = strtok (command, " ");

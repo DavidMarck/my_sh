@@ -237,7 +237,7 @@ void interpret_node(commandNode* node)
 	if(is_special_string(node->value) == FALSE)
 	{
 		int args_count = 0;
-		char** commandArgs = parse_command(node->value,&args_count);
+		char** commandArgs = parse_to_argv(node->value,&args_count);
 		execute_command(commandArgs, args_count);
 	}
 	

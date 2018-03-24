@@ -20,7 +20,7 @@
  * @param command command line to parse
  * @param argc argument count
  */ 
-char** parse_command(char*, int*);
+char** parse_to_argv(char*, int*);
 
 /**
  * Execute a command using argv and argc
