@@ -40,10 +40,20 @@ int execute_builtin(char** args, int argc);
 
 /**
  * Indicates wether or not the command is a built-in command
- * @param command
+ * @param commandLine
  * 
  * @return true or false
  */
-int isbuiltin(char* command);
+int isbuiltin(char* commandLine);
+
+/**
+ * Indicates wether or not a command line (parsed into argv) 
+ * includes command(s) that have to be ran as background processes.
+ * @param argv array of arguments
+ * @param argc arguments count
+ * 
+ * @return true if argv contains at least one & operator and false otherwise
+ */
+int includes_background(char** argv, int argc);
 
 #endif

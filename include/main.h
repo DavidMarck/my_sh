@@ -72,8 +72,15 @@ void free_if_needed(void* to_free);
 char* dup_optarg_str();
 
 /**
+ * Run all the necessary functions to run a command
+ * @param commandLine
+ * @param batch_mode value 1 if in batch mode, 0 otherwise (default)
+ */
+void process_command_line(char* commandLine, int batch_mode);
+
+/**
  * Exits the program
  */
-void exitProg(char* bin_command_param, int code);
+void exit_prog(char* bin_command_param, int code);
 
 #endif

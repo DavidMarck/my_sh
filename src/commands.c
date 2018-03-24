@@ -143,14 +143,27 @@ int execute_builtin(char** argv, int argc)
     return returnCode;
 }
 
-int isbuiltin(char* command)
+int isbuiltin(char* commandLine)
 {
     for(int i = 0; i < n_built_in; i++)
     {
-        if(strcmp(command,built_in_commands[i]) == 0)
+        if(strcmp(commandLine,built_in_commands[i]) == 0)
         {
             return TRUE;
         }
     }
+    return FALSE;
+}
+
+int includes_background(char** argv, int argc)
+{
+    for(int i = 0; i < argc; i++)
+    {
+        if(strcmp(argv[i],"&") == 0)
+        {
+            return TRUE;
+        }
+    }
+
     return FALSE;
 }
