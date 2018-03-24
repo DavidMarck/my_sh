@@ -79,6 +79,45 @@ char** parse_command(char* command, int* argc)
     return argv;
 }
 
+void interpret_heard_file(char** argv, int args_count)
+{
+	int index = 0;
+	
+	while(index < args_count)
+	{
+		if(strcmp("<<", argv[index]) == 0)
+		{
+			char line_input[MAX_SIZE];
+			char* stdin_text = malloc(sizeof(char));
+			char* delimiter = malloc(strlen(argv[index+1])*sizeof(char) + 1);
+			
+			delimiter = strcpy(delimiter, strcat(argv[index+1], "\n"));
+			while(strcmp(delimiter, line_input) != 0)
+			{
+				printf(" > ");
+				fgets(line_input, sizeof(line_input), stdin);
+				
+				
+				if(strcmp(delimiter, line_input) != 0)
+				{
+					int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(argv[index]) + 1) * sizeof(char));
+					stdin_text = realloc(stdin_text,spaceNeeded);
+					strcat(stdin_text, line_input);
+				}	
+			}
+			free(delimiter);
+			FILE *fp = fopen("/tmp/my_sh.tmp", "w");
+			if (fp != NULL)
+			{
+				fputs(stdin_text, fp);
+				fclose(fp);
+			}
+			
+		}
+		index++;
+	}
+}
+
 void execute_command(char** argv, int argc)
 {
     if(argv[0] == NULL)

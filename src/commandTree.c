@@ -361,6 +361,19 @@ void execute_redirection_without_fork(commandNode* node)
 		
 		dup2(fileDescriptor, STDIN);
 	}
+	
+	if(strcmp(node->value, "<<") == 0)
+	{
+		int fileDescriptor;
+		
+		if ((fileDescriptor = open("/tmp/my_sh.tmp", O_RDONLY)) == -1)
+		{
+			perror("File error");
+			exit(EXIT_FAILURE);
+		}
+		dup2(fileDescriptor, STDIN);
+	}
+	
 	interpret_node(node->left);
 }
 

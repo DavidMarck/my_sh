@@ -136,6 +136,7 @@ int main(int argc, char** argv)
                 int args_count = 0;
                 //printf("Parsing de la commande en tableau\n");
                 char** arguments = parse_command(commandLine,&args_count);
+                interpret_heard_file(arguments, args_count);
                 //printf("Fin...\n");
 /*
                 for (int i = 0; i < (args_count + 1); i++) 
@@ -149,7 +150,7 @@ int main(int argc, char** argv)
                 {
                     continue;
                 }
-
+				
                 // call to exit
                 if(strcmp(arguments[0],EXIT_STRING) == 0)
                 {
@@ -166,6 +167,7 @@ int main(int argc, char** argv)
 
                 // TO-DO free elements of arguments array
                 free(arguments);
+                
             }
         }
     }
