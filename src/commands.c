@@ -92,26 +92,29 @@ void interpret_heard_file(char** argv, int args_count)
 			char* delimiter = malloc(strlen(argv[index+1])*sizeof(char) + 1);
 			
 			delimiter = strcpy(delimiter, strcat(argv[index+1], "\n"));
-			while(strcmp(delimiter, line_input) != 0)
+			
+			do
 			{
 				printf(" > ");
 				fgets(line_input, sizeof(line_input), stdin);
 				
-				
 				if(strcmp(delimiter, line_input) != 0)
 				{
-					int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(argv[index]) + 1) * sizeof(char));
+					int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(line_input) + 1) * sizeof(char));
 					stdin_text = realloc(stdin_text,spaceNeeded);
 					strcat(stdin_text, line_input);
 				}	
-			}
+			} while(strcmp(delimiter, line_input) != 0);
+			
 			free(delimiter);
 			FILE *fp = fopen("/tmp/my_sh.tmp", "w");
 			if (fp != NULL)
 			{
 				fputs(stdin_text, fp);
+				free(stdin_text);
 				fclose(fp);
 			}
+			
 			
 		}
 		index++;
