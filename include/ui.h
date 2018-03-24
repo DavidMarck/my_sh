@@ -30,11 +30,4 @@ void clean(const char*);
  */
 void read_command_line(char* commandLine);
 
-/**
- * Make the shell wait for specified character sequence
- * 
- * @param delim char sequence waited
- */
-int wait_for_delim(char* delim);
-
 #endif
