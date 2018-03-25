@@ -72,11 +72,20 @@ void free_if_needed(void* to_free);
 char* dup_optarg_str();
 
 /**
- * Run all the necessary functions to run a command
+ * Run all the necessary functions to interpret a command
+ * (proxy method)
  * @param commandLine
  * @param batch_mode value 1 if in batch mode, 0 otherwise (default)
  */
 void process_command_line(char* commandLine, int batch_mode);
+
+/**
+ * Execute a command line
+ * @param argv array of arguments
+ * @param argc arguments count
+ * @param isBackground wether or not the process has to be ran in background
+ */
+void execute_command_line(char** argv, int argc, int isBackground);
 
 /**
  * Exits the program

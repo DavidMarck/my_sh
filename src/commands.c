@@ -167,3 +167,60 @@ int includes_background(char** argv, int argc)
 
     return FALSE;
 }
+
+char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineIndex)
+{
+    char** bg_argv = NULL;
+
+    int n_args = 0;
+    int i = *nxtCmdLineIndex;
+
+    // We copy all the arguments to get only the ones concerned by the next & operator
+    while(strcmp(argv[i],"&") != 0)
+    {
+        // reallocating memory
+        bg_argv = realloc(bg_argv, sizeof (char*) * ++n_args);
+        if (bg_argv == NULL) exit (-1); /* memory allocation failed */
+
+        bg_argv[n_args - 1] = argv[i];
+        i++;
+    }
+    // Sets "&" to "" in argv
+    argv[i] = "";
+    *nxtCmdLineIndex = i + 1;
+
+    /* realloc one extra element for the last NULL 
+     (necessary for exec fucntion)*/
+	bg_argv = realloc (bg_argv, sizeof (char*) * (n_args+1));
+	bg_argv[n_args] = 0;
+
+    *bg_argc = n_args;
+
+    return bg_argv;
+}
+
+char** get_fg_command_args(char** argv, int argc, int* fg_argc, int startIndex)
+{
+    char** fg_argv = NULL;
+
+    int n_args = 0;
+
+    // We copy all the arguments at the end (after all the & operators)
+    for(int i = startIndex; i < argc; i++)
+    {
+        // reallocating memory
+        fg_argv = realloc(fg_argv, sizeof (char*) * ++n_args);
+        if (fg_argv == NULL) exit (-1); /* memory allocation failed */
+
+        fg_argv[n_args - 1] = argv[i];
+    }
+
+    /* realloc one extra element for the last NULL 
+     (necessary for exec fucntion)*/
+	fg_argv = realloc (fg_argv, sizeof (char*) * (n_args+1));
+	fg_argv[n_args] = 0;
+
+    *fg_argc = n_args;
+
+    return fg_argv;
+}

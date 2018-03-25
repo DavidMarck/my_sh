@@ -56,4 +56,26 @@ int isbuiltin(char* commandLine);
  */
 int includes_background(char** argv, int argc);
 
+/**
+ * Gets the next sequence of commands that has to be ran as a background process
+ * @param argv array of arguments
+ * @param argc arguments count (input arguments array)
+ * @param bg_argc arguments count (output arguments array)
+ * @param nxtCmdLineIndex index of the next command line (after & operator)
+ * 
+ * @return array of arguments to be used in a background process
+ */
+char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineIndex);
+
+/**
+ * Gets the next sequence of commands that has to be ran as a foreground process
+ * @param argv array of arguments
+ * @param argc arguments count (input arguments array)
+ * @param fg_argc arguments count (output arguments array)
+ * @param startIndex 
+ * 
+ * @return sub-array of arguments to be used in a foreground process
+ */
+char** get_fg_command_args(char** argv, int argc, int* fg_argc, int startIndex);
+
 #endif

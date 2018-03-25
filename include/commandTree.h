@@ -73,8 +73,9 @@ int is_redirection_without_fork(char* argument);
 /**
  * Execute a command line based on a tree
  * @param root the tree to execute
+ * @param isBackground wether or not the process has to be ran in background (O or 1)
  */
-void execute_tree(commandNode* root);
+void execute_tree(commandNode* root, int isBackground);
 
 /**
  * Intertpret a Node to execute in a tree (recursive call)
