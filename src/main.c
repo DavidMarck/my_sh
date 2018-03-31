@@ -134,14 +134,16 @@ int main(int argc, char** argv)
                 read_command_line(commandLine);
 
                 int args_count = 0;
+                
+                
                 //printf("Parsing de la commande en tableau\n");
                 char** arguments = parse_command(commandLine,&args_count);
-                interpret_heard_file(arguments, args_count);
-                //printf("Fin...\n");
-/*
-                for (int i = 0; i < (args_count + 1); i++) 
+                char** tmpFiles = interpret_heard_file(arguments, args_count);
+                printf("on compte... \n");
+			/*
+                for (int i = 0; i < 2; i++) 
                 {
-                    printf ("arguments[%d] = %s\n", i, arguments[i]);
+                    printf ("arguments[%d] = %s\n", i, tmpFiles[i]);
                 }
 */
 

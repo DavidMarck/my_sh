@@ -79,9 +79,12 @@ char** parse_command(char* command, int* argc)
     return argv;
 }
 
-void interpret_heard_file(char** argv, int args_count)
+char** interpret_heard_file(char** argv, int args_count)
 {
 	int index = 0;
+	int n_files = 0;
+	
+	char** tempFilesNames  = NULL;
 	
 	while(index < args_count)
 	{
@@ -107,18 +110,43 @@ void interpret_heard_file(char** argv, int args_count)
 			} while(strcmp(delimiter, line_input) != 0);
 			
 			free(delimiter);
-			FILE *fp = fopen("/tmp/my_sh.tmp", "w");
-			if (fp != NULL)
+			
+			int descTemp;
+			static char template[] = "/tmp/tmpShellXXXXXX";
+			char fileName[20];
+			
+			strcpy(fileName, template);
+			
+			descTemp = mkstemp(fileName);
+			if(descTemp == -1) {
+				dprintf(STDERR, "Error in mkstemp.\n");
+				exit(EXIT_FAILURE);
+			}
+			printf("Fichier temporaire %s créé\n", fileName);
+			FILE *fp = fdopen(descTemp, "w");
+			if (fp == NULL)
 			{
-				fputs(stdin_text, fp);
-				free(stdin_text);
-				fclose(fp);
+				perror("Error when opening temp file");
+				exit(EXIT_FAILURE);
 			}
 			
+			char* tmp = malloc(sizeof(char) * strlen(fileName));
+			strcpy(tmp, fileName);
 			
+			tempFilesNames = realloc (tempFilesNames, sizeof (char*) * ++n_files);
+			
+			if (tempFilesNames == NULL) exit (-1); /* memory allocation failed */
+			tempFilesNames[n_files-1] = tmp;
+			fputs(stdin_text, fp);
+			
+			fclose(fp);
+			close(descTemp);
+			free(stdin_text);
 		}
 		index++;
 	}
+	//TODO FREE
+	return tempFilesNames;
 }
 
 void execute_command(char** argv, int argc)
