@@ -26,7 +26,76 @@ char* dup_optarg_str()
   return str;
 }
 
-void exitProg(char* bin_command_param, int code) 
+void process_command_line(char* commandLine, int batch_mode)
+{
+    int argc = 0;
+    char** argv = parse_to_argv(commandLine,&argc);
+
+    int fg_argc;
+    char** fg_argv = NULL;
+
+    for (int i = 0; i < (argc + 1); i++) 
+    {
+        printf ("argv[%d] = %s\n", i, argv[i]);
+    }
+
+    // empty command line
+    if(argc == 0)
+    {
+        return;
+    }
+
+    // call to exit
+    if(strcmp(argv[0],EXIT_STRING) == 0)
+    {
+        execute_command(argv,argc);
+    }
+    else if(strcmp(argv[0],"&") == 0)
+    {
+        printf("my_sh: syntax error near unexpected token `&'");
+        return;
+    }
+
+    int nxtCmdLineIndex = 0;
+    while(includes_background(argv,argc))
+    {
+        int bg_argc = 0;
+        char** bg_argv = get_bg_command_args(argv,argc,&bg_argc,&nxtCmdLineIndex);
+        // for (int i = 0; i < (bg_argc + 1); i++) 
+        // {
+        //     printf("bg_argv[%d] = %s\n", i, bg_argv[i]);
+        // }
+
+        execute_command_line(bg_argv,bg_argc,TRUE);
+    }
+
+    // if there were any background processes and if there is still a foreground command
+    if((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
+    {
+        // we get only the foreground command's arguments
+        fg_argc = 0;
+        fg_argv = get_fg_command_args(argv,argc,&fg_argc,nxtCmdLineIndex);
+
+        for (int i = 0; i < (fg_argc + 1); i++) 
+        {
+            printf("fg_argv[%d] = %s\n", i, fg_argv[i]);
+        }
+    }
+
+    (fg_argv != NULL) ? execute_command_line(fg_argv,fg_argc,FALSE) : execute_command_line(argv,argc,FALSE);
+}
+
+void execute_command_line(char** argv, int argc, int isBackground)
+{
+    commandNode* tree_arguments = parse_to_tree(argv, argc);
+
+	execute_tree(tree_arguments,isBackground);
+
+    free_tree(tree_arguments);
+    free(argv);
+}
+
+void exit_prog(char* bin_command_param, int code) 
 {
    // Freeing allocated data
     free_if_needed(bin_command_param);
@@ -81,7 +150,7 @@ int main(int argc, char** argv)
     // if (bin_command_param == NULL)
     // {
     //     dprintf(STDERR, "Bad usage! See HELP [--help|-h]\n");
-    //     exitProg(bin_command_param, EXIT_FAILURE);
+    //     exit_prog(bin_command_param, EXIT_FAILURE);
     // }
 
     // Printing params
@@ -92,22 +161,7 @@ int main(int argc, char** argv)
     {
         strcat(bin_command_param,"\n");
         read_command_line(bin_command_param);
-        int args_count = 0;
-       
-        char** arguments = parse_command(bin_command_param,&args_count);
-
-/*	
-        for (int i = 0; i < (args_count + 1); i++) 
-        {
-            printf ("arguments[%d] = %s\n", i, arguments[i]);
-        }
-*/		
-        commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-
-	    execute_tree(tree_arguments);
-
-        free_tree(tree_arguments);
-        free(arguments);
+        process_command_line(bin_command_param,TRUE);
     }
     else
     {
@@ -127,52 +181,13 @@ int main(int argc, char** argv)
             {
                 char commandLine[MAX_SIZE];
 				
-                fgets(commandLine, sizeof(commandLine), stdin);
-                //commandLine[strlen(commandLine) - 1] = '\0';
-                //clean(commandLine);            
+                fgets(commandLine, sizeof(commandLine), stdin);         
        
                 read_command_line(commandLine);
-
-                int args_count = 0;
-                
-                
-                //printf("Parsing de la commande en tableau\n");
-                char** arguments = parse_command(commandLine,&args_count);
-                char** tmpFiles = interpret_heard_file(arguments, args_count);
-                printf("on compte... \n");
-			/*
-                for (int i = 0; i < 2; i++) 
-                {
-                    printf ("arguments[%d] = %s\n", i, tmpFiles[i]);
-                }
-*/
-
-                // case no arguments (i.e. empty command line)
-                if(args_count == 0)
-                {
-                    continue;
-                }
-				
-                // call to exit
-                if(strcmp(arguments[0],EXIT_STRING) == 0)
-                {
-                    execute_command(arguments,args_count);
-                }
-                // call to any other command
-                //printf("Parsing de la commande en arbre\n");
-                commandNode* tree_arguments = parse_to_tree(arguments, args_count);
-                //printf("Fin...\n");
-				//printf("Exécution de l'arbre\n");
-                execute_tree(tree_arguments);
-
-                free_tree(tree_arguments);
-
-                // TO-DO free elements of arguments array
-                free(arguments);
-                
+                process_command_line(commandLine,FALSE);
             }
         }
     }
     
-    exitProg(bin_command_param,EXIT_SUCCESS);
+    exit_prog(bin_command_param,EXIT_SUCCESS);
 }

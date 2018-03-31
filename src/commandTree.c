@@ -159,10 +159,10 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 int is_special_string(char* argument)
 {	
 	int index = 0;
-	char* operators[] = {"|", "||", "&&", ">", "<", ">>", "<<", "&"};
+	char* operators[] = {"|", "||", "&&", ">", "<", ">>", "<<"};
 	
 	
-	while (index < 8)
+	while (index < 7)
 	{
 		if(strcmp(operators[index], argument) == 0)
 		{
@@ -206,7 +206,7 @@ int is_redirection_without_fork(char* argument)
 	return FALSE;
 }
 
-void execute_tree(commandNode* root)
+void execute_tree(commandNode* root, int isBackground)
 {
   int status;
   int pid;
@@ -221,7 +221,7 @@ void execute_tree(commandNode* root)
   {
 	  interpret_node(root);
   }
-  else
+  else if(!isBackground)
   {
 	  wait(&status);
   }
@@ -237,7 +237,7 @@ void interpret_node(commandNode* node)
 	if(is_special_string(node->value) == FALSE)
 	{
 		int args_count = 0;
-		char** commandArgs = parse_command(node->value,&args_count);
+		char** commandArgs = parse_to_argv(node->value,&args_count);
 		execute_command(commandArgs, args_count);
 	}
 	

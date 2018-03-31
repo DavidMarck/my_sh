@@ -40,8 +40,3 @@ void read_command_line(char* commandLine)
 
     commandLine[strlen(commandLine) - 1] = '\0';
 }
-
-int wait_for_delim(char* delim)
-{
-    return TRUE;
-}
