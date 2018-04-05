@@ -1,0 +1,22 @@
+.TH my_sh 1 "01 April 2018" "my_sh man page"
+.SH NAME
+my_sh \- Simplified shell implementation
+.SH SYNOPSIS
+my_sh [\fB\-c\fR \fICOMMAND\fR]
+.SH DESCRIPTION
+.B
+my_sh is a simplified implementation of the linux bash. 
+.PP
+It executes commands read from the standard input.
+It supports the following operators : |, ||, &&, <, <<, >, >>, & .
+.SH OPTIONS
+.TP
+.BR \-c " " \fICOMMAND\fR
+Commands are read from the first non-option argument \fICOMMAND\fR. (interactive shell won't display)
+.SH EXAMPLES
+.SH SEE ALSO
+bash(1)
+.SH BUGS
+No known bugs
+.SH AUTHOR
+Written by David Marck and Maxime Moser
