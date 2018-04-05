@@ -1,4 +1,5 @@
 #include "util.h"
+#include <stdio.h>
 
 char* string_to_lower(char* string)
 {
@@ -15,7 +16,7 @@ int contains(char* str, char* seq)
     if (strstr(str, seq) != NULL) {
         return TRUE;
     }
-    return TRUE;
+    return FALSE;
 }
 
 int isNumeric (const char * s)
@@ -149,4 +150,40 @@ char* str_replace(char* search, char* replace, char* subject) {
 	free(foundBuffer);
 	
 	return ret;
+}
+
+void insert_substring(char *str, char *insert, int position)
+{
+   char *f, *e;
+   int length;
+ 
+   length = strlen(str);
+ 
+   f = substring(str, 1, position - 1 ); 
+   e = substring(str, position, length-position+1);
+ 
+   strcpy(str, "");
+   strcat(str, f);
+   free(f);
+   strcat(str, insert);
+   strcat(str, e);
+   free(e);
+}
+ 
+char *substring(char *string, int position, int length) 
+{
+   char *pointer;
+   int c;
+ 
+   pointer = malloc(length+1);
+ 
+   if( pointer == NULL )
+       exit(EXIT_FAILURE);
+ 
+   for( c = 0 ; c < length ; c++ ) 
+      *(pointer+c) = *((string+position-1)+c);       
+ 
+   *(pointer+c) = '\0';
+ 
+   return pointer;
 }

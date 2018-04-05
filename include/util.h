@@ -10,12 +10,16 @@
 
 /**
  * Returns a string in lower case
+ * 
  * @param string string to be returned in lower case
+ * 
+ * @return string in lower-case
  */
 char* string_to_lower(char*);
 
 /**
  * Indicates wether or not a string contains a certain sequence
+ * 
  * @ param str string in which the sequence has to be searched
  * @ param seq sequence to look for in string
  * 
@@ -25,6 +29,7 @@ int contains(char* str, char* seq);
 
 /**
  * Indicates wether or not a string represents a signed or unsigner numeric
+ * 
  * @param s string to test
  * 
  * @return true if string is numeric, false otherwise
@@ -33,6 +38,7 @@ int isNumeric (const char * s);
 
 /**
  * Converts a string to an integer
+ * 
  * @param str string to convert
  * 
  * @return resulting integer
@@ -41,6 +47,7 @@ int strtonum(const char * str);
 
 /**
  * Count occurences of a certain character in a string
+ * 
  * @param str string to look into
  * @param search char seq to find and count
  * 
@@ -58,5 +65,25 @@ int strcount(char* str, char* search);
  * @return A new string with the search/replacement performed
  **/
 char* str_replace(char* search, char* replace, char* subject);
+
+/**
+ * Inserts a string into another string at a given position
+ * 
+ * @param str
+ * @param insert
+ * @param position
+ */
+void insert_substring(char *str, char *insert, int position);
+
+/**
+ * Gets substring
+ * 
+ * @param string string from which we want a substring
+ * @param position start index
+ * @param length end index from position
+ * 
+ * @return substring
+ */
+char *substring(char *string, int position, int length);
 
 #endif

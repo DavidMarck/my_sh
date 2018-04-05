@@ -97,6 +97,7 @@ void process_command_line(char* commandLine, int batch_mode)
 
 void execute_command_line(char** argv, int argc, int isBackground)
 {
+    printf("execute_command_line : %d\n", argc);
     commandNode* tree_arguments = parse_to_tree(argv, argc);
 
 	execute_tree(tree_arguments,isBackground);
@@ -189,7 +190,7 @@ int main(int argc, char** argv)
     {
         strcat(bin_command_param,"\n");
         read_command_line(bin_command_param);
-        process_command_line(bin_command_param,TRUE);
+        //process_command_line(bin_command_param,TRUE);
     }
     else
     {
