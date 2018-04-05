@@ -31,8 +31,8 @@ void process_command_line(char* commandLine, int batch_mode)
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
 
-    int fg_argc;
-    char** fg_argv = NULL;
+    // int fg_argc = 0;
+    // char** fg_argv = NULL;
 
     for (int i = 0; i < (argc + 1); i++) 
     {
@@ -56,33 +56,43 @@ void process_command_line(char* commandLine, int batch_mode)
         return;
     }
 
-    int nxtCmdLineIndex = 0;
-    while(includes_background(argv,argc))
-    {
-        int bg_argc = 0;
-        char** bg_argv = get_bg_command_args(argv,argc,&bg_argc,&nxtCmdLineIndex);
-        // for (int i = 0; i < (bg_argc + 1); i++) 
-        // {
-        //     printf("bg_argv[%d] = %s\n", i, bg_argv[i]);
-        // }
+    execute_command_line(argv,argc,FALSE);
 
-        execute_command_line(bg_argv,bg_argc,TRUE);
-    }
+    // int nxtCmdLineIndex = 0;
+    // while(includes_background(argv,argc))
+    // {
+    //     int bg_argc = 0;
+    //     char** bg_argv = get_bg_command_args(argv,argc,&bg_argc,&nxtCmdLineIndex);
+    //     for (int i = 0; i < (bg_argc + 1); i++) 
+    //     {
+    //         printf("bg_argv[%d] = %s\n", i, bg_argv[i]);
+    //     }
 
-    // if there were any background processes and if there is still a foreground command
-    if((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
-    {
-        // we get only the foreground command's arguments
-        fg_argc = 0;
-        fg_argv = get_fg_command_args(argv,argc,&fg_argc,nxtCmdLineIndex);
+    //     execute_command_line(bg_argv,bg_argc,TRUE);
+    // }
 
-        for (int i = 0; i < (fg_argc + 1); i++) 
-        {
-            printf("fg_argv[%d] = %s\n", i, fg_argv[i]);
-        }
-    }
+    // // if there were any background processes and if there is still a foreground command
+    // if((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
+    // {
+    //     // we get only the foreground command's arguments
+    //     fg_argv = get_fg_command_args(argv,argc,&fg_argc,nxtCmdLineIndex);
 
-    (fg_argv != NULL) ? execute_command_line(fg_argv,fg_argc,FALSE) : execute_command_line(argv,argc,FALSE);
+    //     for (int i = 0; i < (fg_argc + 1); i++) 
+    //     {
+    //         printf("fg_argv[%d] = %s\n", i, fg_argv[i]);
+    //     }
+    // }
+
+    // // if after backgorund commands there was another command to run in foreground...
+    // if(fg_argc > 0)
+    // {
+    //     execute_command_line(fg_argv,fg_argc,FALSE);
+    //     return;
+    // }
+
+    // if there were no background commands to run
+    // if(nxtCmdLineIndex == 0) execute_command_line(argv,argc,FALSE);
+    
 }
 
 void execute_command_line(char** argv, int argc, int isBackground)
@@ -90,6 +100,24 @@ void execute_command_line(char** argv, int argc, int isBackground)
     commandNode* tree_arguments = parse_to_tree(argv, argc);
 
 	execute_tree(tree_arguments,isBackground);
+
+    // int status;
+    // pid_t pid;
+    // while((pid = waitpid(-1, NULL, WNOHANG)) > 0) {
+    //     printf("[process %d exited with code %d]\n",
+    //     pid, WEXITSTATUS(status));
+    //     /* here you can remove the pid from your jobs list */
+    //     int i = 0;
+    //     while(BG_PIDS_ARRAY[i] != 0)
+    //     {
+    //         if(BG_PIDS_ARRAY[i] == pid)
+    //         {
+    //             BG_PIDS_ARRAY[i] = 0;
+    //             break;
+    //         }
+    //         i++;
+    //     }
+    // }
 
     free_tree(tree_arguments);
     free(argv);

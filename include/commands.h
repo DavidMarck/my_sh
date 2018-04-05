@@ -54,7 +54,7 @@ int isbuiltin(char* commandLine);
  * 
  * @return true if argv contains at least one & operator and false otherwise
  */
-int includes_background(char** argv, int argc);
+//int includes_background(char** argv, int argc);
 
 /**
  * Gets the next sequence of commands that has to be ran as a background process
@@ -65,7 +65,7 @@ int includes_background(char** argv, int argc);
  * 
  * @return array of arguments to be used in a background process
  */
-char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineIndex);
+//char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineIndex);
 
 /**
  * Gets the next sequence of commands that has to be ran as a foreground process
@@ -76,6 +76,6 @@ char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineI
  * 
  * @return sub-array of arguments to be used in a foreground process
  */
-char** get_fg_command_args(char** argv, int argc, int* fg_argc, int startIndex);
+//char** get_fg_command_args(char** argv, int argc, int* fg_argc, int startIndex);
 
 #endif

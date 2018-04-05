@@ -208,32 +208,55 @@ int is_redirection_without_fork(char* argument)
 
 void execute_tree(commandNode* root, int isBackground)
 {
-  int status;
-  int pid;
-  if((pid = fork()) < 0)
-  {
-	  perror("Error");
-	  exit(EXIT_FAILURE);
-  }
-  
-  
-  if(pid == 0) 
-  {
-	  interpret_node(root);
-  }
-  else if(!isBackground)
-  {
-	  wait(&status);
-  }
+	int status;
+	int pid;
 	
+	if((pid = fork()) < 0)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}  
+  
+	// child
+	if(pid == 0) 
+	{
+		// if(isBackground)
+		// {
+		// 	//int fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);   // open the file /dev/null
+        // 	//dup2(fd, STDOUT); // replace standard output with output file
+		// 	setpgid(0,0);
+		// }
+		interpret_node(root);
+	}	
+	// parent process
+	else
+	{
+		// if(isBackground)
+		// {
+		// 	int i = 0;
+		// 	while(BG_PIDS_ARRAY[i] != 0)
+		// 	{
+		// 		i++;
+		// 	}
+		// 	BG_PIDS_ARRAY[i] = pid;
+
+		// 	printf("[process %d started]\n", pid);
+
+		// 	int status;
+		// 	waitpid(-1, &status, WNOHANG);
+		// 	printf("[process %d exited with code %d]\n",
+        //     pid, WEXITSTATUS(status));                         
+		// }
+		// else
+		// {
+		// 	wait(&status);
+		// }
+		wait(&status);
+	}	
 }
 
 void interpret_node(commandNode* node)
 {
-//	printf("valeur du noeud : %s\n", node->value);
-//	printf("Fils gauche : %s\n", node->left->value);
-//	printf("Fils droit : %s\n\n", node->right->value);
-
 	if(is_special_string(node->value) == FALSE)
 	{
 		int args_count = 0;
@@ -263,13 +286,13 @@ void execute_fork_node(commandNode* node)
 		int pipeDescs[2];         
 		if(pipe(pipeDescs) == -1)
 		{
-		   perror("Pipe error");
+		   perror("pipe");
 		   exit(EXIT_FAILURE);
 		}
 		
 		if((pid = fork()) < 0)
 		{
-			perror("Fork error");
+			perror("fork");
 			exit(EXIT_FAILURE);
 		}
 		
@@ -294,7 +317,7 @@ void execute_fork_node(commandNode* node)
 	{
 		if((pid = fork()) < 0)
 		{
-			perror("Fork error");
+			perror("fork");
 			exit(EXIT_FAILURE);
 		}
 		

@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <getopt.h>
+#include <termios.h>
 
 #include "commands.h"
 #include "util.h"
