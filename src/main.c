@@ -30,6 +30,7 @@ void process_command_line(char* commandLine, int batch_mode)
 {
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
+    //interpret_heard_file(argv, argc);
 
     // int fg_argc = 0;
     // char** fg_argv = NULL;
@@ -98,7 +99,6 @@ void process_command_line(char* commandLine, int batch_mode)
 void execute_command_line(char** argv, int argc, int isBackground)
 {
     commandNode* tree_arguments = parse_to_tree(argv, argc);
-
 	execute_tree(tree_arguments,isBackground);
 
     // int status;

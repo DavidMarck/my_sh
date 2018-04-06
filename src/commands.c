@@ -149,12 +149,54 @@ char** interpret_heard_file(char** argv, int args_count)
 	return tempFilesNames;
 }
 
-void execute_command(char** argv, int argc)
+int execute_command(char** argv, int argc)
 {
-    if(argv[0] == NULL)
+	if(isbuiltin(argv[0]))
+	{
+		return execute_builtin(argv, argc);
+	}
+	else
+	{
+		int pid;
+		int status;
+		if ((pid = fork()) < 0)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if(pid == 0)
+		{
+			char* bin = "/bin/";
+			char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));
+			strcat(path,bin);
+			strcat(path,argv[0]);
+
+			if (execvp(path, argv) == -1) {
+				if(errno == ENOENT)
+				{
+					fprintf(stderr,"%s: Command not found\n",argv[0]);
+				}
+				else
+				{
+					perror(argv[0]);
+				}
+				exit(EXIT_FAILURE);
+			}
+		}
+		else
+		{
+			wait(&status);
+			return status;
+		}
+		
+	}
+	return -1;
+	
+    /*if(argv[0] == NULL)
     {
         return;
     }
+    
     else if(isbuiltin(argv[0]))
     {
         if(execute_builtin(argv,argc) == 0) exit(EXIT_SUCCESS);
@@ -181,6 +223,7 @@ void execute_command(char** argv, int argc)
     printf("\n\n");
 
     free(path);
+    */
 }
 
 int execute_builtin(char** argv, int argc)

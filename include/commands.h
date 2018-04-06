@@ -8,6 +8,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "var.h"
 #include "typedef.h"
@@ -26,8 +28,10 @@ char** parse_to_argv(char*, int*);
  * Execute a command using argv and argc
  * @param argv array of arguments
  * @param argc arguments count
+ * 
+ * @return the exit code of process
  */
-void execute_command(char** argv, int argc);
+int execute_command(char** argv, int argc);
 
 /**
  * Execute a buitl-in command using argv and argc

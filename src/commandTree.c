@@ -7,6 +7,7 @@ commandNode* new_node(char* value)
 	
 	cmdNode->value = malloc(sizeof(char) * (strlen(value)+1));
 	cmdNode->mainRoot = cmdNode;
+	cmdNode->parentNode = NULL;
 	
 	strcpy(cmdNode->value, value);
 	
@@ -22,6 +23,7 @@ commandNode* add_left(commandNode* root, commandNode* nodeToInsert) {
 		return nodeToInsert;
 	}
 	nodeToInsert->mainRoot = root->mainRoot;
+	nodeToInsert->parentNode = root;
 	
 	if(root->left != NULL)
 	{
@@ -41,6 +43,8 @@ commandNode* add_right(commandNode* root, commandNode* nodeToInsert) {
 		return nodeToInsert;
 	}
 	nodeToInsert->mainRoot = root->mainRoot;
+	nodeToInsert->parentNode = root;
+	
 	if(root->right != NULL)
 	{
 		root->right = add_right(root->right, nodeToInsert);
@@ -50,6 +54,29 @@ commandNode* add_right(commandNode* root, commandNode* nodeToInsert) {
 		root->right = nodeToInsert;
 	}
 	return nodeToInsert;
+}
+
+commandNode* get_last_left_child(commandNode* node)
+{
+	while(node->left != NULL)
+	{
+		node = node->left;
+	}
+	return node;
+}
+
+int is_left_child(commandNode* node)
+{
+	if(node == node->parentNode->left)
+		return TRUE;
+	return FALSE;
+}
+
+int is_right_child(commandNode* node)
+{
+	if(node == node->parentNode->right)
+		return TRUE;
+	return FALSE;
 }
 
 
@@ -208,7 +235,9 @@ int is_redirection_without_fork(char* argument)
 
 void execute_tree(commandNode* root, int isBackground)
 {
-	int status;
+	commandNode* last_left_child = get_last_left_child(root);
+	interpret_node(last_left_child);
+	/*int status;
 	int pid;
 	
 	if((pid = fork()) < 0)
@@ -253,10 +282,138 @@ void execute_tree(commandNode* root, int isBackground)
 		// }
 		wait(&status);
 	}	
+	*/
 }
 
 void interpret_node(commandNode* node)
 {
+	int return_code;
+	int argc = 0;
+	char** argv;
+	
+	// If last left child is the root
+	if(node->parentNode == NULL && node->left == NULL && node->right == NULL)
+	{
+		argv = parse_to_argv(node->value,&argc);
+		execute_command(argv, argc);
+		
+	}
+	else 
+	{
+		// left child
+		if(is_left_child(node))
+		{
+			if(strcmp(node->parentNode->value, "&&") == 0)
+			{
+				argv = parse_to_argv(node->value,&argc);
+				if(execute_command(argv, argc) >= 0)
+				{
+					interpret_node(node->parentNode->right);
+				}
+			}			
+		}
+		// right child
+		else 
+		{
+			// redirection
+			if(is_redirection_without_fork(node->value))
+			{
+				//TODO le << 
+			}
+			// command
+			else
+			{
+				argv = parse_to_argv(node->value,&argc);
+				execute_command(argv, argc);
+			}
+			
+		}
+		
+	}
+	/*
+	if(node == NULL) 
+		return;
+	
+	interpret_node(node->left);
+	
+
+	if(is_special_string(node->value) == FALSE && node == node->mainRoot)
+	{
+		
+
+		int args_count = 0;
+		char** commandArgs = parse_to_argv(node->value,&args_count);
+		
+		if(isbuiltin(commandArgs[0]))
+		{
+			execute_builtin(commandArgs, args_count);
+		}
+		else
+		{
+			int pid;
+			int status;
+			pid = fork();
+			if(pid == 0)
+			{
+				execute_command(commandArgs, args_count);
+			}
+			else
+			{
+				wait(&status);
+			}
+			
+		}
+		
+	}
+	else 
+	{
+		if(strcmp(node->value, "&&") == 0)
+		{
+			int status;
+			int args_count = 0;
+			char** commandArgs = parse_to_argv(node->left->value,&args_count);
+			
+			if(isbuiltin(commandArgs[0]))
+			{
+				execute_builtin(commandArgs, args_count);
+			}
+			else
+			{
+				int status;
+				int pid;
+				
+				pid = fork();
+				if(pid == 0)
+				{
+					execute_command(commandArgs, args_count);
+				}
+				else
+				{
+					wait(&status);
+					
+				}
+				
+			}
+			
+		}
+	}
+	*/	
+	
+	/*
+	printf("################ Noeud %s ###########\n", node->value);
+	if(node->parentNode != NULL)
+		printf(".  parent : %s\n", node->parentNode->value);
+	if(node->left != NULL)
+		printf(".  fils de gauche : %s\n", node->left->value);
+			
+	if(node->right != NULL)
+		printf(".  fils de droite : %s\n", node->right->value);
+	
+	*/	
+	
+	
+	//interpret_node(node->right);
+	/*
 	if(is_special_string(node->value) == FALSE)
 	{
 		int args_count = 0;
@@ -273,6 +430,7 @@ void interpret_node(commandNode* node)
 	{
 		execute_redirection_without_fork(node);
 	}
+	* */
 }
 
 void execute_fork_node(commandNode* node)
@@ -334,7 +492,7 @@ void execute_fork_node(commandNode* node)
 				{		
 					interpret_node(node->right);
 				} 
-				exit(EXIT_SUCCESS);
+				exit(EXIT_FAILURE);
 			}
 			else
 			{
@@ -342,7 +500,7 @@ void execute_fork_node(commandNode* node)
 				{		
 					interpret_node(node->right);
 				}
-				exit(EXIT_SUCCESS);
+				exit(EXIT_FAILURE);
 			}
 		}
 	}
