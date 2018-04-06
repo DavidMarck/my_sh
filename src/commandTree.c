@@ -88,7 +88,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 			{
 				char* argument = strdup(arguments[i]);
 
-				// if any space in the argument, then we add space for quotes
+				// if any space in the argument, then we add quotes
 				if(contains(arguments[i]," "))
 				{
 					insert_substring(argument,"\"",1);

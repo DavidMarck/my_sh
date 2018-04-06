@@ -75,7 +75,6 @@ char** parse_to_argv(char* command, int* argc)
 	argv[n_spaces] = 0;
 
     *argc = n_spaces;
-    printf("parse_to_argv : %d\n",*argc);
 
     return argv;
 }
@@ -178,10 +177,6 @@ void execute_command(char** argv, int argc)
         }
         free(path);
         exit(EXIT_FAILURE);
-    }
-    else
-    {
-        free(path);
     }
 }
 
