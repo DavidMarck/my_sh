@@ -217,6 +217,7 @@ int execute_command(char** argv, int argc)
         {
             perror(argv[0]);
         }
+        free(path);
         exit(EXIT_FAILURE);
     }
 
@@ -224,6 +225,7 @@ int execute_command(char** argv, int argc)
 
     free(path);
     */
+
 }
 
 int execute_builtin(char** argv, int argc)

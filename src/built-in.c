@@ -69,7 +69,6 @@ int echo(char** argv, int argc)
 
     for(int i = 1; i < argc; i++)
     {
-        //if((argv[i] != NULL) && (contains(argv[i],"\\"))) argv[i] = str_replace("\\","",argv[i]);
         for(int j = 0; j < strlen(argv[i]); j++)
         {
             if(argv[i][j] == '\\')

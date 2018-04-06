@@ -13,6 +13,7 @@
 
 #include "var.h"
 #include "typedef.h"
+#include "util.h"
 #include "commands.h"
 
 /**

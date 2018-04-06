@@ -189,7 +189,7 @@ int main(int argc, char** argv)
     {
         strcat(bin_command_param,"\n");
         read_command_line(bin_command_param);
-        process_command_line(bin_command_param,TRUE);
+        //process_command_line(bin_command_param,TRUE);
     }
     else
     {

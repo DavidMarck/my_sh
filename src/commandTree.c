@@ -80,7 +80,7 @@ int is_right_child(commandNode* node)
 }
 
 
-commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le "&" !
+commandNode* parse_to_tree(char** arguments, int args_count)
 {
 	// initialisation of the cursors (we'll start from the last index to the first(0))
 	int index = args_count-1;                          // current index
@@ -110,11 +110,20 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				string_index = index;
 			command = strcpy(command,"");
 			
-			// these loop will concatenate all string until the "special" index 
+			// these loop will concatenate all string until the "special" index is reached
 			for(i = string_index; i < last_string_limit; i++)
 			{
+				char* argument = strdup(arguments[i]);
+
+				// if any space in the argument, then we add quotes
+				if(contains(arguments[i]," "))
+				{
+					insert_substring(argument,"\"",1);
+					insert_substring(argument,"\"",strlen(argument) + 1);
+				}
+
 				// we realloc the space and we make the concatenation
-				int spaceNeeded = ((strlen(command)) * sizeof(char)) + ((strlen(arguments[i]) + 1) * sizeof(char));
+				int spaceNeeded = ((strlen(command)) * sizeof(char)) + ((strlen(argument) + 1) * sizeof(char));
 				// if we're don't at the last string, we had 1 space for the whitespace
 				if(i != string_index)
 					spaceNeeded++;
@@ -122,14 +131,11 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 				command = realloc(command,spaceNeeded);
 			
 				if(i != string_index)
-					command = strcat(command, " ");
-					
+					command = strcat(command, " ");				
 				
-				command = strcat(command, arguments[i]);
-				//printf("Commande détectée : %s\n", command);
+				command = strcat(command, argument);
 			}
 			
-			//printf("Fin de la concaténation\n");
 			// if we reach the begin of the function...
 			if(index == 0)
 			{
@@ -176,10 +182,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)   // pas oublier le
 		} 
 		index--;
 	}
-	//printf("Fin de l'engraissage, dernière commande : %s\n", command);
 	free(command);
-	//printf("Free effectué\n");
-	//printf("Racine de l'arbre : %s\n", cmdNode->mainRoot->value);
 	return cmdNode->mainRoot;
 }
 
@@ -573,10 +576,8 @@ void free_tree(commandNode* root){
 	if( root ){
      free_tree(root->left);
      free_tree(root->right);
-     //printf("Nettoyage de l'arbre : %s\n", root->value);
      free(root->value); 
      free(root);
-     //printf("Fin du nettoyage de l'arbre\n");
    }
 }
 
