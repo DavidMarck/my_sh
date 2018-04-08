@@ -180,13 +180,17 @@ int execute_command(char** argv, int argc)
 				{
 					perror(argv[0]);
 				}
-				exit(EXIT_FAILURE);
+				exit(-1);
 			}
 		}
 		else
 		{
 			wait(&status);
-			return status;
+			if(WIFEXITED(status) && WEXITSTATUS(status) == 0) 
+			{
+				return status;
+			}
+			return -1;
 		}
 		
 	}

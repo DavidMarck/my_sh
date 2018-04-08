@@ -58,11 +58,18 @@ commandNode* parse_to_tree(char** arguments, int args_count);
 int is_special_string(char* argument);
 
 /**
- * Check if a string is a potential fork
+ * Check if a string is a && or ||
  * @param argument the string to check
- * @return true/false depending if this is a potential fork
+ * @return true/false depending if this is a && or ||
  */
-int is_fork(char* argument);
+int is_operator(char* argument);
+
+/**
+ * Check if a string is a |
+ * @param argument the string to check
+ * @return true/false depending if this is a |
+ */
+int is_pipe(char* argument);
 
 /**
  * Check if a string is a special argument without fork

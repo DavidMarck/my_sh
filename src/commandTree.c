@@ -153,7 +153,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 					cmdNode = add_left(operatorNode, cmdNode);
 			}
 			// if our index is a future fork...
-			else if(is_fork(arguments[index]) == TRUE)
+			else if(is_operator(arguments[index]) == TRUE || is_pipe(arguments[index]) == TRUE)
 			{
 				// ... we initiate an operatorNode and we add it at the left of the last operatorNode (or it becomes the main root)
 				//printf("Fork détecté : %s\n", arguments[index]);
@@ -203,12 +203,12 @@ int is_special_string(char* argument)
 	return FALSE;
 }
 
-int is_fork(char* argument) 
+int is_operator(char* argument) 
 {
 	int index = 0;
-	char* operators[] = {"|", "||", "&&"};
+	char* operators[] = {"||", "&&"};
 	
-	while (index < 3)
+	while (index < 2)
 	{
 		if(strcmp(operators[index], argument) == 0)
 		{
@@ -217,6 +217,11 @@ int is_fork(char* argument)
 		index++;
 	}
 	return FALSE;
+}
+
+int is_pipe(char* argument)
+{
+	return (strcmp(argument, "|") == 0);
 }
 
 int is_redirection_without_fork(char* argument) 
@@ -290,7 +295,6 @@ void execute_tree(commandNode* root, int isBackground)
 
 void interpret_node(commandNode* node)
 {
-	int return_code;
 	int argc = 0;
 	char** argv;
 	
@@ -306,32 +310,158 @@ void interpret_node(commandNode* node)
 		// left child
 		if(is_left_child(node))
 		{
-			if(strcmp(node->parentNode->value, "&&") == 0)
+			if(is_operator(node->value) == FALSE && is_pipe(node->value) == FALSE)
 			{
-				argv = parse_to_argv(node->value,&argc);
-				if(execute_command(argv, argc) >= 0)
+				if(strcmp(node->parentNode->value, "&&") == 0)
 				{
-					interpret_node(node->parentNode->right);
+					argv = parse_to_argv(node->value,&argc);
+					if(execute_command(argv, argc) >= 0)
+					{
+						interpret_node(node->parentNode->right);
+					}
 				}
-			}			
+				
+				if(strcmp(node->parentNode->value, "||") == 0)
+				{
+					argv = parse_to_argv(node->value,&argc);
+					if(execute_command(argv, argc) < 0)
+					{
+						interpret_node(node->parentNode->right);
+					}
+					
+				}
+				
+				if(is_pipe(node->parentNode->value))
+				{
+					int pipeDescs[2];         
+					if(pipe(pipeDescs) == -1)
+					{
+					   perror("pipe");
+					}
+					else 
+					{
+						int pid;
+						if((pid = fork()) < 0)
+						{
+							perror("fork");
+						}
+						else 
+						{
+							int saved_stdin = dup(STDIN);
+							if (pid ==0) 
+							{			 
+								close(pipeDescs[0]);								 	
+								dup2(pipeDescs[1], STDOUT);								
+								argv = parse_to_argv(node->value,&argc);
+								if(execute_command(argv, argc) < 0)
+								{
+									exit(EXIT_FAILURE);
+								}
+								exit(EXIT_SUCCESS);
+								
+							}
+							else 
+							{
+								wait(NULL);
+								
+								close(pipeDescs[1]); // On ferme l'entrée du pipe
+								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
+									
+								interpret_node(node->parentNode->right);
+								
+								dup2(saved_stdin, STDIN);
+								close(saved_stdin);
+							}
+						}
+					}
+				}
+			}	
 		}
 		// right child
 		else 
 		{
-			// redirection
-			if(is_redirection_without_fork(node->value))
+			if((node->parentNode->parentNode == NULL))
 			{
-				//TODO le << 
+				// redirection
+				if(is_redirection_without_fork(node->value))
+				{
+					//TODO le << 
+				}
+				// command
+				else
+				{
+					argv = parse_to_argv(node->value,&argc);
+					execute_command(argv, argc);
+				}
 			}
-			// command
-			else
+			else 
 			{
-				argv = parse_to_argv(node->value,&argc);
-				execute_command(argv, argc);
-			}
-			
+				if(is_operator(node->parentNode->parentNode->value))
+				{
+					if(strcmp(node->parentNode->parentNode->value, "&&") == 0)
+					{
+						argv = parse_to_argv(node->value,&argc);
+						if(execute_command(argv, argc) >= 0)
+						{
+							interpret_node(node->parentNode->parentNode->right);
+						}
+					}
+					
+					if(strcmp(node->parentNode->parentNode->value, "||") == 0)
+					{
+						argv = parse_to_argv(node->value,&argc);
+						if(execute_command(argv, argc) < 0)
+						{
+							interpret_node(node->parentNode->parentNode->right);
+						}
+					}
+				}
+				else if(is_pipe(node->parentNode->parentNode->value))
+				{
+					int pipeDescs[2];         
+					if(pipe(pipeDescs) == -1)
+					{
+					   perror("pipe");
+					}
+					else 
+					{
+						int pid;
+						if((pid = fork()) < 0)
+						{
+							perror("fork");
+						}
+						else 
+						{
+							int saved_stdin = dup(STDIN);
+							if (pid ==0) 
+							{			 
+								close(pipeDescs[0]);								 	
+								dup2(pipeDescs[1], STDOUT);								
+								argv = parse_to_argv(node->value,&argc);
+								if(execute_command(argv, argc) < 0)
+								{
+									exit(EXIT_FAILURE);
+								}
+								exit(EXIT_SUCCESS);
+								
+							}
+							else 
+							{
+								wait(NULL);
+								
+								close(pipeDescs[1]); // On ferme l'entrée du pipe
+								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
+									
+								interpret_node(node->parentNode->parentNode->right);
+								
+								dup2(saved_stdin, STDIN);
+								close(saved_stdin);
+							}
+						}
+					}						
+				}				
+			}			
 		}
-		
 	}
 	/*
 	if(node == NULL) 
@@ -424,7 +554,7 @@ void interpret_node(commandNode* node)
 		execute_command(commandArgs, args_count);
 	}
 	
-	else if(is_fork(node->value) == TRUE) 
+	else if(is_operator_or_pipe(node->value) == TRUE) 
 	{
 		execute_fork_node(node);
 	}
