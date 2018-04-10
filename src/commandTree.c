@@ -310,6 +310,7 @@ void interpret_node(commandNode* node)
 		// left child
 		if(is_left_child(node))
 		{
+			// value of left child is not && , || or |
 			if(is_operator(node->value) == FALSE && is_pipe(node->value) == FALSE)
 			{
 				if(strcmp(node->parentNode->value, "&&") == 0)
@@ -384,20 +385,27 @@ void interpret_node(commandNode* node)
 		// right child
 		else 
 		{
+			// case first right child
 			if((node->parentNode->parentNode == NULL))
 			{
-				// redirection
+				// parent is a redirection operator (without fork, i.e. not a pipe)
 				if(is_redirection_without_fork(node->parentNode->value))
 				{
 					execute_redirection_without_fork(node->parentNode); 
 				}
-				// command
+				// node itself is a redirection operator (without fork, i.e. not a pipe)
+				else if(is_redirection_without_fork(node->value))
+				{
+					execute_redirection_without_fork(node);
+				}
+				// simple command
 				else
 				{
 					argv = parse_to_argv(node->value,&argc);
 					execute_command(argv, argc);
 				}
 			}
+			// all the other right childs
 			else 
 			{
 				if(is_operator(node->parentNode->parentNode->value))
@@ -409,11 +417,16 @@ void interpret_node(commandNode* node)
 					{
 						return_code = execute_redirection_without_fork(node);
 					}
+					else if(is_redirection_without_fork(node->parentNode->value))
+					{
+						return_code = execute_redirection_without_fork(node->parentNode);
+					}
 					else
 					{
 						return_code = execute_command(argv, argc);
 					}
 					
+					// CHECK ICI POUR TYPE DE COMMANDE ls > toto && pwd
 					if(strcmp(node->parentNode->parentNode->value, "&&") == 0)
 					{
 						if(return_code >= 0)
@@ -473,7 +486,7 @@ void interpret_node(commandNode* node)
 							}
 						}
 					}						
-				}				
+				}	
 			}			
 		}
 	}
