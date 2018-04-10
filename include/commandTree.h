@@ -100,8 +100,9 @@ void execute_fork_node(commandNode* node);
 /**
  * Execute a node with a redirection which don't requires a fork
  * @param node the node to execute
+ * @return the return code
  */
-void execute_redirection_without_fork(commandNode* node);
+int execute_redirection_without_fork(commandNode* node);
 
 /**
  * Print the entire tree

@@ -327,8 +327,12 @@ void interpret_node(commandNode* node)
 					if(execute_command(argv, argc) < 0)
 					{
 						interpret_node(node->parentNode->right);
-					}
-					
+					}	
+				}
+				
+				if(is_redirection_without_fork(node->parentNode->value))
+				{
+					interpret_node(node->parentNode->right);
 				}
 				
 				if(is_pipe(node->parentNode->value))
@@ -383,9 +387,9 @@ void interpret_node(commandNode* node)
 			if((node->parentNode->parentNode == NULL))
 			{
 				// redirection
-				if(is_redirection_without_fork(node->value))
+				if(is_redirection_without_fork(node->parentNode->value))
 				{
-					//TODO le << 
+					execute_redirection_without_fork(node->parentNode); 
 				}
 				// command
 				else
@@ -398,10 +402,21 @@ void interpret_node(commandNode* node)
 			{
 				if(is_operator(node->parentNode->parentNode->value))
 				{
+					argv = parse_to_argv(node->value,&argc);
+					int return_code;
+					
+					if(is_redirection_without_fork(node->value))
+					{
+						return_code = execute_redirection_without_fork(node);
+					}
+					else
+					{
+						return_code = execute_command(argv, argc);
+					}
+					
 					if(strcmp(node->parentNode->parentNode->value, "&&") == 0)
 					{
-						argv = parse_to_argv(node->value,&argc);
-						if(execute_command(argv, argc) >= 0)
+						if(return_code >= 0)
 						{
 							interpret_node(node->parentNode->parentNode->right);
 						}
@@ -409,8 +424,7 @@ void interpret_node(commandNode* node)
 					
 					if(strcmp(node->parentNode->parentNode->value, "||") == 0)
 					{
-						argv = parse_to_argv(node->value,&argc);
-						if(execute_command(argv, argc) < 0)
+						if(return_code < 0)
 						{
 							interpret_node(node->parentNode->parentNode->right);
 						}
@@ -639,15 +653,17 @@ void execute_fork_node(commandNode* node)
 	}
 }
 
-void execute_redirection_without_fork(commandNode* node)
+int execute_redirection_without_fork(commandNode* node)
 {
+	int saved_stdout = dup(STDOUT);
+	int saved_stdin = dup(STDIN);
 	if(strcmp(node->value, ">") == 0)
 	{
 		int fileDescriptor;
 		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR)) == -1)
 		{
 			perror("File error");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 		dup2(fileDescriptor, STDOUT);
 	}
@@ -658,7 +674,7 @@ void execute_redirection_without_fork(commandNode* node)
 		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR)) == -1)
 		{
 			perror("File error");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 		dup2(fileDescriptor, STDOUT);
 	}
@@ -670,7 +686,7 @@ void execute_redirection_without_fork(commandNode* node)
 		if ((fileDescriptor = open(node->right->value, O_RDONLY)) == -1)
 		{
 			perror("File error");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 		
 		dup2(fileDescriptor, STDIN);
@@ -683,12 +699,25 @@ void execute_redirection_without_fork(commandNode* node)
 		if ((fileDescriptor = open("/tmp/my_sh.tmp", O_RDONLY)) == -1)
 		{
 			perror("File error");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 		dup2(fileDescriptor, STDIN);
 	}
+	int argc = 0;
+	char** argv = parse_to_argv(node->left->value,&argc);
 	
-	interpret_node(node->left);
+	int return_code = execute_command(argv, argc);
+	
+	dup2(saved_stdout, STDOUT);
+	dup2(saved_stdin, STDIN);
+	close(saved_stdin);
+	close(saved_stdout);
+	
+	if(return_code < 0)
+	{
+		return -1;
+	}
+	return 0;
 }
 
 void print_tree(commandNode* root)
