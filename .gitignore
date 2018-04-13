@@ -1,5 +1,6 @@
 bin/*
 src/*.o
+commands_history.txt
 *.stackdump
 .vscode/*
 *.code-workspace

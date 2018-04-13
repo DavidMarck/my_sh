@@ -17,6 +17,7 @@
 #include "util.h"
 #include "commandTree.h"
 #include "ui.h"
+#include "history.h"
 
 #define USAGE_SYNTAX "[OPTIONS]"
 #define USAGE_PARAMS "OPTIONS:\n\

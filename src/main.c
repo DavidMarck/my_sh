@@ -209,6 +209,10 @@ int main(int argc, char** argv)
                 fgets(commandLine, sizeof(commandLine), stdin);         
        
                 read_command_line(commandLine);
+
+                if(strlen(commandLine) > 0)
+                    write_to_history(strdup(commandLine));
+
                 process_command_line(commandLine);
             }
         }
