@@ -46,6 +46,7 @@ commandNode* insert_right(commandNode* root, commandNode* nodeToInsert);
  * Parse an array of Strings into a tree
  * @param arguments the array of Strings
  * @param args_count the number of arguments
+ * 
  * @return the parsed string in tree format
  */
 commandNode* parse_to_tree(char** arguments, int args_count);
@@ -53,6 +54,7 @@ commandNode* parse_to_tree(char** arguments, int args_count);
 /**
  * Check if a string is a special argument
  * @param argument the string to check
+ * 
  * @return true/false depending if this is a special argument
  */
 int is_special_string(char* argument);
@@ -60,13 +62,15 @@ int is_special_string(char* argument);
 /**
  * Check if a string is a && or ||
  * @param argument the string to check
+ * 
  * @return true/false depending if this is a && or ||
  */
-int is_operator(char* argument);
+int is_logical_operator(char* argument);
 
 /**
  * Check if a string is a |
  * @param argument the string to check
+ * 
  * @return true/false depending if this is a |
  */
 int is_pipe(char* argument);
@@ -98,8 +102,17 @@ void interpret_node(commandNode* node);
 void execute_fork_node(commandNode* node);
 
 /**
+ * Executes a nodewhich is a pipe
+ * @param node the node to execute as a pipeline
+ * 
+ * @return 0 on success and -1 on error
+ */
+int execute_pipe(commandNode* node);
+
+/**
  * Execute a node with a redirection which don't requires a fork
  * @param node the node to execute
+ * 
  * @return the return code
  */
 int execute_redirection_without_fork(commandNode* node);

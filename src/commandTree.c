@@ -153,7 +153,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 					cmdNode = add_left(operatorNode, cmdNode);
 			}
 			// if our index is a future fork...
-			else if(is_operator(arguments[index]) == TRUE || is_pipe(arguments[index]) == TRUE)
+			else if(is_logical_operator(arguments[index]) == TRUE || is_pipe(arguments[index]) == TRUE)
 			{
 				// ... we initiate an operatorNode and we add it at the left of the last operatorNode (or it becomes the main root)
 				//printf("Fork détecté : %s\n", arguments[index]);
@@ -203,7 +203,7 @@ int is_special_string(char* argument)
 	return FALSE;
 }
 
-int is_operator(char* argument) 
+int is_logical_operator(char* argument) 
 {
 	int index = 0;
 	char* operators[] = {"||", "&&"};
@@ -243,7 +243,9 @@ int is_redirection_without_fork(char* argument)
 
 void execute_tree(commandNode* root, int isBackground)
 {
+	// we get the last left child, i.e. the leftmost child in the tree
 	commandNode* last_left_child = get_last_left_child(root);
+	// we interpret that last left child node, which will recursively interpret the entire tree
 	interpret_node(last_left_child);
 	/*int status;
 	int pid;
@@ -293,26 +295,29 @@ void execute_tree(commandNode* root, int isBackground)
 	*/
 }
 
+// TO DO : when pipe, built in on fork!! (cd | ls OR ls | cd --> in both, cd within child process)
 void interpret_node(commandNode* node)
 {
 	int argc = 0;
 	char** argv;
 	
-	// If last left child is the root
+	// if the current node is root
 	if(node->parentNode == NULL && node->left == NULL && node->right == NULL)
 	{
 		argv = parse_to_argv(node->value,&argc);
 		execute_command(argv, argc);
-		
 	}
 	else 
 	{
-		// left child
+		// current node is a left child
 		if(is_left_child(node))
 		{
 			// value of left child is not && , || or |
-			if(is_operator(node->value) == FALSE && is_pipe(node->value) == FALSE)
+			if(is_logical_operator(node->value) == FALSE && is_pipe(node->value) == FALSE)
 			{
+				// we check current node's parent value to determine which logic should be applied
+
+				// Logical and : &&
 				if(strcmp(node->parentNode->value, "&&") == 0)
 				{
 					argv = parse_to_argv(node->value,&argc);
@@ -322,6 +327,7 @@ void interpret_node(commandNode* node)
 					}
 				}
 				
+				// Logical or : ||
 				if(strcmp(node->parentNode->value, "||") == 0)
 				{
 					argv = parse_to_argv(node->value,&argc);
@@ -331,11 +337,13 @@ void interpret_node(commandNode* node)
 					}	
 				}
 				
+				// Redeirection that is not implying a fork : <, <<, >, >>
 				if(is_redirection_without_fork(node->parentNode->value))
 				{
 					interpret_node(node->parentNode->right);
 				}
 				
+				// Pipeline : |
 				if(is_pipe(node->parentNode->value))
 				{
 					int pipeDescs[2];         
@@ -382,23 +390,23 @@ void interpret_node(commandNode* node)
 				}
 			}	
 		}
-		// right child
+		// current node is a right child
 		else 
 		{
-			// case first right child
+			// case node is first right child
 			if((node->parentNode->parentNode == NULL))
 			{
-				// parent is a redirection operator (without fork, i.e. not a pipe)
+				// parent (i.e. root) is a redirection without fork
 				if(is_redirection_without_fork(node->parentNode->value))
 				{
 					execute_redirection_without_fork(node->parentNode); 
 				}
-				// node itself is a redirection operator (without fork, i.e. not a pipe)
+				// node itself is a redirection without fork
 				else if(is_redirection_without_fork(node->value))
 				{
 					execute_redirection_without_fork(node);
 				}
-				// simple command
+				// no redirection, execution of node's command
 				else
 				{
 					argv = parse_to_argv(node->value,&argc);
@@ -408,25 +416,30 @@ void interpret_node(commandNode* node)
 			// all the other right childs
 			else 
 			{
-				if(is_operator(node->parentNode->parentNode->value))
+				// check if right child's grand parent is && or || operator
+				// to determine logic to be applied
+				if(is_logical_operator(node->parentNode->parentNode->value))
 				{
 					argv = parse_to_argv(node->value,&argc);
 					int return_code;
 					
+					// node is a redirection without fork
 					if(is_redirection_without_fork(node->value))
 					{
 						return_code = execute_redirection_without_fork(node);
 					}
+					// parent is a redirection without fork
 					else if(is_redirection_without_fork(node->parentNode->value))
 					{
 						return_code = execute_redirection_without_fork(node->parentNode);
 					}
+					// no redirection, execution of node's command
 					else
 					{
 						return_code = execute_command(argv, argc);
 					}
 					
-					// CHECK ICI POUR TYPE DE COMMANDE ls > toto && pwd
+					// Logical and : &&
 					if(strcmp(node->parentNode->parentNode->value, "&&") == 0)
 					{
 						if(return_code >= 0)
@@ -435,6 +448,7 @@ void interpret_node(commandNode* node)
 						}
 					}
 					
+					// Logical or : ||
 					if(strcmp(node->parentNode->parentNode->value, "||") == 0)
 					{
 						if(return_code < 0)
@@ -443,6 +457,7 @@ void interpret_node(commandNode* node)
 						}
 					}
 				}
+				// Grand parent is a pipeline operator, meaning a pipeline shouldbe initiated
 				else if(is_pipe(node->parentNode->parentNode->value))
 				{
 					int pipeDescs[2];         
@@ -479,13 +494,13 @@ void interpret_node(commandNode* node)
 								close(pipeDescs[1]); // On ferme l'entrée du pipe
 								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
 									
-								interpret_node(node->parentNode->parentNode->right);
+								interpret_node(node->parentNode->right);
 								
 								dup2(saved_stdin, STDIN);
 								close(saved_stdin);
 							}
 						}
-					}						
+					}					
 				}	
 			}			
 		}
@@ -581,7 +596,7 @@ void interpret_node(commandNode* node)
 		execute_command(commandArgs, args_count);
 	}
 	
-	else if(is_operator_or_pipe(node->value) == TRUE) 
+	else if(is_logical_operator_or_pipe(node->value) == TRUE) 
 	{
 		execute_fork_node(node);
 	}
@@ -666,6 +681,74 @@ void execute_fork_node(commandNode* node)
 	}
 }
 
+int execute_pipe(commandNode* node)
+{
+	if(!is_pipe(node->parentNode->value))
+	{
+		printf("pipe : Tried to pipeline non pipelined nodes!");
+		return -1;
+	}
+
+	int argc = 0;
+	char** argv;
+
+	// pipe's descriptors
+	int pipeDescs[2];         
+	if(pipe(pipeDescs) == -1)
+	{
+		perror("pipe");
+		return -1;
+	}
+	else 
+	{
+		int pid;
+		// fork
+		if((pid = fork()) < 0)
+		{
+			perror("fork");
+			return -1;
+		}
+		else 
+		{
+			// save current STDIN
+			int saved_stdin = dup(STDIN);
+			// child
+			if (pid ==0) 
+			{			
+				// close the output descriptor of the pipe 
+				close(pipeDescs[0]);	
+				// redirection of STDOUT to pipe's input descriptor							 	
+				dup2(pipeDescs[1], STDOUT);		
+				// then, execution of the command. Its output, if any, will be redirected into the pipe						
+				argv = parse_to_argv(node->value,&argc);
+				if(execute_command(argv, argc) < 0)
+				{
+					exit(EXIT_FAILURE);
+				}
+				exit(EXIT_SUCCESS);
+				
+			}
+			// parent
+			else 
+			{
+				wait(NULL);
+				
+				close(pipeDescs[1]); // we close pipe's input descriptor
+				dup2(pipeDescs[0], STDIN); // redirection of STDIN on pipe's output descriptor
+				
+				// then, we intepret the pipelined node
+				// it will receive previous command's output as its input
+				interpret_node(node->parentNode->parentNode->right);
+				
+				// here we reset STDIN to its default state
+				dup2(saved_stdin, STDIN);
+				close(saved_stdin);
+			}
+		}
+	}
+	return 0;
+}
+
 int execute_redirection_without_fork(commandNode* node)
 {
 	int saved_stdout = dup(STDOUT);
@@ -744,7 +827,8 @@ void print_tree(commandNode* root)
       
 }
 
-void free_tree(commandNode* root){         
+void free_tree(commandNode* root)
+{         
 	if( root ){
      free_tree(root->left);
      free_tree(root->right);

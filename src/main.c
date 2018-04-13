@@ -26,7 +26,7 @@ char* dup_optarg_str()
   return str;
 }
 
-void process_command_line(char* commandLine, int batch_mode)
+void process_command_line(char* commandLine)
 {
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
@@ -46,12 +46,8 @@ void process_command_line(char* commandLine, int batch_mode)
         return;
     }
 
-    // call to exit
-    if(strcmp(argv[0],EXIT_STRING) == 0)
-    {
-        execute_command(argv,argc);
-    }
-    else if(strcmp(argv[0],"&") == 0)
+    // TO DO handle other syntax errors in the line beginning ?
+    if(strcmp(argv[0],"&") == 0)
     {
         printf("my_sh: syntax error near unexpected token `&'");
         return;
@@ -120,6 +116,7 @@ void execute_command_line(char** argv, int argc, int isBackground)
     // }
 
     free_tree(tree_arguments);
+    // TO DO free_array()
     free(argv);
 }
 
@@ -141,7 +138,6 @@ int main(int argc, char** argv)
 
     /**
      * Binary variables
-     * (could be defined in a structure)
      */
     char* bin_command_param = NULL;
 
@@ -161,6 +157,7 @@ int main(int argc, char** argv)
                 }
                 break;
             case 'h':
+                //help param
                 print_usage(argv[0]);
 
                 free_if_needed(bin_command_param);
@@ -173,7 +170,6 @@ int main(int argc, char** argv)
     
     /**
      * Checking binary requirements
-     * (could be defined in a separate function)
      */
     // if (bin_command_param == NULL)
     // {
@@ -181,16 +177,17 @@ int main(int argc, char** argv)
     //     exit_prog(bin_command_param, EXIT_FAILURE);
     // }
 
-    // Printing params
-    dprintf(1, "** PARAMS **\n%-8s: %s\n", 
-        "command",   bin_command_param);
-
+    // batch mode command
     if(bin_command_param != NULL)
     {
+        // Printing params
+        // dprintf(1, "** PARAMS **\n%-8s: %s\n", 
+        //     "command",   bin_command_param);
         strcat(bin_command_param,"\n");
         read_command_line(bin_command_param);
-        //process_command_line(bin_command_param,TRUE);
+        process_command_line(bin_command_param);
     }
+    // init interactive shell
     else
     {
         int pid = fork();
@@ -203,7 +200,7 @@ int main(int argc, char** argv)
         {
             wait(NULL);
 
-            printf("=== PROJET : MiniShell my_sh ===\n");
+            printf("==================================\n||   PROJET : MiniShell my_sh   ||\n==================================\n");
             
             while(print_prompt())
             {
@@ -212,7 +209,7 @@ int main(int argc, char** argv)
                 fgets(commandLine, sizeof(commandLine), stdin);         
        
                 read_command_line(commandLine);
-                process_command_line(commandLine,FALSE);
+                process_command_line(commandLine);
             }
         }
     }

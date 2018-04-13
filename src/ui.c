@@ -32,8 +32,6 @@ void read_command_line(char* commandLine)
             printf(" > ");
             char c[MAX_SIZE];
             fgets(c,sizeof(c),stdin);
-            //commandLine = realloc(commandLine,strlen(c) + strlen(commandLine) + sizeof(char));
-            //printf("%ld",sizeof(commandLine));
             strcat(commandLine,c);
         }
     }

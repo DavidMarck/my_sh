@@ -5,12 +5,12 @@ int n_built_in = sizeof(built_in_commands) / sizeof(const char*);
 
 char** parse_to_argv(char* command, int* argc)
 {
-	char** argv  = NULL;
-	char *  p    = strtok (command, " ");
-	int n_spaces = 0;
+	char** argv  = NULL; // args array
+	char *  p    = strtok (command, " "); // token
+	int n_spaces = 0; // args counter
 
-    int awaitingClosingQuote = FALSE;
-    char* tmp = "";
+    int awaitingClosingQuote = FALSE; // indicates wether or not quote is opened and not closed
+    char* tmp = ""; // hold between quotes string until closing quote reached
 
 
 	/* split string and append tokens to 'argv' */
@@ -31,7 +31,7 @@ char** parse_to_argv(char* command, int* argc)
             strcat(tmp,p);
         }
 
-        // if current argument starts quotes
+        // if current argument starts with quotes
         if((p[0] == '"') && (awaitingClosingQuote != TRUE))
         {
             // only one word between quotes = normal token
@@ -43,12 +43,13 @@ char** parse_to_argv(char* command, int* argc)
                 continue;
             }
 
+            // initiates tmp string to hold string between quotes
             awaitingClosingQuote = TRUE;
             tmp = strdup(p);
             p = strtok(NULL, " ");
             continue;
         }
-        // if ending quote reached
+        // if closing quote is reached
         else if((p[strlen(p) - 1] == '"') && (awaitingClosingQuote == TRUE))
         {
             awaitingClosingQuote = FALSE;
@@ -58,6 +59,7 @@ char** parse_to_argv(char* command, int* argc)
             tmp = "";
             continue;
         }
+        // end of command string is reached while still waiting for closing quote
         else if((awaitingClosingQuote == TRUE) && (p[strlen(p)] == '\0'))
         {
             argv[n_spaces-1] = tmp;
@@ -151,12 +153,15 @@ char** interpret_heard_file(char** argv, int args_count)
 
 int execute_command(char** argv, int argc)
 {
+    // case built-in command
 	if(isbuiltin(argv[0]))
 	{
 		return execute_builtin(argv, argc);
 	}
+    // other commands
 	else
 	{
+        // fork
 		int pid;
 		int status;
 		if ((pid = fork()) < 0)
@@ -164,13 +169,17 @@ int execute_command(char** argv, int argc)
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
+
+        // child
 		if(pid == 0)
 		{
+            // buidling the path
 			char* bin = "/bin/";
 			char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));
 			strcat(path,bin);
 			strcat(path,argv[0]);
 
+            // execution
 			if (execvp(path, argv) == -1) {
 				if(errno == ENOENT)
 				{
@@ -183,6 +192,7 @@ int execute_command(char** argv, int argc)
 				exit(-1);
 			}
 		}
+        // parent
 		else
 		{
 			wait(&status);

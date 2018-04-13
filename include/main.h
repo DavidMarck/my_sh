@@ -78,7 +78,7 @@ char* dup_optarg_str();
  * @param commandLine
  * @param batch_mode value 1 if in batch mode, 0 otherwise (default)
  */
-void process_command_line(char* commandLine, int batch_mode);
+void process_command_line(char* commandLine);
 
 /**
  * Execute a command line
