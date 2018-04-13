@@ -494,7 +494,7 @@ void interpret_node(commandNode* node)
 								close(pipeDescs[1]); // On ferme l'entrée du pipe
 								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
 									
-								interpret_node(node->parentNode->right);
+								interpret_node(node->parentNode->parentNode->right);
 								
 								dup2(saved_stdin, STDIN);
 								close(saved_stdin);
