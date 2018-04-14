@@ -337,7 +337,7 @@ void interpret_node(commandNode* node)
 					}	
 				}
 				
-				// Redeirection that is not implying a fork : <, <<, >, >>
+				// Redirection that is not implying a fork : <, <<, >, >>
 				if(is_redirection_without_fork(node->parentNode->value))
 				{
 					interpret_node(node->parentNode->right);
@@ -457,7 +457,7 @@ void interpret_node(commandNode* node)
 						}
 					}
 				}
-				// Grand parent is a pipeline operator, meaning a pipeline shouldbe initiated
+				// Grand parent is a pipeline operator, meaning a pipeline should be initiated
 				else if(is_pipe(node->parentNode->parentNode->value))
 				{
 					int pipeDescs[2];         
@@ -476,11 +476,21 @@ void interpret_node(commandNode* node)
 						{
 							int saved_stdin = dup(STDIN);
 							if (pid ==0) 
-							{			 
+							{		 
 								close(pipeDescs[0]);								 	
-								dup2(pipeDescs[1], STDOUT);								
-								argv = parse_to_argv(node->value,&argc);
-								if(execute_command(argv, argc) < 0)
+								dup2(pipeDescs[1], STDOUT);	
+								int return_code;
+								
+								if(is_redirection_without_fork(node->parentNode->value))
+								{
+									return_code = execute_redirection_without_fork(node->parentNode);
+								}
+								else							
+								{
+									argv = parse_to_argv(node->value,&argc);
+									return_code = execute_command(argv, argc);
+								}
+								if(return_code < 0)
 								{
 									exit(EXIT_FAILURE);
 								}
@@ -758,7 +768,7 @@ int execute_redirection_without_fork(commandNode* node)
 		int fileDescriptor;
 		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR)) == -1)
 		{
-			perror("File error");
+			fprintf(stderr,"file open: %s: %s\n",node->right->value,strerror(errno));
 			return -1;
 		}
 		dup2(fileDescriptor, STDOUT);
@@ -769,36 +779,36 @@ int execute_redirection_without_fork(commandNode* node)
 		int fileDescriptor;
 		if ((fileDescriptor = open(node->right->value, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR)) == -1)
 		{
-			perror("File error");
+			fprintf(stderr,"file open: %s: %s\n",node->right->value,strerror(errno));
 			return -1;
 		}
 		dup2(fileDescriptor, STDOUT);
 	}
 	
-	if(strcmp(node->value, "<") == 0)
+	if((strcmp(node->value, "<") == 0) || (strcmp(node->value, "<<") == 0))
 	{
 		int fileDescriptor;
 		
 		if ((fileDescriptor = open(node->right->value, O_RDONLY)) == -1)
 		{
-			perror("File error");
+			fprintf(stderr,"file open: %s: %s\n",node->right->value,strerror(errno));
 			return -1;
 		}
 		
 		dup2(fileDescriptor, STDIN);
 	}
 	
-	if(strcmp(node->value, "<<") == 0)
+	/*if(strcmp(node->value, "<<") == 0)
 	{
 		int fileDescriptor;
 		
 		if ((fileDescriptor = open("/tmp/my_sh.tmp", O_RDONLY)) == -1)
 		{
-			perror("File error");
+			fprintf(stderr,"file open: %s: %s\n",node->right->value,strerror(errno));
 			return -1;
 		}
 		dup2(fileDescriptor, STDIN);
-	}
+	}*/
 	int argc = 0;
 	char** argv = parse_to_argv(node->left->value,&argc);
 	

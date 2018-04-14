@@ -4,7 +4,6 @@ char* get_history_path()
 {
     char* history_path = malloc(1024 * sizeof(char));
     *history_path = '\0';
-    strcat(history_path,getenv("HOME"));
     strcat(history_path,"/tmp/commands_history.txt");
 
     return history_path;
@@ -18,7 +17,7 @@ int write_to_history(char* commandLine)
 
     if((fp = fopen(history_path, "a")) == NULL)
     {
-        perror("history file open");
+        fprintf(stderr,"file open: %s: %s\n",history_path,strerror(errno));
         return -1;
     }
 

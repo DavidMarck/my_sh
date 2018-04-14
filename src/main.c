@@ -30,6 +30,7 @@ void process_command_line(char* commandLine)
 {
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
+    argv = interpret_heard_file(argv, argc);
     //interpret_heard_file(argv, argc);
 
     // int fg_argc = 0;
@@ -95,6 +96,7 @@ void process_command_line(char* commandLine)
 void execute_command_line(char** argv, int argc, int isBackground)
 {
     commandNode* tree_arguments = parse_to_tree(argv, argc);
+    
 	execute_tree(tree_arguments,isBackground);
 
     // int status;
@@ -211,9 +213,12 @@ int main(int argc, char** argv)
                 read_command_line(commandLine);
 
                 if(strlen(commandLine) > 0)
-                    write_to_history(strdup(commandLine));
-
-                process_command_line(commandLine);
+                {
+					if((write_to_history(strdup(commandLine))) == 0)
+						process_command_line(commandLine);
+					else
+						fprintf(stderr, "Error : couldn't write to history. Command not executed");
+				}
             }
         }
     }

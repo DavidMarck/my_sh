@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 /**
  * Gets the history file path, usually under /home/user/...
- * (for this project we chose : /home/user/tmp/my_sh/commands_history.txt)
+ * (for this project we chose : /tmp/commands_history.txt)
  * 
  * @return command history file path
  */

@@ -77,7 +77,7 @@ char** parse_to_argv(char* command, int* argc)
 	argv[n_spaces] = 0;
 
     *argc = n_spaces;
-
+    
     return argv;
 }
 
@@ -85,8 +85,6 @@ char** interpret_heard_file(char** argv, int args_count)
 {
 	int index = 0;
 	int n_files = 0;
-	
-	char** tempFilesNames  = NULL;
 	
 	while(index < args_count)
 	{
@@ -135,20 +133,18 @@ char** interpret_heard_file(char** argv, int args_count)
 			char* tmp = malloc(sizeof(char) * strlen(fileName));
 			strcpy(tmp, fileName);
 			
-			tempFilesNames = realloc (tempFilesNames, sizeof (char*) * ++n_files);
-			
-			if (tempFilesNames == NULL) exit (-1); /* memory allocation failed */
-			tempFilesNames[n_files-1] = tmp;
 			fputs(stdin_text, fp);
 			
+			char* next = argv[index+2];
+			argv[index+1] = tmp;
+			argv[index+2] = next;
 			fclose(fp);
 			close(descTemp);
 			free(stdin_text);
 		}
 		index++;
 	}
-	//TODO FREE
-	return tempFilesNames;
+	return argv;
 }
 
 int execute_command(char** argv, int argc)
@@ -176,9 +172,15 @@ int execute_command(char** argv, int argc)
             // buidling the path
 			char* bin = "/bin/";
 			char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));
-			strcat(path,bin);
-			strcat(path,argv[0]);
-
+			*path = '\0';
+			path = strcat(path,bin);
+			path = strcat(path,argv[0]);
+			
+			for (int i = 0; i < (argc + 1); i++) 
+			{
+				printf ("argv[%d] = %s\n", i, argv[i]);
+			}
+			
             // execution
 			if (execvp(path, argv) == -1) {
 				if(errno == ENOENT)
