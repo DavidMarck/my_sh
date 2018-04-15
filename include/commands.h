@@ -18,14 +18,16 @@
 #include "built-in.h"
 
 /**
- * Parse the text of the commandLine
+ * Parses the text of the commandLine
+ * 
  * @param command command line to parse
  * @param argc argument count
  */ 
 char** parse_to_argv(char*, int*);
 
 /**
- * Execute a command using argv and argc
+ * Executes a command using argv and argc
+ * 
  * @param argv array of arguments
  * @param argc arguments count
  * 
@@ -34,7 +36,8 @@ char** parse_to_argv(char*, int*);
 int execute_command(char** argv, int argc);
 
 /**
- * Execute a buitl-in command using argv and argc
+ * Executes a buitl-in command using argv and argc
+ * 
  * @param argv array of arguments
  * @param argc arguments count
  * 
@@ -44,6 +47,7 @@ int execute_builtin(char** args, int argc);
 
 /**
  * Indicates wether or not the command is a built-in command
+ * 
  * @param commandLine
  * 
  * @return true or false
@@ -51,8 +55,22 @@ int execute_builtin(char** args, int argc);
 int isbuiltin(char* commandLine);
 
 /**
+ * Interprets symbols "<<"  of the command line, creates a tmp file
+ * it pattern is : "/tmp/tmpShellXXXXXX.tmp" 
+ * it contains what the user typed until he wrote the delimiter
+ * the delimiter is replace by the tmp file path
+ * 
+ * @param argv array of arguments
+ * @param args_count arguments count
+ * 
+ * @return the new array of arguments
+ */
+char** interpret_heard_file(char** argv, int args_count);
+
+/**
  * Indicates wether or not a command line (parsed into argv) 
  * includes command(s) that have to be ran as background processes.
+ * 
  * @param argv array of arguments
  * @param argc arguments count
  * 
@@ -62,6 +80,7 @@ int isbuiltin(char* commandLine);
 
 /**
  * Gets the next sequence of commands that has to be ran as a background process
+ * 
  * @param argv array of arguments
  * @param argc arguments count (input arguments array)
  * @param bg_argc arguments count (output arguments array)
@@ -73,6 +92,7 @@ int isbuiltin(char* commandLine);
 
 /**
  * Gets the next sequence of commands that has to be ran as a foreground process
+ * 
  * @param argv array of arguments
  * @param argc arguments count (input arguments array)
  * @param fg_argc arguments count (output arguments array)

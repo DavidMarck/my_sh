@@ -86,4 +86,24 @@ void insert_substring(char *str, char *insert, int position);
  */
 char *substring(char *string, int position, int length);
 
+/**
+ * Replaces the value of an index into a char**
+ * 
+ * @param array the array to change
+ * @param size the size of the array
+ * @param index_to_replace the index of the array to change
+ * @param string the new string to put into the index
+ * 
+ * @return a new array with the modifications
+ */
+char** str_array_replace(char** array, int size, int index_to_replace, char* string);
+
+/**
+ * Free a char**
+ * 
+ * @param array the array to free
+ * @param size the size of the array
+ */
+void free_array(char** array, int array_size);
+
 #endif

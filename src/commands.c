@@ -84,20 +84,22 @@ char** parse_to_argv(char* command, int* argc)
 char** interpret_heard_file(char** argv, int args_count)
 {
 	int index = 0;
-	int n_files = 0;
 	
+	// brownsing the entire command
 	while(index < args_count)
 	{
+		// case a "<<" is find
 		if(strcmp("<<", argv[index]) == 0)
 		{
-
+			
 			char line_input[MAX_SIZE];
 			char* stdin_text = malloc(sizeof(char));
 			char* delimiter = malloc(strlen(argv[index+1])*sizeof((char) + 1));
 			
 			delimiter = strcpy(delimiter, argv[index+1]);
-			delimiter = strcat(delimiter,"\n");
+			delimiter = strcat(delimiter,"\n");  // adding a \n to the delimiter  (in order to be able to compare it with fget)
 			
+			// letting the user write some lines until he writes the delimiter after << 
 			do
 			{
 				printf(" > ");
@@ -113,8 +115,7 @@ char** interpret_heard_file(char** argv, int args_count)
 			
 			free(delimiter);
 			
-			
-			
+			// creating a temporary files (which will be readed during the execution of the tree  	
 			int descTemp;
 			static char template[] = "/tmp/tmpShellXXXXXX.tmp";
 			char fileName[23];
@@ -127,7 +128,8 @@ char** interpret_heard_file(char** argv, int args_count)
 				dprintf(STDERR, "Error in mkstemp.\n");
 				exit(EXIT_FAILURE);
 			}
-			printf("Fichier temporaire %s créé\n", fileName);
+			
+			// writing what the user wrote before into the tmp file
 			FILE *fp = fdopen(descTemp, "w");
 			if (fp == NULL)
 			{
@@ -135,12 +137,11 @@ char** interpret_heard_file(char** argv, int args_count)
 				exit(EXIT_FAILURE);
 			}
 			
+			fputs(stdin_text, fp);
+			
+			// replacing  the delimiter by the tmp file path
 			char* tmp = malloc(sizeof(char) * strlen(fileName));
 			strcpy(tmp, fileName);
-			
-			fputs(stdin_text, fp);
-
-	
 			argv = str_array_replace(argv, args_count,(index+1), tmp);
 			
 			fclose(fp);
@@ -180,11 +181,6 @@ int execute_command(char** argv, int argc)
 			*path = '\0';
 			path = strcat(path,bin);
 			path = strcat(path,argv[0]);
-			
-		//	for (int i = 0; i < (argc + 1); i++) 
-		//	{
-		//		printf ("argv[%d] = %s\n", i, argv[i]);
-		//	}
 			
             // execution
 			if (execvp(path, argv) == -1) {

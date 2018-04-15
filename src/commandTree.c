@@ -84,8 +84,8 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 {
 	// initialisation of the cursors (we'll start from the last index to the first(0))
 	int index = args_count-1;                          // current index
-	int last_string_limit = args_count;                // this cursor go to the last "special index" (it concerned all operators and redirection), by default this is the "null"
-	int string_index;                                  // this cursor will be use in order to concatenate some strings
+	int last_string_limit = args_count;                // this cursor go to the last "special index" (it concerned all operators and redirection), by default this is the "null" value at the end
+	int string_index;                                  // this cursor will be used in order to concatenate some strings
 	int i;
 	
 	// this variable will concatenate all strings between 2 specials indexes
@@ -93,14 +93,13 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 	
 	// these variables concerned the tree building
 	commandNode* cmdNode = NULL;
-	commandNode* operatorNode = NULL;
+	commandNode* operatorOrPipeNode = NULL;
 	commandNode* redirectionNode = NULL; 
 	
 	
 	while (index > -1)
 	{
 		// when we have a special string (or the begin of the commmand), we concatenate all strings until we get the "special" index (or the end of the command)
-		//printf("Noeud actuel : %s\n", arguments[index]);
 		if(is_special_string(arguments[index]) == TRUE || index == 0) 
 		{
 			// if we are not at the first element, we don't take the "special" string into the concatenation
@@ -145,30 +144,29 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 				// ... if there is a redirection Node without fork ('>', '>>', '<', '<<'), whe add the cmdNode at the left of this one (and we had the redirection node at the left of the operator)
 				if(redirectionNode != NULL)
 				{	
-					add_left(operatorNode, redirectionNode);
+					add_left(operatorOrPipeNode, redirectionNode);
 					add_left(redirectionNode, cmdNode);
 				}
-				// ... else we add the cmdNode at the left of the last "operatorNode" which include a fork ('&&', '||', '|'), if there is no operator, the cmd node become the root of the tree 
+				// ... else we add the cmdNode at the left of the last "operatorOrPipeNode", if there is no operator or pipe, the cmd node become the root of the tree 
 				else
-					cmdNode = add_left(operatorNode, cmdNode);
+					cmdNode = add_left(operatorOrPipeNode, cmdNode);
 			}
-			// if our index is a future fork...
+			// if our index is an operator or a pipe
 			else if(is_logical_operator(arguments[index]) == TRUE || is_pipe(arguments[index]) == TRUE)
 			{
-				// ... we initiate an operatorNode and we add it at the left of the last operatorNode (or it becomes the main root)
-				//printf("Fork détecté : %s\n", arguments[index]);
-				operatorNode = add_left(operatorNode, new_node(arguments[index]));
+				// ... we initiate an operatorOrPipeNode and we add it at the left of the last operatorOrPipeNode (or it becomes the main root)
+				operatorOrPipeNode = add_left(operatorOrPipeNode, new_node(arguments[index]));
 				
 				// if there was a redirectionNode,  we add it to this node and we add a node which contains the last concatenante string and we turn the redirectionNode variable to null 
 				if(redirectionNode != NULL) 
 				{
-					add_right(operatorNode, redirectionNode);
+					add_right(operatorOrPipeNode, redirectionNode);
 					add_left(redirectionNode, new_node(command));
 					redirectionNode = NULL;
 				}
 				// else we just add the node with the concatenate string at the right of this node
 				else
-					add_right(operatorNode, new_node(command));
+					add_right(operatorOrPipeNode, new_node(command));
 			}
 			// if we have a redirection without fork, we declare it, and we add a node which contains the last concatenate string at its right
 			else if(is_redirection_without_fork(arguments[index]) == TRUE)
@@ -618,6 +616,7 @@ void interpret_node(commandNode* node)
 	* */
 }
 
+/*
 void execute_fork_node(commandNode* node)
 {
 	int status;
@@ -690,6 +689,7 @@ void execute_fork_node(commandNode* node)
 		}
 	}
 }
+*/
 
 int execute_pipe(commandNode* node)
 {
@@ -763,6 +763,8 @@ int execute_redirection_without_fork(commandNode* node)
 {
 	int saved_stdout = dup(STDOUT);
 	int saved_stdin = dup(STDIN);
+	
+	// case > : We open the file (with The Truncate flag) and we redirect STDOUT to it
 	if(strcmp(node->value, ">") == 0)
 	{
 		int fileDescriptor;
@@ -774,6 +776,7 @@ int execute_redirection_without_fork(commandNode* node)
 		dup2(fileDescriptor, STDOUT);
 	}
 	
+	// case >> : Same as > but with the append flag
 	if(strcmp(node->value, ">>") == 0)
 	{
 		int fileDescriptor;
@@ -785,6 +788,7 @@ int execute_redirection_without_fork(commandNode* node)
 		dup2(fileDescriptor, STDOUT);
 	}
 	
+	// case < or << we open the file (readonly) and we redirect stdin to it (it works with << because we replaced the delimiter by the tmp file path.
 	if((strcmp(node->value, "<") == 0) || (strcmp(node->value, "<<") == 0))
 	{
 		int fileDescriptor;
@@ -798,20 +802,9 @@ int execute_redirection_without_fork(commandNode* node)
 		dup2(fileDescriptor, STDIN);
 	}
 	
-	/*if(strcmp(node->value, "<<") == 0)
-	{
-		int fileDescriptor;
-		
-		if ((fileDescriptor = open("/tmp/my_sh.tmp", O_RDONLY)) == -1)
-		{
-			fprintf(stderr,"file open: %s: %s\n",node->right->value,strerror(errno));
-			return -1;
-		}
-		dup2(fileDescriptor, STDIN);
-	}*/
+	// Executing interpret the left child node of the redirection before to restore all streams
 	int argc = 0;
 	char** argv = parse_to_argv(node->left->value,&argc);
-	
 	int return_code = execute_command(argv, argc);
 	
 	dup2(saved_stdout, STDOUT);
@@ -819,6 +812,13 @@ int execute_redirection_without_fork(commandNode* node)
 	close(saved_stdin);
 	close(saved_stdout);
 	
+	// if we used a tmp file, we remove it
+	if((strcmp(node->value, "<<") == 0))
+	{
+		remove(node->right->value);
+	}
+	
+	// return code
 	if(return_code < 0)
 	{
 		return -1;
@@ -828,7 +828,6 @@ int execute_redirection_without_fork(commandNode* node)
 
 void print_tree(commandNode* root)
 {
-	//printf("Affichage\n");
     if (root == NULL) return; 
 	
 	printf("tree : %s\n", root->value);

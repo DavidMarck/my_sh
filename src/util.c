@@ -195,25 +195,40 @@ char** str_array_replace(char** array, int size, int index_to_replace, char* str
 	newArray = malloc (sizeof (char*) * (size+1));
 	if (newArray == NULL) exit (-1); /* memory allocation failed */ 
 		
-	char* tmp;
-
+	char* tmp = NULL;
+	// we browse the old array
 	while(index < size)
 	{
+		// if we aren't at the specified index, we just get the same element
 		if(index != index_to_replace)
 		{
-			tmp = array[index];
+			tmp = malloc(sizeof(char)*strlen(array[index]));
+			tmp = strcpy(tmp,array[index]);
 		}
+		// else we get the new string
 		else 
 		{
-			tmp = string;
+			tmp = malloc(sizeof(char)*strlen(string));
+			tmp = strcpy(tmp,string);
 		}
 		
+		// we add the right element to the new array
 		newArray[index] = tmp;
 		index++;	
-	}
+	}	
 	
-	
+	// we add the null, and we free the old array before to return the new one
 	newArray[index] = 0;
+	free(array);
 
 	return newArray;	
+}
+
+void free_array(char** array, int array_size)
+{
+    for(int i = 0; i < array_size; i++)
+    {
+        free(array[i]);
+    }
+    free(array);
 }
