@@ -30,9 +30,9 @@ void process_command_line(char* commandLine)
 {
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
+    //argv = interpret_heard_file(argv, argc);
     argv = interpret_heard_file(argv, argc);
-    //interpret_heard_file(argv, argc);
-
+    printf("DONE !!!!!!!!!!!!!!!!\n");
     // int fg_argc = 0;
     // char** fg_argv = NULL;
 

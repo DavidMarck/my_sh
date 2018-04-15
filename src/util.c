@@ -187,3 +187,33 @@ char *substring(char *string, int position, int length)
  
    return pointer;
 }
+
+char** str_array_replace(char** array, int size, int index_to_replace, char* string) 
+{
+	char** newArray  = NULL; // args array
+	int index = 0;
+	newArray = malloc (sizeof (char*) * (size+1));
+	if (newArray == NULL) exit (-1); /* memory allocation failed */ 
+		
+	char* tmp;
+
+	while(index < size)
+	{
+		if(index != index_to_replace)
+		{
+			tmp = array[index];
+		}
+		else 
+		{
+			tmp = string;
+		}
+		
+		newArray[index] = tmp;
+		index++;	
+	}
+	
+	
+	newArray[index] = 0;
+
+	return newArray;	
+}

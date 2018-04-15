@@ -90,11 +90,13 @@ char** interpret_heard_file(char** argv, int args_count)
 	{
 		if(strcmp("<<", argv[index]) == 0)
 		{
+
 			char line_input[MAX_SIZE];
 			char* stdin_text = malloc(sizeof(char));
-			char* delimiter = malloc(strlen(argv[index+1])*sizeof(char) + 1);
+			char* delimiter = malloc(strlen(argv[index+1])*sizeof((char) + 1));
 			
-			delimiter = strcpy(delimiter, strcat(argv[index+1], "\n"));
+			delimiter = strcpy(delimiter, argv[index+1]);
+			delimiter = strcat(delimiter,"\n");
 			
 			do
 			{
@@ -111,14 +113,17 @@ char** interpret_heard_file(char** argv, int args_count)
 			
 			free(delimiter);
 			
+			
+			
 			int descTemp;
-			static char template[] = "/tmp/tmpShellXXXXXX";
-			char fileName[20];
+			static char template[] = "/tmp/tmpShellXXXXXX.tmp";
+			char fileName[23];
 			
 			strcpy(fileName, template);
 			
-			descTemp = mkstemp(fileName);
+			descTemp = mkstemps(fileName,4);
 			if(descTemp == -1) {
+				perror("error !");
 				dprintf(STDERR, "Error in mkstemp.\n");
 				exit(EXIT_FAILURE);
 			}
@@ -134,10 +139,10 @@ char** interpret_heard_file(char** argv, int args_count)
 			strcpy(tmp, fileName);
 			
 			fputs(stdin_text, fp);
+
+	
+			argv = str_array_replace(argv, args_count,(index+1), tmp);
 			
-			char* next = argv[index+2];
-			argv[index+1] = tmp;
-			argv[index+2] = next;
 			fclose(fp);
 			close(descTemp);
 			free(stdin_text);
@@ -176,10 +181,10 @@ int execute_command(char** argv, int argc)
 			path = strcat(path,bin);
 			path = strcat(path,argv[0]);
 			
-			for (int i = 0; i < (argc + 1); i++) 
-			{
-				printf ("argv[%d] = %s\n", i, argv[i]);
-			}
+		//	for (int i = 0; i < (argc + 1); i++) 
+		//	{
+		//		printf ("argv[%d] = %s\n", i, argv[i]);
+		//	}
 			
             // execution
 			if (execvp(path, argv) == -1) {
