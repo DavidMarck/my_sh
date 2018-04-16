@@ -39,6 +39,23 @@ void process_command_line(char* commandLine)
         char** argv_heard_file = interpret_heard_file(argv, argc);
 
         // if the two arrays are identical, syntax error in use of << operator exists
+        /*
+        int is_identical = TRUE;
+        
+        for(int i = 0; i < argc; i++)
+        {
+			if((strcmp(argv[i], argv_heard_file[i])) == 0)
+			{
+				is_identical = FALSE;
+			}
+		}
+        if(is_identical == TRUE)
+        {
+            return;
+        }
+        argv = argv_heard_file;
+        */
+        
         if(argv == argv_heard_file)
         {
             return;
@@ -126,7 +143,7 @@ void execute_command_line(char** argv, int argc, int isBackground)
     // }
 
     free_tree(tree_arguments);
-    // TO DO free_array()
+
     free(argv);
 }
 

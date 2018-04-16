@@ -94,6 +94,7 @@ char** interpret_heard_file(char** argv, int args_count)
 			
 			char line_input[MAX_SIZE];
 			char* stdin_text = malloc(sizeof(char));
+			*stdin_text = '\0';
 
             if(argv[index+1] == NULL)
             {
@@ -113,17 +114,18 @@ char** interpret_heard_file(char** argv, int args_count)
 				
 				if(strcmp(delimiter, line_input) != 0)
 				{
-					int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(line_input) + 1) * sizeof(char));
+					int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(line_input) + 3) * sizeof(char));
 					stdin_text = realloc(stdin_text,spaceNeeded);
-					strcat(stdin_text, line_input);
+					stdin_text = strcat(stdin_text, line_input);
 				}	
 			} while(strcmp(delimiter, line_input) != 0);
 			
+			write_to_history(stdin_text);
 			free(delimiter);
 			
 			// creating a temporary files (which will be readed during the execution of the tree  	
 			int descTemp;
-			static char template[] = "/tmp/tmpShellXXXXXX.tmp";
+			static char template[] = "/tmp/tmpShellXXXXXX.txt";
 			char fileName[23];
 			
 			strcpy(fileName, template);

@@ -13,7 +13,7 @@
 
 #include "var.h"
 #include "typedef.h"
-
+#include "history.h"
 #include "util.h"
 #include "built-in.h"
 

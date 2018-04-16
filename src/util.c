@@ -203,12 +203,14 @@ char** str_array_replace(char** array, int size, int index_to_replace, char* str
 		if(index != index_to_replace)
 		{
 			tmp = malloc(sizeof(char)*strlen(array[index]));
+			*tmp ='\0'; 
 			tmp = strcpy(tmp,array[index]);
 		}
 		// else we get the new string
 		else 
 		{
 			tmp = malloc(sizeof(char)*strlen(string));
+			*tmp = '\0';
 			tmp = strcpy(tmp,string);
 		}
 		
@@ -219,7 +221,7 @@ char** str_array_replace(char** array, int size, int index_to_replace, char* str
 	
 	// we add the null, and we free the old array before to return the new one
 	newArray[index] = 0;
-	free(array);
+	//free(array);
 
 	return newArray;	
 }
