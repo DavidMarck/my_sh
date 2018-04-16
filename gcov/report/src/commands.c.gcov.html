@@ -31,18 +31,18 @@
             <td class="headerValue">report.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntry">125</td>
+            <td class="headerCovTableEntry">152</td>
+            <td class="headerCovTableEntryMed">82.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-28 22:28:22</td>
+            <td class="headerValue">2018-04-16 15:26:05</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">60.0 %</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -62,94 +62,440 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>            : #include &quot;commands.h&quot;</a>
 <span class="lineNum">       2 </span>            : 
-<span class="lineNum">       3 </span>            : /**
-<a name="4"><span class="lineNum">       4 </span>            :  * Prints the command lines starter</a>
-<span class="lineNum">       5 </span>            :  */
-<span class="lineNum">       6 </span><span class="lineCov">          8 : void print_prompt()</span>
+<span class="lineNum">       3 </span>            : const char* built_in_commands[] = {&quot;cd&quot;, &quot;pwd&quot;, &quot;echo&quot;, &quot;exit&quot;};
+<a name="4"><span class="lineNum">       4 </span>            : int n_built_in = sizeof(built_in_commands) / sizeof(const char*);</a>
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span><span class="lineCov">         54 : char** parse_to_argv(char* command, int* argc)</span>
 <span class="lineNum">       7 </span>            : {
-<span class="lineNum">       8 </span><span class="lineCov">          8 :     printf(&quot;my_sh &gt; &quot;);</span>
-<span class="lineNum">       9 </span><span class="lineCov">          8 : }</span>
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : /**
-<span class="lineNum">      12 </span>            :  * Parse the text of the commandLine
-<a name="13"><span class="lineNum">      13 </span>            :  * @param command command line to parse</a>
-<span class="lineNum">      14 </span>            :  */ 
-<span class="lineNum">      15 </span><span class="lineCov">          8 : void parseCommand(char* command)</span>
-<span class="lineNum">      16 </span>            : {   
+<span class="lineNum">       8 </span><span class="lineCov">         54 :         char** argv  = NULL; // args array</span>
+<span class="lineNum">       9 </span><span class="lineCov">         54 :         char *  p    = strtok (command, &quot; &quot;); // token</span>
+<span class="lineNum">      10 </span><span class="lineCov">         54 :         int n_spaces = 0; // args counter</span>
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span><span class="lineCov">         54 :     int awaitingClosingQuote = FALSE; // indicates wether or not quote is opened and not closed</span>
+<span class="lineNum">      13 </span><span class="lineCov">         54 :     char* tmp = &quot;&quot;; // hold between quotes string until closing quote reached</span>
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :         /* split string and append tokens to 'argv' */
 <span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span><span class="lineCov">          8 :         char ** res  = NULL;</span>
-<span class="lineNum">      19 </span><span class="lineCov">          8 :         char *  p    = strtok (command, &quot; &quot;);</span>
-<span class="lineNum">      20 </span><span class="lineCov">          8 :         int n_spaces = 0, i;</span>
-<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      18 </span><span class="lineCov">        260 :         while (p) {</span>
+<span class="lineNum">      19 </span>            :         // reallocating memory as the arg count augments
+<span class="lineNum">      20 </span>            :         // (only reallocating once if arg between quotes, i.e. spaces ignored)
+<span class="lineNum">      21 </span><span class="lineCov">        152 :         if(awaitingClosingQuote != TRUE) argv = realloc (argv, sizeof (char*) * ++n_spaces);</span>
 <span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            :         /* split string and append tokens to 'res' */
+<span class="lineNum">      23 </span><span class="lineCov">        152 :         if (argv == NULL) exit (-1); /* memory allocation failed */</span>
 <span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineCov">         28 :         while (p) {</span>
-<span class="lineNum">      26 </span><span class="lineCov">         12 :           res = realloc (res, sizeof (char*) * ++n_spaces);</span>
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineCov">         12 :           if (res == NULL)</span>
-<span class="lineNum">      29 </span><span class="lineNoCov">          0 :                 exit (-1); /* memory allocation failed */</span>
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span><span class="lineCov">         12 :           res[n_spaces-1] = p;</span>
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span><span class="lineCov">         12 :           p = strtok (NULL, &quot; &quot;);</span>
-<span class="lineNum">      34 </span>            :         }
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :         /* realloc one extra element for the last NULL */
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineCov">          8 :         res = realloc (res, sizeof (char*) * (n_spaces+1));</span>
-<span class="lineNum">      39 </span><span class="lineCov">          8 :         res[n_spaces] = 0;</span>
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :         /* print the result */
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span><span class="lineCov">         28 :         for (i = 0; i &lt; (n_spaces+1); ++i) {</span>
-<span class="lineNum">      44 </span><span class="lineCov">         20 :           printf (&quot;res[%d] = %s\n&quot;, i, res[i]);</span>
-<span class="lineNum">      45 </span>            :         }    
-<span class="lineNum">      46 </span><span class="lineCov">          8 : }</span>
-<span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span>            : /**
-<span class="lineNum">      49 </span>            :  * Function parsing words by spaces
-<a name="50"><span class="lineNum">      50 </span>            :  * @param str string to parse in words</a>
-<span class="lineNum">      51 </span>            :  */
-<span class="lineNum">      52 </span><span class="lineNoCov">          0 : void parseSpace(char* str)</span>
-<span class="lineNum">      53 </span>            : {
-<span class="lineNum">      54 </span>            :     
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            : /**
-<span class="lineNum">      58 </span>            :  * Clean result of fgets, remove &quot;\n&quot; and flush stdin
-<a name="59"><span class="lineNum">      59 </span>            :  * @param buffer string to clean</a>
-<span class="lineNum">      60 </span>            :  */ 
-<span class="lineNum">      61 </span><span class="lineCov">          8 : void clean(const char *buffer)</span>
-<span class="lineNum">      62 </span>            : {
-<span class="lineNum">      63 </span><span class="lineCov">          8 :     char *p = strchr(buffer,'\n');</span>
-<span class="lineNum">      64 </span><span class="lineCov">          8 :     if (p != NULL)</span>
-<span class="lineNum">      65 </span><span class="lineCov">          8 :         *p = 0;</span>
-<span class="lineNum">      66 </span>            :     else
-<span class="lineNum">      67 </span>            :     {
-<span class="lineNum">      68 </span>            :         int c;
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         while ((c = fgetc(stdin)) != '\n' &amp;&amp; c != EOF);</span>
-<span class="lineNum">      70 </span>            :     }
-<span class="lineNum">      71 </span><span class="lineCov">          8 : }</span>
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            : /**
-<span class="lineNum">      74 </span>            :  * Reads a string as a command
-<a name="75"><span class="lineNum">      75 </span>            :  * @param command string to be read as a command</a>
-<span class="lineNum">      76 </span>            :  */
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 : void readCommand(char* command)</span>
-<span class="lineNum">      78 </span>            : {
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     int commandLength = strlen(command);</span>
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     if(commandLength &gt; 255)</span>
-<span class="lineNum">      82 </span>            :     {
-<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         printf(&quot;Your command exceeds 255 characters. Please enter a shorter command.&quot;);</span>
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         exit(EXIT_FAILURE);</span>
-<span class="lineNum">      85 </span>            :     }
-<span class="lineNum">      86 </span>            :     else
-<span class="lineNum">      87 </span>            :     {
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         printf(&quot;Your entered command: %s\n&quot;, stringToLower(command));</span>
-<span class="lineNum">      89 </span>            :     }
-<span class="lineNum">      90 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      25 </span>            :         // if still waiting for closing quote
+<span class="lineNum">      26 </span><span class="lineCov">        152 :         if(awaitingClosingQuote == TRUE)</span>
+<span class="lineNum">      27 </span>            :         {
+<span class="lineNum">      28 </span><span class="lineNoCov">          0 :             int spaceNeeded = (strlen(tmp) * sizeof(char)) + ((strlen(p) + 1) * sizeof(char)) + 1;</span>
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :             tmp = realloc(tmp,spaceNeeded);</span>
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :             strcat(tmp,&quot; &quot;);</span>
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :             strcat(tmp,p);</span>
+<span class="lineNum">      32 </span>            :         }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         // if current argument starts with quotes
+<span class="lineNum">      35 </span><span class="lineCov">        152 :         if((p[0] == '&quot;') &amp;&amp; (awaitingClosingQuote != TRUE))</span>
+<span class="lineNum">      36 </span>            :         {
+<span class="lineNum">      37 </span>            :             // only one word between quotes = normal token
+<span class="lineNum">      38 </span><span class="lineCov">          2 :             if(p[strlen(p) - 1] == '&quot;')</span>
+<span class="lineNum">      39 </span>            :             {
+<span class="lineNum">      40 </span><span class="lineCov">          2 :                 p = str_replace(&quot;\&quot;&quot;,&quot;&quot;,p);</span>
+<span class="lineNum">      41 </span><span class="lineCov">          2 :                 argv[n_spaces-1] = p;</span>
+<span class="lineNum">      42 </span><span class="lineCov">          2 :                 p = strtok (NULL, &quot; &quot;);</span>
+<span class="lineNum">      43 </span><span class="lineCov">          2 :                 continue;</span>
+<span class="lineNum">      44 </span>            :             }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :             // initiates tmp string to hold string between quotes
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :             awaitingClosingQuote = TRUE;</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :             tmp = strdup(p);</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :             p = strtok(NULL, &quot; &quot;);</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">      51 </span>            :         }
+<span class="lineNum">      52 </span>            :         // if closing quote is reached
+<span class="lineNum">      53 </span><span class="lineCov">        150 :         else if((p[strlen(p) - 1] == '&quot;') &amp;&amp; (awaitingClosingQuote == TRUE))</span>
+<span class="lineNum">      54 </span>            :         {
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :             awaitingClosingQuote = FALSE;</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :             tmp = str_replace(&quot;\&quot;&quot;,&quot;&quot;,tmp);</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :             argv[n_spaces-1] = tmp;</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :             p = strtok(NULL, &quot; &quot;);</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :             tmp = &quot;&quot;;</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span>            :         // end of command string is reached while still waiting for closing quote
+<span class="lineNum">      63 </span><span class="lineCov">        150 :         else if((awaitingClosingQuote == TRUE) &amp;&amp; (p[strlen(p)] == '\0'))</span>
+<span class="lineNum">      64 </span>            :         {
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :             argv[n_spaces-1] = tmp;</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :             p = strtok(NULL, &quot; &quot;);</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :             continue;</span>
+<span class="lineNum">      68 </span>            :         }   
+<span class="lineNum">      69 </span>            :         
+<span class="lineNum">      70 </span><span class="lineCov">        150 :         argv[n_spaces-1] = p;</span>
+<span class="lineNum">      71 </span><span class="lineCov">        150 :         p = strtok (NULL, &quot; &quot;);</span>
+<span class="lineNum">      72 </span>            :         }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :         /* realloc one extra element for the last NULL 
+<span class="lineNum">      75 </span>            :      (necessary for exec fucntion)*/
+<span class="lineNum">      76 </span><span class="lineCov">         54 :         argv = realloc (argv, sizeof (char*) * (n_spaces+1));</span>
+<span class="lineNum">      77 </span><span class="lineCov">         54 :         argv[n_spaces] = 0;</span>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">         54 :     *argc = n_spaces;</span>
+<span class="lineNum">      80 </span>            :     
+<span class="lineNum">      81 </span><span class="lineCov">         54 :     return argv;</span>
+<a name="82"><span class="lineNum">      82 </span>            : }</a>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">          4 : char** interpret_heard_file(char** argv, int args_count)</span>
+<span class="lineNum">      85 </span>            : {
+<span class="lineNum">      86 </span><span class="lineCov">          4 :         int index = 0;</span>
+<span class="lineNum">      87 </span>            :         
+<span class="lineNum">      88 </span>            :         // brownsing the entire command
+<span class="lineNum">      89 </span><span class="lineCov">         32 :         while(index &lt; args_count)</span>
+<span class="lineNum">      90 </span>            :         {
+<span class="lineNum">      91 </span>            :                 // case a &quot;&lt;&lt;&quot; is find
+<span class="lineNum">      92 </span><span class="lineCov">         26 :                 if(strcmp(&quot;&lt;&lt;&quot;, argv[index]) == 0)</span>
+<span class="lineNum">      93 </span>            :                 {
+<span class="lineNum">      94 </span>            :                         
+<span class="lineNum">      95 </span>            :                         char line_input[MAX_SIZE];
+<span class="lineNum">      96 </span><span class="lineCov">          5 :                         char* stdin_text = malloc(sizeof(char));</span>
+<span class="lineNum">      97 </span><span class="lineCov">          5 :                         *stdin_text = '\0';</span>
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span><span class="lineCov">          5 :             if(argv[index+1] == NULL)</span>
+<span class="lineNum">     100 </span>            :             {
+<span class="lineNum">     101 </span><span class="lineCov">          2 :                 fprintf(stderr,&quot;bash: syntax error near unexpected token '&lt;&lt;'\n&quot;);</span>
+<span class="lineNum">     102 </span><span class="lineCov">          2 :                 return argv;</span>
+<span class="lineNum">     103 </span>            :             }
+<span class="lineNum">     104 </span><span class="lineCov">          3 :                         char* delimiter = malloc(strlen(argv[index+1])*sizeof((char) + 1));</span>
+<span class="lineNum">     105 </span>            :                         
+<span class="lineNum">     106 </span><span class="lineCov">          3 :                         delimiter = strcpy(delimiter, argv[index+1]);</span>
+<span class="lineNum">     107 </span><span class="lineCov">          3 :                         delimiter = strcat(delimiter,&quot;\n&quot;);  // adding a \n to the delimiter  (in order to be able to compare it with fget)</span>
+<span class="lineNum">     108 </span>            :                         
+<span class="lineNum">     109 </span>            :                         // letting the user write some lines until he writes the delimiter after &lt;&lt; 
+<span class="lineNum">     110 </span>            :                         do
+<span class="lineNum">     111 </span>            :                         {
+<span class="lineNum">     112 </span><span class="lineCov">         12 :                                 printf(&quot; &gt; &quot;);</span>
+<span class="lineNum">     113 </span><span class="lineCov">         12 :                                 fgets(line_input, sizeof(line_input), stdin);</span>
+<span class="lineNum">     114 </span>            :                                 
+<span class="lineNum">     115 </span><span class="lineCov">         12 :                                 if(strcmp(delimiter, line_input) != 0)</span>
+<span class="lineNum">     116 </span>            :                                 {
+<span class="lineNum">     117 </span><span class="lineCov">          9 :                                         int spaceNeeded = ((strlen(stdin_text)) * sizeof(char)) + ((strlen(line_input) + 3) * sizeof(char));</span>
+<span class="lineNum">     118 </span><span class="lineCov">          9 :                                         stdin_text = realloc(stdin_text,spaceNeeded);</span>
+<span class="lineNum">     119 </span><span class="lineCov">          9 :                                         stdin_text = strcat(stdin_text, line_input);</span>
+<span class="lineNum">     120 </span>            :                                 }       
+<span class="lineNum">     121 </span><span class="lineCov">         12 :                         } while(strcmp(delimiter, line_input) != 0);</span>
+<span class="lineNum">     122 </span>            :                         
+<span class="lineNum">     123 </span><span class="lineCov">          3 :                         write_to_history(stdin_text);</span>
+<span class="lineNum">     124 </span><span class="lineCov">          3 :                         free(delimiter);</span>
+<span class="lineNum">     125 </span>            :                         
+<span class="lineNum">     126 </span>            :                         // creating a temporary files (which will be readed during the execution of the tree    
+<span class="lineNum">     127 </span>            :                         int descTemp;
+<span class="lineNum">     128 </span>            :                         static char template[] = &quot;/tmp/tmpShellXXXXXX.txt&quot;;
+<span class="lineNum">     129 </span>            :                         char fileName[23];
+<span class="lineNum">     130 </span>            :                         
+<span class="lineNum">     131 </span><span class="lineCov">          3 :                         strcpy(fileName, template);</span>
+<span class="lineNum">     132 </span>            :                         
+<span class="lineNum">     133 </span><span class="lineCov">          3 :                         descTemp = mkstemps(fileName,4);</span>
+<span class="lineNum">     134 </span><span class="lineCov">          3 :                         if(descTemp == -1) {</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                                 perror(&quot;error !&quot;);</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                                 dprintf(STDERR, &quot;Error in mkstemp.\n&quot;);</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                                 exit(EXIT_FAILURE);</span>
+<span class="lineNum">     138 </span>            :                         }
+<span class="lineNum">     139 </span>            :                         
+<span class="lineNum">     140 </span>            :                         // writing what the user wrote before into the tmp file
+<span class="lineNum">     141 </span><span class="lineCov">          3 :                         FILE *fp = fdopen(descTemp, &quot;w&quot;);</span>
+<span class="lineNum">     142 </span><span class="lineCov">          3 :                         if (fp == NULL)</span>
+<span class="lineNum">     143 </span>            :                         {
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                                 perror(&quot;Error when opening temp file&quot;);</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                                 exit(EXIT_FAILURE);</span>
+<span class="lineNum">     146 </span>            :                         }
+<span class="lineNum">     147 </span>            :                         
+<span class="lineNum">     148 </span><span class="lineCov">          3 :                         fputs(stdin_text, fp);</span>
+<span class="lineNum">     149 </span>            :                         
+<span class="lineNum">     150 </span>            :                         // replacing  the delimiter by the tmp file path
+<span class="lineNum">     151 </span><span class="lineCov">          3 :                         char* tmp = malloc(sizeof(char) * strlen(fileName));</span>
+<span class="lineNum">     152 </span><span class="lineCov">          3 :                         strcpy(tmp, fileName);</span>
+<span class="lineNum">     153 </span><span class="lineCov">          3 :                         argv = str_array_replace(argv, args_count,(index+1), tmp);</span>
+<span class="lineNum">     154 </span>            :                         
+<span class="lineNum">     155 </span><span class="lineCov">          3 :                         fclose(fp);</span>
+<span class="lineNum">     156 </span><span class="lineCov">          3 :                         close(descTemp);</span>
+<span class="lineNum">     157 </span><span class="lineCov">          3 :                         free(stdin_text);</span>
+<span class="lineNum">     158 </span>            :                 }
+<span class="lineNum">     159 </span><span class="lineCov">         24 :                 index++;</span>
+<span class="lineNum">     160 </span>            :         }
+<span class="lineNum">     161 </span><span class="lineCov">          2 :         return argv;</span>
+<a name="162"><span class="lineNum">     162 </span>            : }</a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineCov">         31 : int execute_command(char** argv, int argc)</span>
+<span class="lineNum">     165 </span>            : {
+<span class="lineNum">     166 </span>            :     // case built-in command
+<span class="lineNum">     167 </span><span class="lineCov">         31 :         if(isbuiltin(argv[0]))</span>
+<span class="lineNum">     168 </span>            :         {
+<span class="lineNum">     169 </span><span class="lineCov">          7 :                 return execute_builtin(argv, argc);</span>
+<span class="lineNum">     170 </span>            :         }
+<span class="lineNum">     171 </span>            :     // other commands
+<span class="lineNum">     172 </span>            :         else
+<span class="lineNum">     173 </span>            :         {
+<span class="lineNum">     174 </span>            :         // fork
+<span class="lineNum">     175 </span>            :                 int pid;
+<span class="lineNum">     176 </span>            :                 int status;
+<span class="lineNum">     177 </span><span class="lineCov">         24 :                 if ((pid = fork()) &lt; 0)</span>
+<span class="lineNum">     178 </span>            :                 {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                         perror(&quot;fork&quot;);</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                         exit(EXIT_FAILURE);</span>
+<span class="lineNum">     181 </span>            :                 }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :         // child
+<span class="lineNum">     184 </span><span class="lineCov">         25 :                 if(pid == 0)</span>
+<span class="lineNum">     185 </span>            :                 {
+<span class="lineNum">     186 </span>            :             // buidling the path
+<span class="lineNum">     187 </span><span class="lineCov">          1 :                         char* bin = &quot;/bin/&quot;;</span>
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                         char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));</span>
+<span class="lineNum">     189 </span><span class="lineCov">          1 :                         *path = '\0';</span>
+<span class="lineNum">     190 </span><span class="lineCov">          1 :                         path = strcat(path,bin);</span>
+<span class="lineNum">     191 </span><span class="lineCov">          1 :                         path = strcat(path,argv[0]);</span>
+<span class="lineNum">     192 </span>            :                         
+<span class="lineNum">     193 </span>            :             // execution
+<span class="lineNum">     194 </span><span class="lineCov">          1 :                         if (execvp(path, argv) == -1) {</span>
+<span class="lineNum">     195 </span><span class="lineCov">          1 :                                 if(errno == ENOENT)</span>
+<span class="lineNum">     196 </span>            :                                 {
+<span class="lineNum">     197 </span><span class="lineCov">          1 :                                         fprintf(stderr,&quot;%s: Command not found\n&quot;,argv[0]);</span>
+<span class="lineNum">     198 </span>            :                                 }
+<span class="lineNum">     199 </span>            :                                 else
+<span class="lineNum">     200 </span>            :                                 {
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :                                         perror(argv[0]);</span>
+<span class="lineNum">     202 </span>            :                                 }
+<span class="lineNum">     203 </span><span class="lineCov">          1 :                                 exit(-1);</span>
+<span class="lineNum">     204 </span>            :                         }
+<span class="lineNum">     205 </span>            :                 }
+<span class="lineNum">     206 </span>            :         // parent
+<span class="lineNum">     207 </span>            :                 else
+<span class="lineNum">     208 </span>            :                 {
+<span class="lineNum">     209 </span><span class="lineCov">         24 :                         wait(&amp;status);</span>
+<span class="lineNum">     210 </span><span class="lineCov">         24 :                         if(WIFEXITED(status) &amp;&amp; WEXITSTATUS(status) == 0) </span>
+<span class="lineNum">     211 </span>            :                         {
+<span class="lineNum">     212 </span><span class="lineCov">         43 :                                 return status;</span>
+<span class="lineNum">     213 </span>            :                         }
+<span class="lineNum">     214 </span><span class="lineCov">          5 :                         return -1;</span>
+<span class="lineNum">     215 </span>            :                 }
+<span class="lineNum">     216 </span>            :                 
+<span class="lineNum">     217 </span>            :         }
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :         return -1;</span>
+<span class="lineNum">     219 </span>            :         
+<span class="lineNum">     220 </span>            :     /*if(argv[0] == NULL)
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span>            :         return;
+<span class="lineNum">     223 </span>            :     }
+<span class="lineNum">     224 </span>            :     
+<span class="lineNum">     225 </span>            :     else if(isbuiltin(argv[0]))
+<span class="lineNum">     226 </span>            :     {
+<span class="lineNum">     227 </span>            :         if(execute_builtin(argv,argc) == 0) exit(EXIT_SUCCESS);
+<span class="lineNum">     228 </span>            :         else exit(EXIT_FAILURE);
+<span class="lineNum">     229 </span>            :     }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :     char* bin = &quot;/bin/&quot;;
+<span class="lineNum">     232 </span>            :     char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));
+<span class="lineNum">     233 </span>            :     strcat(path,bin);
+<span class="lineNum">     234 </span>            :     strcat(path,argv[0]);
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :     if (execvp(path, argv) == -1) {
+<span class="lineNum">     237 </span>            :         if(errno == ENOENT)
+<span class="lineNum">     238 </span>            :         {
+<span class="lineNum">     239 </span>            :             fprintf(stderr,&quot;%s: Command not found\n&quot;,argv[0]);
+<span class="lineNum">     240 </span>            :         }
+<span class="lineNum">     241 </span>            :         else
+<span class="lineNum">     242 </span>            :         {
+<span class="lineNum">     243 </span>            :             perror(argv[0]);
+<span class="lineNum">     244 </span>            :         }
+<span class="lineNum">     245 </span>            :         free(path);
+<span class="lineNum">     246 </span>            :         exit(EXIT_FAILURE);
+<span class="lineNum">     247 </span>            :     }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :     printf(&quot;\n\n&quot;);
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :     free(path);
+<span class="lineNum">     252 </span>            :     */
+<span class="lineNum">     253 </span>            : 
+<a name="254"><span class="lineNum">     254 </span>            : }</a>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">          7 : int execute_builtin(char** argv, int argc)</span>
+<span class="lineNum">     257 </span>            : {
+<span class="lineNum">     258 </span>            :     int returnCode;
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">          7 :     if(!isbuiltin(argv[0]))</span>
+<span class="lineNum">     261 </span>            :     {
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         returnCode = -1;</span>
+<span class="lineNum">     263 </span>            :     }
+<span class="lineNum">     264 </span><span class="lineCov">          7 :     else if(strcmp(argv[0],&quot;cd&quot;) == 0)</span>
+<span class="lineNum">     265 </span>            :     {
+<span class="lineNum">     266 </span><span class="lineCov">          2 :         returnCode = cd(argv,argc);</span>
+<span class="lineNum">     267 </span>            :     }
+<span class="lineNum">     268 </span><span class="lineCov">          5 :     else if(strcmp(argv[0],&quot;pwd&quot;) == 0)</span>
+<span class="lineNum">     269 </span>            :     {
+<span class="lineNum">     270 </span><span class="lineCov">          1 :         returnCode = pwd(argv,argc);</span>
+<span class="lineNum">     271 </span>            :     }
+<span class="lineNum">     272 </span><span class="lineCov">          4 :     else if(strcmp(argv[0],&quot;echo&quot;) == 0)</span>
+<span class="lineNum">     273 </span>            :     {
+<span class="lineNum">     274 </span><span class="lineCov">          3 :         returnCode = echo(argv,argc);</span>
+<span class="lineNum">     275 </span>            :     }
+<span class="lineNum">     276 </span><span class="lineCov">          1 :     else if(strcmp(argv[0],&quot;exit&quot;) == 0)</span>
+<span class="lineNum">     277 </span>            :     {
+<span class="lineNum">     278 </span><span class="lineCov">          1 :         builtin_exit(argv,argc);</span>
+<span class="lineNum">     279 </span>            :     }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span><span class="lineCov">          6 :     printf(&quot;\n&quot;);</span>
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">          6 :     return returnCode;</span>
+<a name="284"><span class="lineNum">     284 </span>            : }</a>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineCov">         38 : int isbuiltin(char* commandLine)</span>
+<span class="lineNum">     287 </span>            : {
+<span class="lineNum">     288 </span><span class="lineCov">        154 :     for(int i = 0; i &lt; n_built_in; i++)</span>
+<span class="lineNum">     289 </span>            :     {
+<span class="lineNum">     290 </span><span class="lineCov">        130 :         if(strcmp(commandLine,built_in_commands[i]) == 0)</span>
+<span class="lineNum">     291 </span>            :         {
+<span class="lineNum">     292 </span><span class="lineCov">         14 :             return TRUE;</span>
+<span class="lineNum">     293 </span>            :         }
+<span class="lineNum">     294 </span>            :     }
+<span class="lineNum">     295 </span><span class="lineCov">         24 :     return FALSE;</span>
+<a name="296"><span class="lineNum">     296 </span>            : }</a>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineCov">         20 : int includes_multplie_commands(char** argv, int argc)</span>
+<span class="lineNum">     299 </span>            : {
+<span class="lineNum">     300 </span><span class="lineCov">        140 :     for(int i = 0; i &lt; argc; i++)</span>
+<span class="lineNum">     301 </span>            :     {
+<span class="lineNum">     302 </span><span class="lineCov">        124 :         if(strcmp(argv[i],&quot;;&quot;) == 0)</span>
+<span class="lineNum">     303 </span>            :         {
+<span class="lineNum">     304 </span><span class="lineCov">          4 :             return TRUE;</span>
+<span class="lineNum">     305 </span>            :         }
+<span class="lineNum">     306 </span>            :     }
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span><span class="lineCov">         16 :     return FALSE;</span>
+<a name="309"><span class="lineNum">     309 </span>            : }</a>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span><span class="lineCov">          4 : char** get_next_command_args(char** argv, int argc, int* nxt_argc, int* nxtCmdLineIndex)</span>
+<span class="lineNum">     312 </span>            : {
+<span class="lineNum">     313 </span><span class="lineCov">          4 :     char** nxt_argv = NULL;</span>
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineCov">          4 :     int n_args = 0;</span>
+<span class="lineNum">     316 </span><span class="lineCov">          4 :     int i = *nxtCmdLineIndex;</span>
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :     // We copy all the arguments to get only the ones concerned by the next ; operator
+<span class="lineNum">     319 </span><span class="lineCov">         32 :     while(strcmp(argv[i],&quot;;&quot;) != 0)</span>
+<span class="lineNum">     320 </span>            :     {
+<span class="lineNum">     321 </span>            :         // reallocating memory
+<span class="lineNum">     322 </span><span class="lineCov">         24 :         nxt_argv = realloc(nxt_argv, sizeof (char*) * ++n_args);</span>
+<span class="lineNum">     323 </span><span class="lineCov">         24 :         if (nxt_argv == NULL) exit (-1); /* memory allocation failed */</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineCov">         24 :         nxt_argv[n_args - 1] = argv[i];</span>
+<span class="lineNum">     326 </span><span class="lineCov">         24 :         i++;</span>
+<span class="lineNum">     327 </span>            :     }
+<span class="lineNum">     328 </span>            :     // Sets &quot;;&quot; to &quot;&quot; in argv
+<span class="lineNum">     329 </span><span class="lineCov">          4 :     argv[i] = &quot;&quot;;</span>
+<span class="lineNum">     330 </span><span class="lineCov">          4 :     *nxtCmdLineIndex = i + 1;</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            :     /* realloc one extra element for the last NULL 
+<span class="lineNum">     333 </span>            :      (necessary for exec fucntion)*/
+<span class="lineNum">     334 </span><span class="lineCov">          4 :         nxt_argv = realloc (nxt_argv, sizeof (char*) * (n_args+1));</span>
+<span class="lineNum">     335 </span><span class="lineCov">          4 :         nxt_argv[n_args] = 0;</span>
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span><span class="lineCov">          4 :     *nxt_argc = n_args;</span>
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineCov">          4 :     return nxt_argv;</span>
+<a name="340"><span class="lineNum">     340 </span>            : }</a>
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span><span class="lineCov">          3 : char** get_last_command_args(char** argv, int argc, int* last_argc, int startIndex)</span>
+<span class="lineNum">     343 </span>            : {
+<span class="lineNum">     344 </span><span class="lineCov">          3 :     char** last_argv = NULL;</span>
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineCov">          3 :     int n_args = 0;</span>
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span>            :     // We copy all the arguments at the end (after all the ; operators)
+<span class="lineNum">     349 </span><span class="lineCov">         20 :     for(int i = startIndex; i &lt; argc; i++)</span>
+<span class="lineNum">     350 </span>            :     {
+<span class="lineNum">     351 </span>            :         // reallocating memory
+<span class="lineNum">     352 </span><span class="lineCov">         17 :         last_argv = realloc(last_argv, sizeof (char*) * ++n_args);</span>
+<span class="lineNum">     353 </span><span class="lineCov">         17 :         if (last_argv == NULL) exit (-1); /* memory allocation failed */</span>
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span><span class="lineCov">         17 :         last_argv[n_args - 1] = argv[i];</span>
+<span class="lineNum">     356 </span>            :     }
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span>            :     /* realloc one extra element for the last NULL 
+<span class="lineNum">     359 </span>            :      (necessary for exec fucntion)*/
+<span class="lineNum">     360 </span><span class="lineCov">          3 :         last_argv = realloc (last_argv, sizeof (char*) * (n_args+1));</span>
+<span class="lineNum">     361 </span><span class="lineCov">          3 :         last_argv[n_args] = 0;</span>
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span><span class="lineCov">          3 :     *last_argc = n_args;</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineCov">          3 :     return last_argv;</span>
+<span class="lineNum">     366 </span>            : }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : // int includes_background(char** argv, int argc)
+<span class="lineNum">     369 </span>            : // {
+<span class="lineNum">     370 </span>            : //     for(int i = 0; i &lt; argc; i++)
+<span class="lineNum">     371 </span>            : //     {
+<span class="lineNum">     372 </span>            : //         if(strcmp(argv[i],&quot;&amp;&quot;) == 0)
+<span class="lineNum">     373 </span>            : //         {
+<span class="lineNum">     374 </span>            : //             return TRUE;
+<span class="lineNum">     375 </span>            : //         }
+<span class="lineNum">     376 </span>            : //     }
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span>            : //     return FALSE;
+<span class="lineNum">     379 </span>            : // }
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            : // char** get_bg_command_args(char** argv, int argc, int* bg_argc, int* nxtCmdLineIndex)
+<span class="lineNum">     382 </span>            : // {
+<span class="lineNum">     383 </span>            : //     char** bg_argv = NULL;
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span>            : //     int n_args = 0;
+<span class="lineNum">     386 </span>            : //     int i = *nxtCmdLineIndex;
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            : //     // We copy all the arguments to get only the ones concerned by the next &amp; operator
+<span class="lineNum">     389 </span>            : //     while(strcmp(argv[i],&quot;&amp;&quot;) != 0)
+<span class="lineNum">     390 </span>            : //     {
+<span class="lineNum">     391 </span>            : //         // reallocating memory
+<span class="lineNum">     392 </span>            : //         bg_argv = realloc(bg_argv, sizeof (char*) * ++n_args);
+<span class="lineNum">     393 </span>            : //         if (bg_argv == NULL) exit (-1); /* memory allocation failed */
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            : //         bg_argv[n_args - 1] = argv[i];
+<span class="lineNum">     396 </span>            : //         i++;
+<span class="lineNum">     397 </span>            : //     }
+<span class="lineNum">     398 </span>            : //     // Sets &quot;&amp;&quot; to &quot;&quot; in argv
+<span class="lineNum">     399 </span>            : //     argv[i] = &quot;&quot;;
+<span class="lineNum">     400 </span>            : //     *nxtCmdLineIndex = i + 1;
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span>            : //     /* realloc one extra element for the last NULL 
+<span class="lineNum">     403 </span>            : //      (necessary for exec fucntion)*/
+<span class="lineNum">     404 </span>            : //      bg_argv = realloc (bg_argv, sizeof (char*) * (n_args+1));
+<span class="lineNum">     405 </span>            : //      bg_argv[n_args] = 0;
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span>            : //     *bg_argc = n_args;
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span>            : //     return bg_argv;
+<span class="lineNum">     410 </span>            : // }
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : // char** get_fg_command_args(char** argv, int argc, int* fg_argc, int startIndex)
+<span class="lineNum">     413 </span>            : // {
+<span class="lineNum">     414 </span>            : //     char** fg_argv = NULL;
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span>            : //     int n_args = 0;
+<span class="lineNum">     417 </span>            : 
+<span class="lineNum">     418 </span>            : //     // We copy all the arguments at the end (after all the &amp; operators)
+<span class="lineNum">     419 </span>            : //     for(int i = startIndex; i &lt; argc; i++)
+<span class="lineNum">     420 </span>            : //     {
+<span class="lineNum">     421 </span>            : //         // reallocating memory
+<span class="lineNum">     422 </span>            : //         fg_argv = realloc(fg_argv, sizeof (char*) * ++n_args);
+<span class="lineNum">     423 </span>            : //         if (fg_argv == NULL) exit (-1); /* memory allocation failed */
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span>            : //         fg_argv[n_args - 1] = argv[i];
+<span class="lineNum">     426 </span>            : //     }
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            : //     /* realloc one extra element for the last NULL 
+<span class="lineNum">     429 </span>            : //      (necessary for exec fucntion)*/
+<span class="lineNum">     430 </span>            : //      fg_argv = realloc (fg_argv, sizeof (char*) * (n_args+1));
+<span class="lineNum">     431 </span>            : //      fg_argv[n_args] = 0;
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            : //     *fg_argc = n_args;
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span>            : //     return fg_argv;
+<span class="lineNum">     436 </span>            : // }
 </pre>
       </td>
     </tr>
