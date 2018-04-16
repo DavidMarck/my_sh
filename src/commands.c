@@ -97,7 +97,7 @@ char** interpret_heard_file(char** argv, int args_count)
 
             if(argv[index+1] == NULL)
             {
-                fprintf(stderr,"bash: syntax error near unexpected token `newline'\n");
+                fprintf(stderr,"bash: syntax error near unexpected token '<<'\n");
                 return argv;
             }
 			char* delimiter = malloc(strlen(argv[index+1])*sizeof((char) + 1));
@@ -291,6 +291,76 @@ int isbuiltin(char* commandLine)
         }
     }
     return FALSE;
+}
+
+int includes_multplie_commands(char** argv, int argc)
+{
+    for(int i = 0; i < argc; i++)
+    {
+        if(strcmp(argv[i],";") == 0)
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+char** get_next_command_args(char** argv, int argc, int* nxt_argc, int* nxtCmdLineIndex)
+{
+    char** nxt_argv = NULL;
+
+    int n_args = 0;
+    int i = *nxtCmdLineIndex;
+
+    // We copy all the arguments to get only the ones concerned by the next ; operator
+    while(strcmp(argv[i],";") != 0)
+    {
+        // reallocating memory
+        nxt_argv = realloc(nxt_argv, sizeof (char*) * ++n_args);
+        if (nxt_argv == NULL) exit (-1); /* memory allocation failed */
+
+        nxt_argv[n_args - 1] = argv[i];
+        i++;
+    }
+    // Sets ";" to "" in argv
+    argv[i] = "";
+    *nxtCmdLineIndex = i + 1;
+
+    /* realloc one extra element for the last NULL 
+     (necessary for exec fucntion)*/
+	nxt_argv = realloc (nxt_argv, sizeof (char*) * (n_args+1));
+	nxt_argv[n_args] = 0;
+
+    *nxt_argc = n_args;
+
+    return nxt_argv;
+}
+
+char** get_last_command_args(char** argv, int argc, int* last_argc, int startIndex)
+{
+    char** last_argv = NULL;
+
+    int n_args = 0;
+
+    // We copy all the arguments at the end (after all the ; operators)
+    for(int i = startIndex; i < argc; i++)
+    {
+        // reallocating memory
+        last_argv = realloc(last_argv, sizeof (char*) * ++n_args);
+        if (last_argv == NULL) exit (-1); /* memory allocation failed */
+
+        last_argv[n_args - 1] = argv[i];
+    }
+
+    /* realloc one extra element for the last NULL 
+     (necessary for exec fucntion)*/
+	last_argv = realloc (last_argv, sizeof (char*) * (n_args+1));
+	last_argv[n_args] = 0;
+
+    *last_argc = n_args;
+
+    return last_argv;
 }
 
 // int includes_background(char** argv, int argc)
