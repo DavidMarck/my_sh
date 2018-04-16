@@ -79,7 +79,7 @@ char** interpret_heard_file(char** argv, int args_count);
 int includes_multplie_commands(char** argv, int argc);
 
 /**
- * Gets the next sequence of commands after ;
+ * Gets the next sequence of commands after ';'
  * 
  * @param argv array of arguments
  * @param argc arguments count (input arguments array)
