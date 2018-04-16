@@ -114,13 +114,18 @@ void interpret_node(commandNode* node);
 void execute_fork_node(commandNode* node);
 
 /**
- * Executes a nodewhich is a pipe
+ * Executes a node which is a pipe (left child)
  * 
  * @param node the node to execute as a pipeline
- * 
- * @return 0 on success and -1 on error
  */
-int execute_pipe(commandNode* node);
+void execute_pipe_left(commandNode* node);
+
+/**
+ * Executes a node which is a pipe (right child)
+ * 
+ * @param node the node to execute as a pipeline
+ */
+void execute_pipe_right(commandNode* node);
 
 /**
  * Execute a node with a redirection which don't requires a fork

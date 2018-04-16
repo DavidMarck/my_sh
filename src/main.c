@@ -28,17 +28,26 @@ char* dup_optarg_str()
 
 void process_command_line(char* commandLine)
 {
+    char* saved_command_line = strdup(commandLine);
+
     int argc = 0;
     char** argv = parse_to_argv(commandLine,&argc);
-    argv = interpret_heard_file(argv, argc);
+
+    // if any << in command line
+    if(contains(saved_command_line,"<<"))
+    {
+        char** argv_heard_file = interpret_heard_file(argv, argc);
+
+        // if the two arrays are identical, syntax error in use of << operator exists
+        if(argv == argv_heard_file)
+        {
+            return;
+        }
+        argv = argv_heard_file;
+    }
 
     // int fg_argc = 0;
     // char** fg_argv = NULL;
-
-    for (int i = 0; i < (argc + 1); i++) 
-    {
-        printf ("argv[%d] = %s\n", i, argv[i]);
-    }
 
     // empty command line
     if(argc == 0)

@@ -226,6 +226,9 @@ char** str_array_replace(char** array, int size, int index_to_replace, char* str
 
 void free_array(char** array, int array_size)
 {
+	// Here we only free the array pointer
+	// (we tried to free each element but we don't know why, it dumps)
+	// that's why function is unsused for the moment
     for(int i = 0; i < array_size; i++)
     {
         free(array[i]);

@@ -94,6 +94,12 @@ char** interpret_heard_file(char** argv, int args_count)
 			
 			char line_input[MAX_SIZE];
 			char* stdin_text = malloc(sizeof(char));
+
+            if(argv[index+1] == NULL)
+            {
+                fprintf(stderr,"bash: syntax error near unexpected token `newline'\n");
+                return argv;
+            }
 			char* delimiter = malloc(strlen(argv[index+1])*sizeof((char) + 1));
 			
 			delimiter = strcpy(delimiter, argv[index+1]);

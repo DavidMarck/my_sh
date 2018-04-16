@@ -83,9 +83,9 @@ int is_right_child(commandNode* node)
 commandNode* parse_to_tree(char** arguments, int args_count)
 {
 	// initialisation of the cursors (we'll start from the last index to the first(0))
-	int index = args_count-1;                          // current index
-	int last_string_limit = args_count;                // this cursor go to the last "special index" (it concerned all operators and redirection), by default this is the "null" value at the end
-	int string_index;                                  // this cursor will be used in order to concatenate some strings
+	int index = args_count-1;            // current index
+	int last_string_limit = args_count;  // this cursor go to the last "special index" (it concerned all operators and redirection), by default this is the "null" value at the end
+	int string_index;                    // this cursor will be used in order to concatenate some strings
 	int i;
 	
 	// this variable will concatenate all strings between 2 specials indexes
@@ -135,7 +135,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 				command = strcat(command, argument);
 			}
 			
-			// if we reach the begin of the function...
+			// if we reach the start of the array...
 			if(index == 0)
 			{
 				// ... we create a new "cmdNode" which contains the value of the last concatenate string
@@ -171,7 +171,6 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 			// if we have a redirection without fork, we declare it, and we add a node which contains the last concatenate string at its right
 			else if(is_redirection_without_fork(arguments[index]) == TRUE)
 			{
-				//printf("Redirections détectée : %s\n", arguments[index]);
 				redirectionNode = new_node(arguments[index]);
 				add_right(redirectionNode, new_node(command));
 			}
@@ -245,55 +244,8 @@ void execute_tree(commandNode* root, int isBackground)
 	commandNode* last_left_child = get_last_left_child(root);
 	// we interpret that last left child node, which will recursively interpret the entire tree
 	interpret_node(last_left_child);
-	/*int status;
-	int pid;
-	
-	if((pid = fork()) < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}  
-  
-	// child
-	if(pid == 0) 
-	{
-		// if(isBackground)
-		// {
-		// 	//int fd = open("/dev/null",O_WRONLY | O_CREAT, 0666);   // open the file /dev/null
-        // 	//dup2(fd, STDOUT); // replace standard output with output file
-		// 	setpgid(0,0);
-		// }
-		interpret_node(root);
-	}	
-	// parent process
-	else
-	{
-		// if(isBackground)
-		// {
-		// 	int i = 0;
-		// 	while(BG_PIDS_ARRAY[i] != 0)
-		// 	{
-		// 		i++;
-		// 	}
-		// 	BG_PIDS_ARRAY[i] = pid;
-
-		// 	printf("[process %d started]\n", pid);
-
-		// 	int status;
-		// 	waitpid(-1, &status, WNOHANG);
-		// 	printf("[process %d exited with code %d]\n",
-        //     pid, WEXITSTATUS(status));                         
-		// }
-		// else
-		// {
-		// 	wait(&status);
-		// }
-		wait(&status);
-	}	
-	*/
 }
 
-// TO DO : when pipe, built in on fork!! (cd | ls OR ls | cd --> in both, cd within child process)
 void interpret_node(commandNode* node)
 {
 	int argc = 0;
@@ -344,47 +296,7 @@ void interpret_node(commandNode* node)
 				// Pipeline : |
 				if(is_pipe(node->parentNode->value))
 				{
-					int pipeDescs[2];         
-					if(pipe(pipeDescs) == -1)
-					{
-					   perror("pipe");
-					}
-					else 
-					{
-						int pid;
-						if((pid = fork()) < 0)
-						{
-							perror("fork");
-						}
-						else 
-						{
-							int saved_stdin = dup(STDIN);
-							if (pid ==0) 
-							{			 
-								close(pipeDescs[0]);								 	
-								dup2(pipeDescs[1], STDOUT);								
-								argv = parse_to_argv(node->value,&argc);
-								if(execute_command(argv, argc) < 0)
-								{
-									exit(EXIT_FAILURE);
-								}
-								exit(EXIT_SUCCESS);
-								
-							}
-							else 
-							{
-								wait(NULL);
-								
-								close(pipeDescs[1]); // On ferme l'entrée du pipe
-								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
-									
-								interpret_node(node->parentNode->right);
-								
-								dup2(saved_stdin, STDIN);
-								close(saved_stdin);
-							}
-						}
-					}
+					execute_pipe_left(node);
 				}
 			}	
 		}
@@ -458,245 +370,19 @@ void interpret_node(commandNode* node)
 				// Grand parent is a pipeline operator, meaning a pipeline should be initiated
 				else if(is_pipe(node->parentNode->parentNode->value))
 				{
-					int pipeDescs[2];         
-					if(pipe(pipeDescs) == -1)
-					{
-					   perror("pipe");
-					}
-					else 
-					{
-						int pid;
-						if((pid = fork()) < 0)
-						{
-							perror("fork");
-						}
-						else 
-						{
-							int saved_stdin = dup(STDIN);
-							if (pid ==0) 
-							{		 
-								close(pipeDescs[0]);								 	
-								dup2(pipeDescs[1], STDOUT);	
-								int return_code;
-								
-								if(is_redirection_without_fork(node->parentNode->value))
-								{
-									return_code = execute_redirection_without_fork(node->parentNode);
-								}
-								else							
-								{
-									argv = parse_to_argv(node->value,&argc);
-									return_code = execute_command(argv, argc);
-								}
-								if(return_code < 0)
-								{
-									exit(EXIT_FAILURE);
-								}
-								exit(EXIT_SUCCESS);
-								
-							}
-							else 
-							{
-								wait(NULL);
-								
-								close(pipeDescs[1]); // On ferme l'entrée du pipe
-								dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
-									
-								interpret_node(node->parentNode->parentNode->right);
-								
-								dup2(saved_stdin, STDIN);
-								close(saved_stdin);
-							}
-						}
-					}					
+					execute_pipe_right(node);					
 				}	
 			}			
 		}
 	}
-	/*
-	if(node == NULL) 
-		return;
-	
-	interpret_node(node->left);
-	
-
-	if(is_special_string(node->value) == FALSE && node == node->mainRoot)
-	{
-		
-
-		int args_count = 0;
-		char** commandArgs = parse_to_argv(node->value,&args_count);
-		
-		if(isbuiltin(commandArgs[0]))
-		{
-			execute_builtin(commandArgs, args_count);
-		}
-		else
-		{
-			int pid;
-			int status;
-			pid = fork();
-			if(pid == 0)
-			{
-				execute_command(commandArgs, args_count);
-			}
-			else
-			{
-				wait(&status);
-			}
-			
-		}
-		
-	}
-	else 
-	{
-		if(strcmp(node->value, "&&") == 0)
-		{
-			int status;
-			int args_count = 0;
-			char** commandArgs = parse_to_argv(node->left->value,&args_count);
-			
-			if(isbuiltin(commandArgs[0]))
-			{
-				execute_builtin(commandArgs, args_count);
-			}
-			else
-			{
-				int status;
-				int pid;
-				
-				pid = fork();
-				if(pid == 0)
-				{
-					execute_command(commandArgs, args_count);
-				}
-				else
-				{
-					wait(&status);
-					
-				}
-				
-			}
-			
-		}
-	}
-	*/	
-	
-	/*
-	printf("################ Noeud %s ###########\n", node->value);
-	if(node->parentNode != NULL)
-		printf(".  parent : %s\n", node->parentNode->value);
-	if(node->left != NULL)
-		printf(".  fils de gauche : %s\n", node->left->value);
-			
-	if(node->right != NULL)
-		printf(".  fils de droite : %s\n", node->right->value);
-	
-	*/	
-	
-	
-	//interpret_node(node->right);
-	/*
-	if(is_special_string(node->value) == FALSE)
-	{
-		int args_count = 0;
-		char** commandArgs = parse_to_argv(node->value,&args_count);
-		execute_command(commandArgs, args_count);
-	}
-	
-	else if(is_logical_operator_or_pipe(node->value) == TRUE) 
-	{
-		execute_fork_node(node);
-	}
-	
-	else if(is_redirection_without_fork(node->value) == TRUE)
-	{
-		execute_redirection_without_fork(node);
-	}
-	* */
 }
 
-/*
-void execute_fork_node(commandNode* node)
-{
-	int status;
-	int pid;
-	
-	// If we have a pipe
-	if(strcmp(node->value, "|") == 0)
-	{
-		int pipeDescs[2];         
-		if(pipe(pipeDescs) == -1)
-		{
-		   perror("pipe");
-		   exit(EXIT_FAILURE);
-		}
-		
-		if((pid = fork()) < 0)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		
-		if (pid ==0) 
-		{			 
-			close(pipeDescs[0]);  	
-			dup2(pipeDescs[1], STDOUT);  
-			
-			interpret_node(node->left);
-		}
-		else 
-		{
-			close(pipeDescs[1]); // On ferme l'entrée du pipe
-			dup2(pipeDescs[0], STDIN); // On redirige l'entrée standarde sur la sortie du pipe
-				
-			interpret_node(node->right);
-	  }
-	}
-	
-	
-	else
-	{
-		if((pid = fork()) < 0)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		
-		if(pid == 0)
-		{
-			interpret_node(node->left);
-		}
-		else 
-		{
-			wait(&status);
-			if(strcmp(node->value, "&&") == 0)
-			{
-				if(WIFEXITED(status) && WEXITSTATUS(status) == 0) 
-				{		
-					interpret_node(node->right);
-				} 
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				if(WIFEXITED(status) && WEXITSTATUS(status) != 0) 
-				{		
-					interpret_node(node->right);
-				}
-				exit(EXIT_FAILURE);
-			}
-		}
-	}
-}
-*/
-
-int execute_pipe(commandNode* node)
+void execute_pipe_left(commandNode* node)
 {
 	if(!is_pipe(node->parentNode->value))
 	{
 		printf("pipe : Tried to pipeline non pipelined nodes!");
-		return -1;
+		return;
 	}
 
 	int argc = 0;
@@ -707,7 +393,6 @@ int execute_pipe(commandNode* node)
 	if(pipe(pipeDescs) == -1)
 	{
 		perror("pipe");
-		return -1;
 	}
 	else 
 	{
@@ -716,7 +401,6 @@ int execute_pipe(commandNode* node)
 		if((pid = fork()) < 0)
 		{
 			perror("fork");
-			return -1;
 		}
 		else 
 		{
@@ -724,12 +408,12 @@ int execute_pipe(commandNode* node)
 			int saved_stdin = dup(STDIN);
 			// child
 			if (pid ==0) 
-			{			
-				// close the output descriptor of the pipe 
-				close(pipeDescs[0]);	
+			{		
+				// close the output descriptor of the pipe 	 
+				close(pipeDescs[0]);
 				// redirection of STDOUT to pipe's input descriptor							 	
-				dup2(pipeDescs[1], STDOUT);		
-				// then, execution of the command. Its output, if any, will be redirected into the pipe						
+				dup2(pipeDescs[1], STDOUT);				
+				// then, execution of the command. Its output, if any, will be redirected into the pipe				
 				argv = parse_to_argv(node->value,&argc);
 				if(execute_command(argv, argc) < 0)
 				{
@@ -745,7 +429,82 @@ int execute_pipe(commandNode* node)
 				
 				close(pipeDescs[1]); // we close pipe's input descriptor
 				dup2(pipeDescs[0], STDIN); // redirection of STDIN on pipe's output descriptor
+					
+				// then, we intepret the pipelined node
+				// it will receive previous command's output as its input
+				interpret_node(node->parentNode->right);
 				
+				// here we reset STDIN to its default state
+				dup2(saved_stdin, STDIN);
+				close(saved_stdin);
+			}
+		}
+	}
+}
+
+void execute_pipe_right(commandNode* node)
+{
+	if(!is_pipe(node->parentNode->parentNode->value))
+	{
+		printf("pipe : Tried to pipeline non pipelined nodes!");
+		return;
+	}
+
+	int argc = 0;
+	char** argv;
+
+	// pipe's descriptors
+	int pipeDescs[2];         
+	if(pipe(pipeDescs) == -1)
+	{
+		perror("pipe");
+	}
+	else 
+	{
+		int pid;
+		// fork
+		if((pid = fork()) < 0)
+		{
+			perror("fork");
+		}
+		else 
+		{
+			// save current STDIN
+			int saved_stdin = dup(STDIN);
+			// child
+			if (pid ==0) 
+			{		
+				// close the output descriptor of the pipe 
+				close(pipeDescs[0]);
+				// redirection of STDOUT to pipe's input descriptor							 	
+				dup2(pipeDescs[1], STDOUT);	
+				int return_code;
+				
+				if(is_redirection_without_fork(node->parentNode->value))
+				{
+					return_code = execute_redirection_without_fork(node->parentNode);
+				}
+				else							
+				{
+					// then, execution of the command. Its output, if any, will be redirected into the pipe	
+					argv = parse_to_argv(node->value,&argc);
+					return_code = execute_command(argv, argc);
+				}
+				if(return_code < 0)
+				{
+					exit(EXIT_FAILURE);
+				}
+				exit(EXIT_SUCCESS);
+				
+			}
+			// parent
+			else 
+			{
+				wait(NULL);
+				
+				close(pipeDescs[1]); // we close pipe's input descriptor
+				dup2(pipeDescs[0], STDIN); // redirection of STDIN on pipe's output descriptor
+					
 				// then, we intepret the pipelined node
 				// it will receive previous command's output as its input
 				interpret_node(node->parentNode->parentNode->right);
@@ -755,8 +514,7 @@ int execute_pipe(commandNode* node)
 				close(saved_stdin);
 			}
 		}
-	}
-	return 0;
+	}	
 }
 
 int execute_redirection_without_fork(commandNode* node)
