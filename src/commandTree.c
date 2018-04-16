@@ -186,7 +186,7 @@ commandNode* parse_to_tree(char** arguments, int args_count)
 int is_special_string(char* argument)
 {	
 	int index = 0;
-	char* operators[] = {"|", "||", "&&", ">", "<", ">>", "<<"};
+	char* operators[] = {"|", "||", "&&", ">", "<", ">>", "<<","&"};
 	
 	
 	while (index < 7)

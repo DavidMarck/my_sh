@@ -63,8 +63,8 @@ void process_command_line(char* commandLine)
         argv = argv_heard_file;
     }
 
-    // int fg_argc = 0;
-    // char** fg_argv = NULL;
+    int last_argc = 0;
+    char** last_argv = NULL;
 
     // empty command line
     if(argc == 0)
@@ -72,49 +72,38 @@ void process_command_line(char* commandLine)
         return;
     }
 
-    // TO DO handle other syntax errors in the line beginning ?
-    if(strcmp(argv[0],"&") == 0)
+    // syntax error : operator at the beginning
+    if(is_special_string(argv[0]))
     {
-        printf("my_sh: syntax error near unexpected token `&'");
+        printf("my_sh: syntax error near unexpected token '%s'\n",argv[0]);
         return;
     }
 
-    execute_command_line(argv,argc,FALSE);
+    int nxtCmdLineIndex = 0;
+    while(includes_multplie_commands(argv,argc))
+    {
+        int nxt_argc = 0;
+        char** nxt_argv = get_next_command_args(argv,argc,&nxt_argc,&nxtCmdLineIndex);
 
-    // int nxtCmdLineIndex = 0;
-    // while(includes_background(argv,argc))
-    // {
-    //     int bg_argc = 0;
-    //     char** bg_argv = get_bg_command_args(argv,argc,&bg_argc,&nxtCmdLineIndex);
-    //     for (int i = 0; i < (bg_argc + 1); i++) 
-    //     {
-    //         printf("bg_argv[%d] = %s\n", i, bg_argv[i]);
-    //     }
+        execute_command_line(nxt_argv,nxt_argc,TRUE);
+    }
 
-    //     execute_command_line(bg_argv,bg_argc,TRUE);
-    // }
+    // if there were any ; and if there is still a last command
+    if((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
+    {
+        // we get only the foreground command's arguments
+        last_argv = get_last_command_args(argv,argc,&last_argc,nxtCmdLineIndex);
+    }
 
-    // // if there were any background processes and if there is still a foreground command
-    // if((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
-    // {
-    //     // we get only the foreground command's arguments
-    //     fg_argv = get_fg_command_args(argv,argc,&fg_argc,nxtCmdLineIndex);
+    // if after all the commands separated by ; there was another command to run...
+    if(last_argc > 0)
+    {
+        execute_command_line(last_argv,last_argc,FALSE);
+        return;
+    }
 
-    //     for (int i = 0; i < (fg_argc + 1); i++) 
-    //     {
-    //         printf("fg_argv[%d] = %s\n", i, fg_argv[i]);
-    //     }
-    // }
-
-    // // if after backgorund commands there was another command to run in foreground...
-    // if(fg_argc > 0)
-    // {
-    //     execute_command_line(fg_argv,fg_argc,FALSE);
-    //     return;
-    // }
-
-    // if there were no background commands to run
-    // if(nxtCmdLineIndex == 0) execute_command_line(argv,argc,FALSE);
+    // if there were no ; we use the original argv
+    if(nxtCmdLineIndex == 0) execute_command_line(argv,argc,FALSE);
     
 }
 
