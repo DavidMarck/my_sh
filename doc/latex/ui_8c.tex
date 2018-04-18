@@ -1,0 +1,97 @@
+\hypertarget{ui_8c}{}\section{src/ui.c File Reference}
+\label{ui_8c}\index{src/ui.\+c@{src/ui.\+c}}
+{\ttfamily \#include \char`\"{}ui.\+h\char`\"{}}\newline
+Include dependency graph for ui.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ui_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{ui_8c_a599d4f40a5e145d7a701ec49b73426a6}{print\+\_\+prompt}} ()
+\item 
+void \mbox{\hyperlink{ui_8c_acce1050daf9e9625b1f56bd366ee3282}{clean}} (const char $\ast$buffer)
+\item 
+void \mbox{\hyperlink{ui_8c_ae81d5aa16d93cbbc856462895a52e6e3}{read\+\_\+command\+\_\+line}} (char $\ast$command\+Line)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{ui_8c_acce1050daf9e9625b1f56bd366ee3282}\label{ui_8c_acce1050daf9e9625b1f56bd366ee3282}} 
+\index{ui.\+c@{ui.\+c}!clean@{clean}}
+\index{clean@{clean}!ui.\+c@{ui.\+c}}
+\subsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily void clean (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+
+Clean result of fgets, remove \char`\"{}\textbackslash{}n\char`\"{} and flush stdin 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & string to clean \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+15 \{
+16     \textcolor{keywordtype}{char} *p = strchr(buffer,\textcolor{charliteral}{'\(\backslash\)n'});
+17     \textcolor{keywordflow}{if} (p != NULL)
+18         *p = 0;
+19     \textcolor{keywordflow}{else}
+20     \{
+21         \textcolor{keywordtype}{int} c;
+22         \textcolor{keywordflow}{while} ((c = fgetc(stdin)) != \textcolor{charliteral}{'\(\backslash\)n'} && c != EOF);
+23     \}
+24 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{ui_8c_a599d4f40a5e145d7a701ec49b73426a6}\label{ui_8c_a599d4f40a5e145d7a701ec49b73426a6}} 
+\index{ui.\+c@{ui.\+c}!print\+\_\+prompt@{print\+\_\+prompt}}
+\index{print\+\_\+prompt@{print\+\_\+prompt}!ui.\+c@{ui.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+prompt()}{print\_prompt()}}
+{\footnotesize\ttfamily int print\+\_\+prompt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Prints the shell prompt
+
+\begin{DoxyReturn}{Returns}
+true 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5     \textcolor{keywordtype}{char} buffer[1024];
+6     \textcolor{keywordtype}{char}* dir = getcwd(buffer,\textcolor{keyword}{sizeof}(buffer));
+7     \textcolor{keywordtype}{char}* prompt = strcat(dir,\textcolor{stringliteral}{" > "});
+8     printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+9     printf(\textcolor{stringliteral}{"%s"},prompt);
+10 
+11     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+12 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{ui_8c_ae81d5aa16d93cbbc856462895a52e6e3}\label{ui_8c_ae81d5aa16d93cbbc856462895a52e6e3}} 
+\index{ui.\+c@{ui.\+c}!read\+\_\+command\+\_\+line@{read\+\_\+command\+\_\+line}}
+\index{read\+\_\+command\+\_\+line@{read\+\_\+command\+\_\+line}!ui.\+c@{ui.\+c}}
+\subsubsection{\texorpdfstring{read\+\_\+command\+\_\+line()}{read\_command\_line()}}
+{\footnotesize\ttfamily void read\+\_\+command\+\_\+line (\begin{DoxyParamCaption}\item[{char $\ast$}]{command\+Line }\end{DoxyParamCaption})}
+
+Reads a command line 
+\begin{DoxyParams}{Parameters}
+{\em command\+Line} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+27 \{
+28     \textcolor{keywordflow}{if}(\mbox{\hyperlink{util_8c_a680166b74b76fefd0e2fcf1542f950a8}{contains}}(commandLine,\textcolor{stringliteral}{"\(\backslash\)""}))
+29     \{
+30         \textcolor{keywordflow}{while}((\mbox{\hyperlink{util_8c_ac3d573d6edbc018dadc3e3a252444546}{strcount}}(commandLine,\textcolor{stringliteral}{"\(\backslash\)""}) % 2) != 0)
+31         \{
+32             printf(\textcolor{stringliteral}{" > "});
+33             \textcolor{keywordtype}{char} c[\mbox{\hyperlink{var_8h_a0592dba56693fad79136250c11e5a7fe}{MAX\_SIZE}}];
+34             fgets(c,\textcolor{keyword}{sizeof}(c),stdin);
+35             strcat(commandLine,c);
+36         \}
+37     \}
+38 
+39     commandLine[strlen(commandLine) - 1] = \textcolor{charliteral}{'\(\backslash\)0'};
+40 \}
+\end{DoxyCode}

@@ -1,0 +1,114 @@
+\hypertarget{history_8h}{}\section{include/history.h File Reference}
+\label{history_8h}\index{include/history.\+h@{include/history.\+h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+Include dependency graph for history.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{history_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{history_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{history_8h_a4a932da96b920d89c43c8c5fef1106e2}{get\+\_\+history\+\_\+path}} ()
+\item 
+int \mbox{\hyperlink{history_8h_ad048e165fa6cd1fbc4bbc3fc8baac839}{write\+\_\+to\+\_\+history}} (char $\ast$command\+Line)
+\item 
+void \mbox{\hyperlink{history_8h_afc991fdb1e95d7cafb1c6fe42f5956cd}{clear\+\_\+history}} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{history_8h_afc991fdb1e95d7cafb1c6fe42f5956cd}\label{history_8h_afc991fdb1e95d7cafb1c6fe42f5956cd}} 
+\index{history.\+h@{history.\+h}!clear\+\_\+history@{clear\+\_\+history}}
+\index{clear\+\_\+history@{clear\+\_\+history}!history.\+h@{history.\+h}}
+\subsubsection{\texorpdfstring{clear\+\_\+history()}{clear\_history()}}
+{\footnotesize\ttfamily void clear\+\_\+history (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clears commands history file 
+\begin{DoxyCode}
+34 \{
+35     FILE * fp;
+36 
+37     \textcolor{keywordtype}{char}* history\_path= \mbox{\hyperlink{history_8c_a4a932da96b920d89c43c8c5fef1106e2}{get\_history\_path}}();
+38 
+39     \textcolor{keywordflow}{if}((fp = fopen (history\_path, \textcolor{stringliteral}{"w"})) == NULL)
+40     \{
+41         perror(\textcolor{stringliteral}{"history file open"});
+42         \textcolor{keywordflow}{return};
+43     \}
+44 
+45     fclose(fp);
+46 
+47     free(history\_path);
+48 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{history_8h_a4a932da96b920d89c43c8c5fef1106e2}\label{history_8h_a4a932da96b920d89c43c8c5fef1106e2}} 
+\index{history.\+h@{history.\+h}!get\+\_\+history\+\_\+path@{get\+\_\+history\+\_\+path}}
+\index{get\+\_\+history\+\_\+path@{get\+\_\+history\+\_\+path}!history.\+h@{history.\+h}}
+\subsubsection{\texorpdfstring{get\+\_\+history\+\_\+path()}{get\_history\_path()}}
+{\footnotesize\ttfamily char$\ast$ get\+\_\+history\+\_\+path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets the history file path, usually under /home/user/... (for this project we chose \+: /tmp/commands\+\_\+history.txt)
+
+\begin{DoxyReturn}{Returns}
+command history file path 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5     \textcolor{keywordtype}{char}* history\_path = malloc(1024 * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));
+6     *history\_path = \textcolor{charliteral}{'\(\backslash\)0'};
+7     strcat(history\_path,\textcolor{stringliteral}{"/tmp/commands\_history.txt"});
+8 
+9     \textcolor{keywordflow}{return} history\_path;
+10 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{history_8h_ad048e165fa6cd1fbc4bbc3fc8baac839}\label{history_8h_ad048e165fa6cd1fbc4bbc3fc8baac839}} 
+\index{history.\+h@{history.\+h}!write\+\_\+to\+\_\+history@{write\+\_\+to\+\_\+history}}
+\index{write\+\_\+to\+\_\+history@{write\+\_\+to\+\_\+history}!history.\+h@{history.\+h}}
+\subsubsection{\texorpdfstring{write\+\_\+to\+\_\+history()}{write\_to\_history()}}
+{\footnotesize\ttfamily int write\+\_\+to\+\_\+history (\begin{DoxyParamCaption}\item[{char $\ast$}]{command\+Line }\end{DoxyParamCaption})}
+
+Writes a command line to the history file 
+\begin{DoxyParams}{Parameters}
+{\em command\+Line} & command line to write into the history\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/1 on error, 0 on success 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+13 \{
+14     FILE * fp;
+15 
+16     \textcolor{keywordtype}{char}* history\_path= \mbox{\hyperlink{history_8c_a4a932da96b920d89c43c8c5fef1106e2}{get\_history\_path}}();
+17 
+18     \textcolor{keywordflow}{if}((fp = fopen(history\_path, \textcolor{stringliteral}{"a"})) == NULL)
+19     \{
+20         fprintf(stderr,\textcolor{stringliteral}{"file open: %s: %s\(\backslash\)n"},history\_path,strerror(errno));
+21         \textcolor{keywordflow}{return} -1;
+22     \}
+23 
+24     fprintf(fp, \textcolor{stringliteral}{"%s\(\backslash\)n"}, commandLine);
+25     
+26     fclose(fp);
+27 
+28     free(history\_path);
+29     
+30     \textcolor{keywordflow}{return} 0;
+31 \}
+\end{DoxyCode}

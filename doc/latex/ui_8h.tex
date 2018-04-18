@@ -1,0 +1,123 @@
+\hypertarget{ui_8h}{}\section{include/ui.h File Reference}
+\label{ui_8h}\index{include/ui.\+h@{include/ui.\+h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}var.\+h\char`\"{}}\newline
+Include dependency graph for ui.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ui_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{ui_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{ui_8h_a369266c24eacffb87046522897a570d5}{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{ui_8h_a599d4f40a5e145d7a701ec49b73426a6}{print\+\_\+prompt}} ()
+\item 
+void \mbox{\hyperlink{ui_8h_a7a6e0b05379c0db9c20a599404ad1bb1}{clean}} (const char $\ast$)
+\item 
+void \mbox{\hyperlink{ui_8h_ae81d5aa16d93cbbc856462895a52e6e3}{read\+\_\+command\+\_\+line}} (char $\ast$command\+Line)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{ui_8h_a369266c24eacffb87046522897a570d5}\label{ui_8h_a369266c24eacffb87046522897a570d5}} 
+\index{ui.\+h@{ui.\+h}!\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\index{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}!ui.\+h@{ui.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}{\_GNU\_SOURCE}}
+{\footnotesize\ttfamily \#define \+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{ui_8h_a7a6e0b05379c0db9c20a599404ad1bb1}\label{ui_8h_a7a6e0b05379c0db9c20a599404ad1bb1}} 
+\index{ui.\+h@{ui.\+h}!clean@{clean}}
+\index{clean@{clean}!ui.\+h@{ui.\+h}}
+\subsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily void clean (\begin{DoxyParamCaption}\item[{const char $\ast$}]{ }\end{DoxyParamCaption})}
+
+Clean result of fgets, remove \char`\"{}\textbackslash{}n\char`\"{} and flush stdin 
+\begin{DoxyParams}{Parameters}
+{\em buffer} & string to clean \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+15 \{
+16     \textcolor{keywordtype}{char} *p = strchr(buffer,\textcolor{charliteral}{'\(\backslash\)n'});
+17     \textcolor{keywordflow}{if} (p != NULL)
+18         *p = 0;
+19     \textcolor{keywordflow}{else}
+20     \{
+21         \textcolor{keywordtype}{int} c;
+22         \textcolor{keywordflow}{while} ((c = fgetc(stdin)) != \textcolor{charliteral}{'\(\backslash\)n'} && c != EOF);
+23     \}
+24 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{ui_8h_a599d4f40a5e145d7a701ec49b73426a6}\label{ui_8h_a599d4f40a5e145d7a701ec49b73426a6}} 
+\index{ui.\+h@{ui.\+h}!print\+\_\+prompt@{print\+\_\+prompt}}
+\index{print\+\_\+prompt@{print\+\_\+prompt}!ui.\+h@{ui.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+prompt()}{print\_prompt()}}
+{\footnotesize\ttfamily int print\+\_\+prompt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Prints the shell prompt
+
+\begin{DoxyReturn}{Returns}
+true 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5     \textcolor{keywordtype}{char} buffer[1024];
+6     \textcolor{keywordtype}{char}* dir = getcwd(buffer,\textcolor{keyword}{sizeof}(buffer));
+7     \textcolor{keywordtype}{char}* prompt = strcat(dir,\textcolor{stringliteral}{" > "});
+8     printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+9     printf(\textcolor{stringliteral}{"%s"},prompt);
+10 
+11     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+12 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{ui_8h_ae81d5aa16d93cbbc856462895a52e6e3}\label{ui_8h_ae81d5aa16d93cbbc856462895a52e6e3}} 
+\index{ui.\+h@{ui.\+h}!read\+\_\+command\+\_\+line@{read\+\_\+command\+\_\+line}}
+\index{read\+\_\+command\+\_\+line@{read\+\_\+command\+\_\+line}!ui.\+h@{ui.\+h}}
+\subsubsection{\texorpdfstring{read\+\_\+command\+\_\+line()}{read\_command\_line()}}
+{\footnotesize\ttfamily void read\+\_\+command\+\_\+line (\begin{DoxyParamCaption}\item[{char $\ast$}]{command\+Line }\end{DoxyParamCaption})}
+
+Reads a command line 
+\begin{DoxyParams}{Parameters}
+{\em command\+Line} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+27 \{
+28     \textcolor{keywordflow}{if}(\mbox{\hyperlink{util_8c_a680166b74b76fefd0e2fcf1542f950a8}{contains}}(commandLine,\textcolor{stringliteral}{"\(\backslash\)""}))
+29     \{
+30         \textcolor{keywordflow}{while}((\mbox{\hyperlink{util_8c_ac3d573d6edbc018dadc3e3a252444546}{strcount}}(commandLine,\textcolor{stringliteral}{"\(\backslash\)""}) % 2) != 0)
+31         \{
+32             printf(\textcolor{stringliteral}{" > "});
+33             \textcolor{keywordtype}{char} c[\mbox{\hyperlink{var_8h_a0592dba56693fad79136250c11e5a7fe}{MAX\_SIZE}}];
+34             fgets(c,\textcolor{keyword}{sizeof}(c),stdin);
+35             strcat(commandLine,c);
+36         \}
+37     \}
+38 
+39     commandLine[strlen(commandLine) - 1] = \textcolor{charliteral}{'\(\backslash\)0'};
+40 \}
+\end{DoxyCode}

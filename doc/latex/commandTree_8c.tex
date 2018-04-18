@@ -1,0 +1,937 @@
+\hypertarget{commandTree_8c}{}\section{src/command\+Tree.c File Reference}
+\label{commandTree_8c}\index{src/command\+Tree.\+c@{src/command\+Tree.\+c}}
+{\ttfamily \#include \char`\"{}command\+Tree.\+h\char`\"{}}\newline
+Include dependency graph for command\+Tree.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commandTree_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$ \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\+\_\+node}} (char $\ast$value)
+\item 
+\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$ \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\+\_\+left}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$root, \mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node\+To\+Insert)
+\item 
+\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$ \mbox{\hyperlink{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}{add\+\_\+right}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$root, \mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node\+To\+Insert)
+\item 
+\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$ \mbox{\hyperlink{commandTree_8c_adeeb9f8c681ee18d0d7e7d622ef84450}{get\+\_\+last\+\_\+left\+\_\+child}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+int \mbox{\hyperlink{commandTree_8c_aa744fadb6c630680d43cebd361b09edc}{is\+\_\+left\+\_\+child}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+int \mbox{\hyperlink{commandTree_8c_aafc6398bbc037cdd5bcd76e95399ce11}{is\+\_\+right\+\_\+child}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$ \mbox{\hyperlink{commandTree_8c_a26b3f0fbe7d40e8de4f2900641a30ef4}{parse\+\_\+to\+\_\+tree}} (char $\ast$$\ast$arguments, int args\+\_\+count)
+\item 
+int \mbox{\hyperlink{commandTree_8c_ac345078b1e4f67d6e156578800a78473}{is\+\_\+special\+\_\+string}} (char $\ast$argument)
+\item 
+int \mbox{\hyperlink{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}{is\+\_\+logical\+\_\+operator}} (char $\ast$argument)
+\item 
+int \mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\+\_\+pipe}} (char $\ast$argument)
+\item 
+int \mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\+\_\+redirection\+\_\+without\+\_\+fork}} (char $\ast$argument)
+\item 
+void \mbox{\hyperlink{commandTree_8c_a56ed6b9afd9134e7d57be5fd60562d5d}{execute\+\_\+tree}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$root, int is\+Background)
+\item 
+void \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\+\_\+node}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+void \mbox{\hyperlink{commandTree_8c_a66a34e1033e33fd12a898e59aa82c352}{execute\+\_\+pipe\+\_\+left}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+void \mbox{\hyperlink{commandTree_8c_a5ec09ad1dd4528924d09e54f573f1391}{execute\+\_\+pipe\+\_\+right}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+int \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\+\_\+redirection\+\_\+without\+\_\+fork}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$node)
+\item 
+void \mbox{\hyperlink{commandTree_8c_a90a9216c548fc8d1140733564875a48f}{print\+\_\+tree}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$root)
+\item 
+void \mbox{\hyperlink{commandTree_8c_ab553fb78bed7105079a8c557226b9676}{free\+\_\+tree}} (\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$root)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}\label{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!add\+\_\+left@{add\+\_\+left}}
+\index{add\+\_\+left@{add\+\_\+left}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{add\+\_\+left()}{add\_left()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcommandNode}{command\+Node}}$\ast$ add\+\_\+left (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{root,  }\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node\+To\+Insert }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+20                                                                     \{
+21     \textcolor{keywordflow}{if}(root == NULL)
+22     \{
+23         \textcolor{keywordflow}{return} nodeToInsert;
+24     \}
+25     nodeToInsert->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}} = root->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}};
+26     nodeToInsert->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}} = root;
+27     
+28     \textcolor{keywordflow}{if}(root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} != NULL)
+29     \{
+30         root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} = \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}}, nodeToInsert);
+31     \}
+32     \textcolor{keywordflow}{else}
+33     \{
+34         root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} = nodeToInsert;
+35     \}
+36     \textcolor{keywordflow}{return} nodeToInsert;
+37 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}\label{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!add\+\_\+right@{add\+\_\+right}}
+\index{add\+\_\+right@{add\+\_\+right}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{add\+\_\+right()}{add\_right()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcommandNode}{command\+Node}}$\ast$ add\+\_\+right (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{root,  }\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node\+To\+Insert }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+39                                                                      \{
+40     
+41     \textcolor{keywordflow}{if}(root == NULL)
+42     \{
+43         \textcolor{keywordflow}{return} nodeToInsert;
+44     \}
+45     nodeToInsert->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}} = root->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}};
+46     nodeToInsert->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}} = root;
+47     
+48     \textcolor{keywordflow}{if}(root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}} != NULL)
+49     \{
+50         root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}} = \mbox{\hyperlink{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}{add\_right}}(root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}, nodeToInsert);
+51     \}
+52     \textcolor{keywordflow}{else}
+53     \{
+54         root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}} = nodeToInsert;
+55     \}
+56     \textcolor{keywordflow}{return} nodeToInsert;
+57 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a66a34e1033e33fd12a898e59aa82c352}\label{commandTree_8c_a66a34e1033e33fd12a898e59aa82c352}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!execute\+\_\+pipe\+\_\+left@{execute\+\_\+pipe\+\_\+left}}
+\index{execute\+\_\+pipe\+\_\+left@{execute\+\_\+pipe\+\_\+left}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{execute\+\_\+pipe\+\_\+left()}{execute\_pipe\_left()}}
+{\footnotesize\ttfamily void execute\+\_\+pipe\+\_\+left (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+Executes a node which is a pipe (left child)
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & the node to execute as a pipeline \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+381 \{
+382     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+383     \{
+384         printf(\textcolor{stringliteral}{"pipe : Tried to pipeline non pipelined nodes!"});
+385         \textcolor{keywordflow}{return};
+386     \}
+387 
+388     \textcolor{keywordtype}{int} argc = 0;
+389     \textcolor{keywordtype}{char}** argv;
+390 
+391     \textcolor{comment}{// pipe's descriptors}
+392     \textcolor{keywordtype}{int} pipeDescs[2];         
+393     \textcolor{keywordflow}{if}(pipe(pipeDescs) == -1)
+394     \{
+395         perror(\textcolor{stringliteral}{"pipe"});
+396     \}
+397     \textcolor{keywordflow}{else} 
+398     \{
+399         \textcolor{keywordtype}{int} pid;
+400         \textcolor{comment}{// fork}
+401         \textcolor{keywordflow}{if}((pid = fork()) < 0)
+402         \{
+403             perror(\textcolor{stringliteral}{"fork"});
+404         \}
+405         \textcolor{keywordflow}{else} 
+406         \{
+407             \textcolor{comment}{// save current STDIN}
+408             \textcolor{keywordtype}{int} saved\_stdin = dup(\mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+409             \textcolor{comment}{// child}
+410             \textcolor{keywordflow}{if} (pid ==0) 
+411             \{       
+412                 \textcolor{comment}{// close the output descriptor of the pipe   }
+413                 close(pipeDescs[0]);
+414                 \textcolor{comment}{// redirection of STDOUT to pipe's input descriptor                             }
+415                 dup2(pipeDescs[1], \mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});               
+416                 \textcolor{comment}{// then, execution of the command. Its output, if any, will be redirected into the pipe             }
+417                 argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+418                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc) < 0)
+419                 \{
+420                     exit(EXIT\_FAILURE);
+421                 \}
+422                 exit(EXIT\_SUCCESS);
+423                 
+424             \}
+425             \textcolor{comment}{// parent}
+426             \textcolor{keywordflow}{else} 
+427             \{
+428                 wait(NULL);
+429                 
+430                 close(pipeDescs[1]); \textcolor{comment}{// we close pipe's input descriptor}
+431                 dup2(pipeDescs[0], \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}}); \textcolor{comment}{// redirection of STDIN on pipe's output descriptor}
+432                     
+433                 \textcolor{comment}{// then, we intepret the pipelined node}
+434                 \textcolor{comment}{// it will receive previous command's output as its input}
+435                 \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+436                 
+437                 \textcolor{comment}{// here we reset STDIN to its default state}
+438                 dup2(saved\_stdin, \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+439                 close(saved\_stdin);
+440             \}
+441         \}
+442     \}
+443 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a5ec09ad1dd4528924d09e54f573f1391}\label{commandTree_8c_a5ec09ad1dd4528924d09e54f573f1391}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!execute\+\_\+pipe\+\_\+right@{execute\+\_\+pipe\+\_\+right}}
+\index{execute\+\_\+pipe\+\_\+right@{execute\+\_\+pipe\+\_\+right}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{execute\+\_\+pipe\+\_\+right()}{execute\_pipe\_right()}}
+{\footnotesize\ttfamily void execute\+\_\+pipe\+\_\+right (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+Executes a node which is a pipe (right child)
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & the node to execute as a pipeline \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+446 \{
+447     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+448     \{
+449         printf(\textcolor{stringliteral}{"pipe : Tried to pipeline non pipelined nodes!"});
+450         \textcolor{keywordflow}{return};
+451     \}
+452 
+453     \textcolor{keywordtype}{int} argc = 0;
+454     \textcolor{keywordtype}{char}** argv;
+455 
+456     \textcolor{comment}{// pipe's descriptors}
+457     \textcolor{keywordtype}{int} pipeDescs[2];         
+458     \textcolor{keywordflow}{if}(pipe(pipeDescs) == -1)
+459     \{
+460         perror(\textcolor{stringliteral}{"pipe"});
+461     \}
+462     \textcolor{keywordflow}{else} 
+463     \{
+464         \textcolor{keywordtype}{int} pid;
+465         \textcolor{comment}{// fork}
+466         \textcolor{keywordflow}{if}((pid = fork()) < 0)
+467         \{
+468             perror(\textcolor{stringliteral}{"fork"});
+469         \}
+470         \textcolor{keywordflow}{else} 
+471         \{
+472             \textcolor{comment}{// save current STDIN}
+473             \textcolor{keywordtype}{int} saved\_stdin = dup(\mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+474             \textcolor{comment}{// child}
+475             \textcolor{keywordflow}{if} (pid ==0) 
+476             \{       
+477                 \textcolor{comment}{// close the output descriptor of the pipe }
+478                 close(pipeDescs[0]);
+479                 \textcolor{comment}{// redirection of STDOUT to pipe's input descriptor                             }
+480                 dup2(pipeDescs[1], \mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});   
+481                 \textcolor{keywordtype}{int} return\_code;
+482                 
+483                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+484                 \{
+485                     return\_code = \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}});
+486                 \}
+487                 \textcolor{keywordflow}{else}                            
+488                 \{
+489                     \textcolor{comment}{// then, execution of the command. Its output, if any, will be redirected into the pipe }
+490                     argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+491                     return\_code = \mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc);
+492                 \}
+493                 \textcolor{keywordflow}{if}(return\_code < 0)
+494                 \{
+495                     exit(EXIT\_FAILURE);
+496                 \}
+497                 exit(EXIT\_SUCCESS);
+498                 
+499             \}
+500             \textcolor{comment}{// parent}
+501             \textcolor{keywordflow}{else} 
+502             \{
+503                 wait(NULL);
+504                 
+505                 close(pipeDescs[1]); \textcolor{comment}{// we close pipe's input descriptor}
+506                 dup2(pipeDescs[0], \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}}); \textcolor{comment}{// redirection of STDIN on pipe's output descriptor}
+507                     
+508                 \textcolor{comment}{// then, we intepret the pipelined node}
+509                 \textcolor{comment}{// it will receive previous command's output as its input}
+510                 \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+511                 
+512                 \textcolor{comment}{// here we reset STDIN to its default state}
+513                 dup2(saved\_stdin, \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+514                 close(saved\_stdin);
+515             \}
+516         \}
+517     \}   
+518 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}\label{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!execute\+\_\+redirection\+\_\+without\+\_\+fork@{execute\+\_\+redirection\+\_\+without\+\_\+fork}}
+\index{execute\+\_\+redirection\+\_\+without\+\_\+fork@{execute\+\_\+redirection\+\_\+without\+\_\+fork}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{execute\+\_\+redirection\+\_\+without\+\_\+fork()}{execute\_redirection\_without\_fork()}}
+{\footnotesize\ttfamily int execute\+\_\+redirection\+\_\+without\+\_\+fork (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+Execute a node with a redirection which don\textquotesingle{}t requires a fork
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & the node to execute\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the return code 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+521 \{
+522     \textcolor{keywordtype}{int} saved\_stdout = dup(\mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});
+523     \textcolor{keywordtype}{int} saved\_stdin = dup(\mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+524     
+525     \textcolor{comment}{// case > : We open the file (with The Truncate flag) and we redirect STDOUT to it}
+526     \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{">"}) == 0)
+527     \{
+528         \textcolor{keywordtype}{int} fileDescriptor;
+529         \textcolor{keywordflow}{if} ((fileDescriptor = open(node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, O\_CREAT | O\_RDWR | O\_TRUNC, S\_IRUSR | 
+      S\_IWUSR)) == -1)
+530         \{
+531             fprintf(stderr,\textcolor{stringliteral}{"file open: %s: %s\(\backslash\)n"},node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},strerror(errno));
+532             \textcolor{keywordflow}{return} -1;
+533         \}
+534         dup2(fileDescriptor, \mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});
+535     \}
+536     
+537     \textcolor{comment}{// case >> : Same as > but with the append flag}
+538     \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{">>"}) == 0)
+539     \{
+540         \textcolor{keywordtype}{int} fileDescriptor;
+541         \textcolor{keywordflow}{if} ((fileDescriptor = open(node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, O\_CREAT | O\_RDWR | O\_APPEND, S\_IRUSR | 
+      S\_IWUSR)) == -1)
+542         \{
+543             fprintf(stderr,\textcolor{stringliteral}{"file open: %s: %s\(\backslash\)n"},node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},strerror(errno));
+544             \textcolor{keywordflow}{return} -1;
+545         \}
+546         dup2(fileDescriptor, \mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});
+547     \}
+548     
+549     \textcolor{comment}{// case < or << we open the file (readonly) and we redirect stdin to it (it works with << because we
+       replaced the delimiter by the tmp file path.}
+550     \textcolor{keywordflow}{if}((strcmp(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"<"}) == 0) || (strcmp(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"<<"}) == 0))
+551     \{
+552         \textcolor{keywordtype}{int} fileDescriptor;
+553         
+554         \textcolor{keywordflow}{if} ((fileDescriptor = open(node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, O\_RDONLY)) == -1)
+555         \{
+556             fprintf(stderr,\textcolor{stringliteral}{"file open: %s: %s\(\backslash\)n"},node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},strerror(errno));
+557             \textcolor{keywordflow}{return} -1;
+558         \}
+559         
+560         dup2(fileDescriptor, \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+561     \}
+562     
+563     \textcolor{comment}{// Executing interpret the left child node of the redirection before to restore all streams}
+564     \textcolor{keywordtype}{int} argc = 0;
+565     \textcolor{keywordtype}{char}** argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+566     \textcolor{keywordtype}{int} return\_code = \mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc);
+567     
+568     dup2(saved\_stdout, \mbox{\hyperlink{var_8h_a8875037d0772a4fc34516f1e03d7e238}{STDOUT}});
+569     dup2(saved\_stdin, \mbox{\hyperlink{var_8h_ac00bfb46347d26fdc58568fe1ab5fa5b}{STDIN}});
+570     close(saved\_stdin);
+571     close(saved\_stdout);
+572     
+573     \textcolor{comment}{// if we used a tmp file, we remove it}
+574     \textcolor{keywordflow}{if}((strcmp(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"<<"}) == 0))
+575     \{
+576         \textcolor{keyword}{remove}(node->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}});
+577     \}
+578     
+579     \textcolor{comment}{// return code}
+580     \textcolor{keywordflow}{if}(return\_code < 0)
+581     \{
+582         \textcolor{keywordflow}{return} -1;
+583     \}
+584     \textcolor{keywordflow}{return} 0;
+585 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a56ed6b9afd9134e7d57be5fd60562d5d}\label{commandTree_8c_a56ed6b9afd9134e7d57be5fd60562d5d}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!execute\+\_\+tree@{execute\+\_\+tree}}
+\index{execute\+\_\+tree@{execute\+\_\+tree}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{execute\+\_\+tree()}{execute\_tree()}}
+{\footnotesize\ttfamily void execute\+\_\+tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{root,  }\item[{int}]{is\+Background }\end{DoxyParamCaption})}
+
+Execute a command line based on a tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & the tree to execute \\
+\hline
+{\em is\+Background} & wether or not the process has to be ran in background (O or 1) \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+242 \{
+243     \textcolor{comment}{// we get the last left child, i.e. the leftmost child in the tree}
+244     \mbox{\hyperlink{structcommandNode}{commandNode}}* last\_left\_child = \mbox{\hyperlink{commandTree_8c_adeeb9f8c681ee18d0d7e7d622ef84450}{get\_last\_left\_child}}(root);
+245     \textcolor{comment}{// we interpret that last left child node, which will recursively interpret the entire tree}
+246     \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(last\_left\_child);
+247 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_ab553fb78bed7105079a8c557226b9676}\label{commandTree_8c_ab553fb78bed7105079a8c557226b9676}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!free\+\_\+tree@{free\+\_\+tree}}
+\index{free\+\_\+tree@{free\+\_\+tree}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{free\+\_\+tree()}{free\_tree()}}
+{\footnotesize\ttfamily void free\+\_\+tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{root }\end{DoxyParamCaption})}
+
+Free the memory allocation of a tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & the root of the tree to free \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+598 \{         
+599     \textcolor{keywordflow}{if}( root )\{
+600      \mbox{\hyperlink{commandTree_8c_ab553fb78bed7105079a8c557226b9676}{free\_tree}}(root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}});
+601      \mbox{\hyperlink{commandTree_8c_ab553fb78bed7105079a8c557226b9676}{free\_tree}}(root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+602      free(root->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}); 
+603      free(root);
+604    \}
+605 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_adeeb9f8c681ee18d0d7e7d622ef84450}\label{commandTree_8c_adeeb9f8c681ee18d0d7e7d622ef84450}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!get\+\_\+last\+\_\+left\+\_\+child@{get\+\_\+last\+\_\+left\+\_\+child}}
+\index{get\+\_\+last\+\_\+left\+\_\+child@{get\+\_\+last\+\_\+left\+\_\+child}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+last\+\_\+left\+\_\+child()}{get\_last\_left\_child()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcommandNode}{command\+Node}}$\ast$ get\+\_\+last\+\_\+left\+\_\+child (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+60 \{
+61     \textcolor{keywordflow}{while}(node->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} != NULL)
+62     \{
+63         node = node->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}};
+64     \}
+65     \textcolor{keywordflow}{return} node;
+66 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}\label{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!interpret\+\_\+node@{interpret\+\_\+node}}
+\index{interpret\+\_\+node@{interpret\+\_\+node}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{interpret\+\_\+node()}{interpret\_node()}}
+{\footnotesize\ttfamily void interpret\+\_\+node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+Intertpret a Node to execute in a tree (recursive call)
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & the node to interpret \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+250 \{
+251     \textcolor{keywordtype}{int} argc = 0;
+252     \textcolor{keywordtype}{char}** argv;
+253     
+254     \textcolor{comment}{// if the current node is root}
+255     \textcolor{keywordflow}{if}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}} == NULL && node->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} == NULL && node->
+      \mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}} == NULL)
+256     \{
+257         argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+258         \mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc);
+259     \}
+260     \textcolor{keywordflow}{else} 
+261     \{
+262         \textcolor{comment}{// current node is a left child}
+263         \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aa744fadb6c630680d43cebd361b09edc}{is\_left\_child}}(node))
+264         \{
+265             \textcolor{comment}{// value of left child is not && , || or |}
+266             \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}{is\_logical\_operator}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}) == \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}} && 
+      \mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}) == \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}})
+267             \{
+268                 \textcolor{comment}{// we check current node's parent value to determine which logic should be applied}
+269 
+270                 \textcolor{comment}{// Logical and : &&}
+271                 \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"&&"}) == 0)
+272                 \{
+273                     argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+274                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc) >= 0)
+275                     \{
+276                         \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+277                     \}
+278                 \}
+279                 
+280                 \textcolor{comment}{// Logical or : ||}
+281                 \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"||"}) == 0)
+282                 \{
+283                     argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+284                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc) < 0)
+285                     \{
+286                         \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+287                     \}   
+288                 \}
+289                 
+290                 \textcolor{comment}{// Redirection that is not implying a fork : <, <<, >, >>}
+291                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+292                 \{
+293                     \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+294                 \}
+295                 
+296                 \textcolor{comment}{// Pipeline : |}
+297                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+298                 \{
+299                     \mbox{\hyperlink{commandTree_8c_a66a34e1033e33fd12a898e59aa82c352}{execute\_pipe\_left}}(node);
+300                 \}
+301             \}   
+302         \}
+303         \textcolor{comment}{// current node is a right child}
+304         \textcolor{keywordflow}{else} 
+305         \{
+306             \textcolor{comment}{// case node is first right child}
+307             \textcolor{keywordflow}{if}((node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}} == NULL))
+308             \{
+309                 \textcolor{comment}{// parent (i.e. root) is a redirection without fork}
+310                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+311                 \{
+312                     \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}); 
+313                 \}
+314                 \textcolor{comment}{// node itself is a redirection without fork}
+315                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+316                 \{
+317                     \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\_redirection\_without\_fork}}(node);
+318                 \}
+319                 \textcolor{comment}{// no redirection, execution of node's command}
+320                 \textcolor{keywordflow}{else}
+321                 \{
+322                     argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+323                     \mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc);
+324                 \}
+325             \}
+326             \textcolor{comment}{// all the other right childs}
+327             \textcolor{keywordflow}{else} 
+328             \{
+329                 \textcolor{comment}{// check if right child's grand parent is && or || operator}
+330                 \textcolor{comment}{// to determine logic to be applied}
+331                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}{is\_logical\_operator}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+332                 \{
+333                     argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(node->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}},&argc);
+334                     \textcolor{keywordtype}{int} return\_code;
+335                     
+336                     \textcolor{comment}{// node is a redirection without fork}
+337                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+338                     \{
+339                         return\_code = \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\_redirection\_without\_fork}}(node
+      );
+340                     \}
+341                     \textcolor{comment}{// parent is a redirection without fork}
+342                     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(node->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+343                     \{
+344                         return\_code = \mbox{\hyperlink{commandTree_8c_a1e08e64748b9ac488728e24c0071fe3b}{execute\_redirection\_without\_fork}}(node
+      ->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}});
+345                     \}
+346                     \textcolor{comment}{// no redirection, execution of node's command}
+347                     \textcolor{keywordflow}{else}
+348                     \{
+349                         return\_code = \mbox{\hyperlink{commands_8c_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\_command}}(argv, argc);
+350                     \}
+351                     
+352                     \textcolor{comment}{// Logical and : &&}
+353                     \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"&&"}) == 0)
+354                     \{
+355                         \textcolor{keywordflow}{if}(return\_code >= 0)
+356                         \{
+357                             \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+358                         \}
+359                     \}
+360                     
+361                     \textcolor{comment}{// Logical or : ||}
+362                     \textcolor{keywordflow}{if}(strcmp(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \textcolor{stringliteral}{"||"}) == 0)
+363                     \{
+364                         \textcolor{keywordflow}{if}(return\_code < 0)
+365                         \{
+366                             \mbox{\hyperlink{commandTree_8c_a5eeee432469ed32080d31770e9f958a6}{interpret\_node}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+367                         \}
+368                     \}
+369                 \}
+370                 \textcolor{comment}{// Grand parent is a pipeline operator, meaning a pipeline should be initiated}
+371                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->
+      \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}))
+372                 \{
+373                     \mbox{\hyperlink{commandTree_8c_a5ec09ad1dd4528924d09e54f573f1391}{execute\_pipe\_right}}(node);                 
+374                 \}   
+375             \}           
+376         \}
+377     \}
+378 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_aa744fadb6c630680d43cebd361b09edc}\label{commandTree_8c_aa744fadb6c630680d43cebd361b09edc}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+left\+\_\+child@{is\+\_\+left\+\_\+child}}
+\index{is\+\_\+left\+\_\+child@{is\+\_\+left\+\_\+child}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+left\+\_\+child()}{is\_left\_child()}}
+{\footnotesize\ttfamily int is\+\_\+left\+\_\+child (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+69 \{
+70     \textcolor{keywordflow}{if}(node == node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}})
+71         \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+72     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+73 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}\label{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+logical\+\_\+operator@{is\+\_\+logical\+\_\+operator}}
+\index{is\+\_\+logical\+\_\+operator@{is\+\_\+logical\+\_\+operator}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+logical\+\_\+operator()}{is\_logical\_operator()}}
+{\footnotesize\ttfamily int is\+\_\+logical\+\_\+operator (\begin{DoxyParamCaption}\item[{char $\ast$}]{argument }\end{DoxyParamCaption})}
+
+Check if a string is a \&\& or $\vert$$\vert$
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & the string to check\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true/false depending if this is a \&\& or $\vert$$\vert$ 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+204 \{
+205     \textcolor{keywordtype}{int} index = 0;
+206     \textcolor{keywordtype}{char}* operators[] = \{\textcolor{stringliteral}{"||"}, \textcolor{stringliteral}{"&&"}\};
+207     
+208     \textcolor{keywordflow}{while} (index < 2)
+209     \{
+210         \textcolor{keywordflow}{if}(strcmp(operators[index], argument) == 0)
+211         \{
+212             \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+213         \}
+214         index++;
+215     \}
+216     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+217 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}\label{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+pipe@{is\+\_\+pipe}}
+\index{is\+\_\+pipe@{is\+\_\+pipe}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+pipe()}{is\_pipe()}}
+{\footnotesize\ttfamily int is\+\_\+pipe (\begin{DoxyParamCaption}\item[{char $\ast$}]{argument }\end{DoxyParamCaption})}
+
+Check if a string is a $\vert$
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & the string to check\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true/false depending if this is a $\vert$ 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+220 \{
+221     \textcolor{keywordflow}{return} (strcmp(argument, \textcolor{stringliteral}{"|"}) == 0);
+222 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}\label{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+redirection\+\_\+without\+\_\+fork@{is\+\_\+redirection\+\_\+without\+\_\+fork}}
+\index{is\+\_\+redirection\+\_\+without\+\_\+fork@{is\+\_\+redirection\+\_\+without\+\_\+fork}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+redirection\+\_\+without\+\_\+fork()}{is\_redirection\_without\_fork()}}
+{\footnotesize\ttfamily int is\+\_\+redirection\+\_\+without\+\_\+fork (\begin{DoxyParamCaption}\item[{char $\ast$}]{argument }\end{DoxyParamCaption})}
+
+Check if a string is a special argument without fork
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & the string to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true/false 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+225 \{
+226     \textcolor{keywordtype}{int} index = 0;
+227     \textcolor{keywordtype}{char}* operators[] = \{\textcolor{stringliteral}{">"}, \textcolor{stringliteral}{"<"}, \textcolor{stringliteral}{">>"}, \textcolor{stringliteral}{"<<"}\};
+228     
+229     \textcolor{keywordflow}{while} (index < 4)
+230     \{
+231 
+232         \textcolor{keywordflow}{if}(strcmp(operators[index], argument) == 0)
+233         \{
+234             \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+235         \}
+236         index++;
+237     \}
+238     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+239 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_aafc6398bbc037cdd5bcd76e95399ce11}\label{commandTree_8c_aafc6398bbc037cdd5bcd76e95399ce11}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+right\+\_\+child@{is\+\_\+right\+\_\+child}}
+\index{is\+\_\+right\+\_\+child@{is\+\_\+right\+\_\+child}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+right\+\_\+child()}{is\_right\_child()}}
+{\footnotesize\ttfamily int is\+\_\+right\+\_\+child (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{node }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}
+76 \{
+77     \textcolor{keywordflow}{if}(node == node->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}}->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}})
+78         \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+79     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+80 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_ac345078b1e4f67d6e156578800a78473}\label{commandTree_8c_ac345078b1e4f67d6e156578800a78473}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!is\+\_\+special\+\_\+string@{is\+\_\+special\+\_\+string}}
+\index{is\+\_\+special\+\_\+string@{is\+\_\+special\+\_\+string}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{is\+\_\+special\+\_\+string()}{is\_special\_string()}}
+{\footnotesize\ttfamily int is\+\_\+special\+\_\+string (\begin{DoxyParamCaption}\item[{char $\ast$}]{argument }\end{DoxyParamCaption})}
+
+Check if a string is a special argument
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & the string to check\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true/false depending if this is a special argument 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+187 \{   
+188     \textcolor{keywordtype}{int} index = 0;
+189     \textcolor{keywordtype}{char}* operators[] = \{\textcolor{stringliteral}{"|"}, \textcolor{stringliteral}{"||"}, \textcolor{stringliteral}{"&&"}, \textcolor{stringliteral}{">"}, \textcolor{stringliteral}{"<"}, \textcolor{stringliteral}{">>"}, \textcolor{stringliteral}{"<<"},\textcolor{stringliteral}{"&"}\};
+190     
+191     
+192     \textcolor{keywordflow}{while} (index < 7)
+193     \{
+194         \textcolor{keywordflow}{if}(strcmp(operators[index], argument) == 0)
+195         \{
+196             \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+197         \}
+198         index++;
+199     \}
+200     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+201 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}\label{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!new\+\_\+node@{new\+\_\+node}}
+\index{new\+\_\+node@{new\+\_\+node}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{new\+\_\+node()}{new\_node()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcommandNode}{command\+Node}}$\ast$ new\+\_\+node (\begin{DoxyParamCaption}\item[{char $\ast$}]{value }\end{DoxyParamCaption})}
+
+Declare and allocate a new node
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the String value of the node\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the node created 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5     \mbox{\hyperlink{structcommandNode}{commandNode}}* cmdNode;
+6     cmdNode = malloc(\textcolor{keyword}{sizeof}(\mbox{\hyperlink{structcommandNode}{commandNode}}));
+7     
+8     cmdNode->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}} = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}) * (strlen(\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}})+1));
+9     cmdNode->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}} = cmdNode;
+10     cmdNode->\mbox{\hyperlink{structcommandNode_a51770f48c99c29a08b34477d9bd0c164}{parentNode}} = NULL;
+11     
+12     strcpy(cmdNode->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}}, \mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}});
+13     
+14     cmdNode->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}} = NULL;
+15     cmdNode->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}} = NULL;
+16     
+17     \textcolor{keywordflow}{return} cmdNode;
+18 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a26b3f0fbe7d40e8de4f2900641a30ef4}\label{commandTree_8c_a26b3f0fbe7d40e8de4f2900641a30ef4}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!parse\+\_\+to\+\_\+tree@{parse\+\_\+to\+\_\+tree}}
+\index{parse\+\_\+to\+\_\+tree@{parse\+\_\+to\+\_\+tree}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{parse\+\_\+to\+\_\+tree()}{parse\_to\_tree()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcommandNode}{command\+Node}}$\ast$ parse\+\_\+to\+\_\+tree (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{arguments,  }\item[{int}]{args\+\_\+count }\end{DoxyParamCaption})}
+
+Parse an array of Strings into a tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em arguments} & the array of Strings \\
+\hline
+{\em args\+\_\+count} & the number of arguments\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the parsed string in tree format 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+84 \{
+85     \textcolor{comment}{// initialisation of the cursors (we'll start from the last index to the first(0))}
+86     \textcolor{keywordtype}{int} index = args\_count-1;            \textcolor{comment}{// current index}
+87     \textcolor{keywordtype}{int} last\_string\_limit = args\_count;  \textcolor{comment}{// this cursor go to the last "special index" (it concerned all
+       operators and redirection), by default this is the "null" value at the end}
+88     \textcolor{keywordtype}{int} string\_index;                    \textcolor{comment}{// this cursor will be used in order to concatenate some strings}
+89     \textcolor{keywordtype}{int} i;
+90     
+91     \textcolor{comment}{// this variable will concatenate all strings between 2 specials indexes}
+92     \textcolor{keywordtype}{char}* command = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));
+93     
+94     \textcolor{comment}{// these variables concerned the tree building}
+95     \mbox{\hyperlink{structcommandNode}{commandNode}}* cmdNode = NULL;
+96     \mbox{\hyperlink{structcommandNode}{commandNode}}* operatorOrPipeNode = NULL;
+97     \mbox{\hyperlink{structcommandNode}{commandNode}}* redirectionNode = NULL; 
+98     
+99     
+100     \textcolor{keywordflow}{while} (index > -1)
+101     \{
+102         \textcolor{comment}{// when we have a special string (or the begin of the commmand), we concatenate all strings until
+       we get the "special" index (or the end of the command)}
+103         \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_ac345078b1e4f67d6e156578800a78473}{is\_special\_string}}(arguments[index]) == \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}} || index == 0) 
+104         \{
+105             \textcolor{comment}{// if we are not at the first element, we don't take the "special" string into the
+       concatenation}
+106             \textcolor{keywordflow}{if}(index != 0) 
+107                 string\_index = index+1;
+108             \textcolor{keywordflow}{else}
+109                 string\_index = index;
+110             command = strcpy(command,\textcolor{stringliteral}{""});
+111             
+112             \textcolor{comment}{// these loop will concatenate all string until the "special" index is reached}
+113             \textcolor{keywordflow}{for}(i = string\_index; i < last\_string\_limit; i++)
+114             \{
+115                 \textcolor{keywordtype}{char}* argument = strdup(arguments[i]);
+116 
+117                 \textcolor{comment}{// if any space in the argument, then we add quotes}
+118                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{util_8c_a680166b74b76fefd0e2fcf1542f950a8}{contains}}(arguments[i],\textcolor{stringliteral}{" "}))
+119                 \{
+120                     \mbox{\hyperlink{util_8c_abee5c83f6dff2667822efe705f4d62a6}{insert\_substring}}(argument,\textcolor{stringliteral}{"\(\backslash\)""},1);
+121                     \mbox{\hyperlink{util_8c_abee5c83f6dff2667822efe705f4d62a6}{insert\_substring}}(argument,\textcolor{stringliteral}{"\(\backslash\)""},strlen(argument) + 1);
+122                 \}
+123 
+124                 \textcolor{comment}{// we realloc the space and we make the concatenation}
+125                 \textcolor{keywordtype}{int} spaceNeeded = ((strlen(command)) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})) + ((strlen(argument) + 1) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{
+      char}));
+126                 \textcolor{comment}{// if we're don't at the last string, we had 1 space for the whitespace}
+127                 \textcolor{keywordflow}{if}(i != string\_index)
+128                     spaceNeeded++;
+129                     
+130                 command = realloc(command,spaceNeeded);
+131             
+132                 \textcolor{keywordflow}{if}(i != string\_index)
+133                     command = strcat(command, \textcolor{stringliteral}{" "});             
+134                 
+135                 command = strcat(command, argument);
+136             \}
+137             
+138             \textcolor{comment}{// if we reach the start of the array...}
+139             \textcolor{keywordflow}{if}(index == 0)
+140             \{
+141                 \textcolor{comment}{// ... we create a new "cmdNode" which contains the value of the last concatenate string}
+142                 cmdNode = \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(command);
+143                 
+144                 \textcolor{comment}{// ... if there is a redirection Node without fork ('>', '>>', '<', '<<'), whe add the
+       cmdNode at the left of this one (and we had the redirection node at the left of the operator)}
+145                 \textcolor{keywordflow}{if}(redirectionNode != NULL)
+146                 \{   
+147                     \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(operatorOrPipeNode, redirectionNode);
+148                     \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(redirectionNode, cmdNode);
+149                 \}
+150                 \textcolor{comment}{// ... else we add the cmdNode at the left of the last "operatorOrPipeNode", if there is no
+       operator or pipe, the cmd node become the root of the tree }
+151                 \textcolor{keywordflow}{else}
+152                     cmdNode = \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(operatorOrPipeNode, cmdNode);
+153             \}
+154             \textcolor{comment}{// if our index is an operator or a pipe}
+155             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_adfd8478d994ac326416d24bffb0e4d88}{is\_logical\_operator}}(arguments[index]) == 
+      \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}} || \mbox{\hyperlink{commandTree_8c_ac9c7771a1fddcda0ec451e4795d4fa4d}{is\_pipe}}(arguments[index]) == \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}})
+156             \{
+157                 \textcolor{comment}{// ... we initiate an operatorOrPipeNode and we add it at the left of the last
+       operatorOrPipeNode (or it becomes the main root)}
+158                 operatorOrPipeNode = \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(operatorOrPipeNode, 
+      \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(arguments[index]));
+159                 
+160                 \textcolor{comment}{// if there was a redirectionNode,  we add it to this node and we add a node which contains
+       the last concatenante string and we turn the redirectionNode variable to null }
+161                 \textcolor{keywordflow}{if}(redirectionNode != NULL) 
+162                 \{
+163                     \mbox{\hyperlink{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}{add\_right}}(operatorOrPipeNode, redirectionNode);
+164                     \mbox{\hyperlink{commandTree_8c_a04e9ef8c773c3e390cc65c40d9165256}{add\_left}}(redirectionNode, \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(command));
+165                     redirectionNode = NULL;
+166                 \}
+167                 \textcolor{comment}{// else we just add the node with the concatenate string at the right of this node}
+168                 \textcolor{keywordflow}{else}
+169                     \mbox{\hyperlink{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}{add\_right}}(operatorOrPipeNode, \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(command));
+170             \}
+171             \textcolor{comment}{// if we have a redirection without fork, we declare it, and we add a node which contains the
+       last concatenate string at its right}
+172             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_aab1e7f73d4175996ff4d3555e4b1dc9a}{is\_redirection\_without\_fork}}(arguments[index]) == 
+      \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}})
+173             \{
+174                 redirectionNode = \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(arguments[index]);
+175                 \mbox{\hyperlink{commandTree_8c_a45797c5e8ca83590732fafa4a86213cc}{add\_right}}(redirectionNode, \mbox{\hyperlink{commandTree_8c_a2ff6eed5a4d5cf1a64dc53a32a39ec63}{new\_node}}(command));
+176             \}
+177             
+178             last\_string\_limit = index;
+179         \} 
+180         index--;
+181     \}
+182     free(command);
+183     \textcolor{keywordflow}{return} cmdNode->\mbox{\hyperlink{structcommandNode_a92f8c627edb51c5ff72e25d8e50c7a2c}{mainRoot}};
+184 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commandTree_8c_a90a9216c548fc8d1140733564875a48f}\label{commandTree_8c_a90a9216c548fc8d1140733564875a48f}} 
+\index{command\+Tree.\+c@{command\+Tree.\+c}!print\+\_\+tree@{print\+\_\+tree}}
+\index{print\+\_\+tree@{print\+\_\+tree}!command\+Tree.\+c@{command\+Tree.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+tree()}{print\_tree()}}
+{\footnotesize\ttfamily void print\+\_\+tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcommandNode}{command\+Node}} $\ast$}]{root }\end{DoxyParamCaption})}
+
+Print the entire tree
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & the root of the tree to print \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+588 \{
+589     \textcolor{keywordflow}{if} (root == NULL) \textcolor{keywordflow}{return}; 
+590     
+591     printf(\textcolor{stringliteral}{"tree : %s\(\backslash\)n"}, root->\mbox{\hyperlink{structcommandNode_a64d65c9b57488418cd5c8e3def5dcbcf}{value}});
+592     \mbox{\hyperlink{commandTree_8c_a90a9216c548fc8d1140733564875a48f}{print\_tree}}(root->\mbox{\hyperlink{structcommandNode_a2a5389004cffb434d719761a50ccf60e}{left}});
+593     \mbox{\hyperlink{commandTree_8c_a90a9216c548fc8d1140733564875a48f}{print\_tree}}(root->\mbox{\hyperlink{structcommandNode_a66f09364fe9dedd129473880c8e65e44}{right}});
+594       
+595 \}
+\end{DoxyCode}

@@ -1,0 +1,205 @@
+\hypertarget{built-in_8c}{}\section{src/built-\/in.c File Reference}
+\label{built-in_8c}\index{src/built-\/in.\+c@{src/built-\/in.\+c}}
+{\ttfamily \#include \char`\"{}built-\/in.\+h\char`\"{}}\newline
+Include dependency graph for built-\/in.c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{built-in_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{built-in_8c_a6e03260ed7d8b2ac33c1116c55c2cec7}{cd}} (char $\ast$$\ast$argv, int argc)
+\item 
+int \mbox{\hyperlink{built-in_8c_a7f540865bf44effc4cd5f843a0d29388}{pwd}} (char $\ast$$\ast$argv, int argc)
+\item 
+int \mbox{\hyperlink{built-in_8c_ae985125913017d37bb75b1ab7b977950}{echo}} (char $\ast$$\ast$argv, int argc)
+\item 
+void \mbox{\hyperlink{built-in_8c_a203155f52ab90e655b8040e61130dbcc}{builtin\+\_\+exit}} (char $\ast$$\ast$argv, int argc)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{built-in_8c_a203155f52ab90e655b8040e61130dbcc}\label{built-in_8c_a203155f52ab90e655b8040e61130dbcc}} 
+\index{built-\/in.\+c@{built-\/in.\+c}!builtin\+\_\+exit@{builtin\+\_\+exit}}
+\index{builtin\+\_\+exit@{builtin\+\_\+exit}!built-\/in.\+c@{built-\/in.\+c}}
+\subsubsection{\texorpdfstring{builtin\+\_\+exit()}{builtin\_exit()}}
+{\footnotesize\ttfamily void builtin\+\_\+exit (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Cause normal process termination $\ast$ 
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+91 \{
+92     \textcolor{keywordtype}{int} statusCode = 0;
+93     
+94     \textcolor{comment}{// get provided exit status code if any}
+95     \textcolor{keywordflow}{if}(argv[1] != NULL && \mbox{\hyperlink{util_8c_a10bf8832498599571c7c3f108f8c41ee}{isNumeric}}(argv[1]))
+96     \{
+97         statusCode = \mbox{\hyperlink{util_8c_a2c685c7c2e8ad02b73daea6caecdf7f6}{strtonum}}(argv[1]);
+98     \}
+99     
+100     \textcolor{comment}{// exit --help}
+101     \textcolor{keywordflow}{if}((argv[1] != NULL) && (strcmp(argv[1],\textcolor{stringliteral}{"--help"}) == 0))
+102     \{
+103         printf(\textcolor{stringliteral}{"exit: exit [n]\(\backslash\)n\(\backslash\)tExit the shell.\(\backslash\)n\(\backslash\)n\(\backslash\)tExits the shell with a status of N.  If N is
+       omitted, the exit status\(\backslash\)n\(\backslash\)tis that of the last command executed.\(\backslash\)n"});
+104     \}
+105     \textcolor{keywordflow}{else}
+106     \{
+107         exit(statusCode);
+108     \}
+109 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{built-in_8c_a6e03260ed7d8b2ac33c1116c55c2cec7}\label{built-in_8c_a6e03260ed7d8b2ac33c1116c55c2cec7}} 
+\index{built-\/in.\+c@{built-\/in.\+c}!cd@{cd}}
+\index{cd@{cd}!built-\/in.\+c@{built-\/in.\+c}}
+\subsubsection{\texorpdfstring{cd()}{cd()}}
+{\footnotesize\ttfamily int cd (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Sets new current/working directory 
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success and -\/1 on error 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5     \textcolor{keywordtype}{int} returnCode;
+6 
+7     \textcolor{comment}{// case cd with no argument}
+8     \textcolor{keywordflow}{if}(argc == 1)
+9     \{
+10         returnCode = chdir(getenv(\textcolor{stringliteral}{"HOME"}));
+11     \}
+12     \textcolor{comment}{// case cd --help}
+13     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(strcmp(argv[1],\textcolor{stringliteral}{"--help"}) == 0)
+14     \{
+15         returnCode = 0;
+16         printf(\textcolor{stringliteral}{"cd: cd [dir]\(\backslash\)n\(\backslash\)tChange the shell working directory.\(\backslash\)n\(\backslash\)n\(\backslash\)tChange the current directory to
+       DIR.  The default DIR is the value of the HOME shell variable.\(\backslash\)n\(\backslash\)n\(\backslash\)tThe variable CDPATH defines the search
+       path for the directory containing DIR.\(\backslash\)n\(\backslash\)tAlternative directory names in CDPATH are separated by a colon (:).\(\backslash\)n
+      \(\backslash\)tA null directory name is the same as the current directory.\(\backslash\)n\(\backslash\)tIf DIR begins with a slash (/), then CDPATH
+       is not used.\(\backslash\)n\(\backslash\)n\(\backslash\)tIf the directory is not found, and the shell option `cdable\_vars' is set, the word is
+       assumed to be  a variable name.\(\backslash\)n\(\backslash\)tIf that variable has a value, its value is used for DIR.\(\backslash\)n\(\backslash\)n\(\backslash\)tReturns 0 if
+       the directory is changed; non-zero otherwise.\(\backslash\)n"});
+17     \}
+18     \textcolor{comment}{// case more than one argument for cd}
+19     \textcolor{comment}{// (first argument in argv being cd)}
+20     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(argc > 2)
+21     \{
+22         returnCode = -1;
+23         fprintf(stderr,\textcolor{stringliteral}{"cd: Too many arguments\(\backslash\)n"});
+24         \textcolor{keywordflow}{return} returnCode;
+25     \}
+26     \textcolor{keywordflow}{else}
+27     \{
+28         returnCode = chdir(argv[1]);
+29     \}
+30 
+31     \textcolor{keywordflow}{if}(returnCode != 0)
+32     \{
+33         perror(\textcolor{stringliteral}{"cd"});
+34     \}
+35 
+36     \textcolor{keywordflow}{return} returnCode;
+37 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{built-in_8c_ae985125913017d37bb75b1ab7b977950}\label{built-in_8c_ae985125913017d37bb75b1ab7b977950}} 
+\index{built-\/in.\+c@{built-\/in.\+c}!echo@{echo}}
+\index{echo@{echo}!built-\/in.\+c@{built-\/in.\+c}}
+\subsubsection{\texorpdfstring{echo()}{echo()}}
+{\footnotesize\ttfamily int echo (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Write arguments to the standard output 
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success and -\/1 on error 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+69 \{
+70     \textcolor{keywordtype}{int} returnCode = 0;
+71 
+72     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 1; i < argc; i++)
+73     \{
+74         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = 0; j < strlen(argv[i]); j++)
+75         \{
+76             \textcolor{keywordflow}{if}(argv[i][j] == \textcolor{charliteral}{'\(\backslash\)\(\backslash\)'})
+77             \{
+78                 \textcolor{keywordflow}{if}((printf(\textcolor{stringliteral}{"%c"},argv[i][j+1]) < 0)) returnCode = -1;
+79                 j++;
+80                 \textcolor{keywordflow}{continue};
+81             \}
+82             \textcolor{keywordflow}{if}((printf(\textcolor{stringliteral}{"%c"},argv[i][j]) < 0)) returnCode = -1;
+83         \}
+84         printf(\textcolor{stringliteral}{" "});
+85     \}
+86     
+87     \textcolor{keywordflow}{return} returnCode;
+88 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{built-in_8c_a7f540865bf44effc4cd5f843a0d29388}\label{built-in_8c_a7f540865bf44effc4cd5f843a0d29388}} 
+\index{built-\/in.\+c@{built-\/in.\+c}!pwd@{pwd}}
+\index{pwd@{pwd}!built-\/in.\+c@{built-\/in.\+c}}
+\subsubsection{\texorpdfstring{pwd()}{pwd()}}
+{\footnotesize\ttfamily int pwd (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Print name of current/working directory 
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success and -\/1 on error 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+40 \{
+41     \textcolor{keywordtype}{int} returnCode;
+42 
+43     \textcolor{comment}{// pwd --help}
+44     \textcolor{keywordflow}{if}((argv[1] != NULL) && (strcmp(argv[1],\textcolor{stringliteral}{"--help"}) == 0))
+45     \{
+46         returnCode = 0;
+47         printf(\textcolor{stringliteral}{"pwd: pwd\(\backslash\)n\(\backslash\)tPrint the name of the current working directory.\(\backslash\)n\(\backslash\)n\(\backslash\)tExit Status:\(\backslash\)n\(\backslash\)tReturns 0
+       unless an invalid option is given or the current directory\(\backslash\)n\(\backslash\)tcannot be read.\(\backslash\)n"});
+48     \}
+49     \textcolor{keywordflow}{else}
+50     \{
+51         \textcolor{keywordtype}{char} buffer[1024];
+52         \textcolor{keywordtype}{char}* dir = getcwd(buffer,\textcolor{keyword}{sizeof}(buffer));
+53 
+54         printf(\textcolor{stringliteral}{"%s"}, dir);
+55 
+56         \textcolor{keywordflow}{if}(dir != NULL) returnCode = 0;
+57         \textcolor{keywordflow}{else} returnCode = -1;    
+58     \}
+59 
+60     \textcolor{keywordflow}{if}(returnCode != 0)
+61     \{
+62         perror(\textcolor{stringliteral}{"pwd"});
+63     \}
+64 
+65     \textcolor{keywordflow}{return} returnCode;
+66 \}
+\end{DoxyCode}
