@@ -1,7 +1,13 @@
 <map id="include/util.h" name="include/util.h">
 <area shape="rect" id="node2" href="$util_8c.html" title="src/util.c" alt="" coords="5,80,77,107"/>
-<area shape="rect" id="node3" href="$commands_8h.html" title="include/commands.h" alt="" coords="102,80,245,107"/>
-<area shape="rect" id="node5" href="$main_8h.html" title="include/main.h" alt="" coords="229,155,336,181"/>
-<area shape="rect" id="node4" href="$commands_8c.html" title="src/commands.c" alt="" coords="86,155,205,181"/>
-<area shape="rect" id="node6" href="$main_8c.html" title="src/main.c" alt="" coords="241,229,324,256"/>
+<area shape="rect" id="node3" href="$built-in_8h.html" title="include/built&#45;in.h" alt="" coords="187,80,303,107"/>
+<area shape="rect" id="node5" href="$commands_8h.html" title="include/commands.h" alt="" coords="270,155,413,181"/>
+<area shape="rect" id="node7" href="$commandTree_8h.html" title="include/commandTree.h" alt="" coords="59,229,219,256"/>
+<area shape="rect" id="node9" href="$main_8h.html" title="include/main.h" alt="" coords="372,304,479,331"/>
+<area shape="rect" id="node11" href="$ui_8h.html" title="include/ui.h" alt="" coords="488,80,576,107"/>
+<area shape="rect" id="node4" href="$built-in_8c.html" title="src/built&#45;in.c" alt="" coords="152,155,245,181"/>
+<area shape="rect" id="node6" href="$commands_8c.html" title="src/commands.c" alt="" coords="243,229,362,256"/>
+<area shape="rect" id="node8" href="$commandTree_8c.html" title="src/commandTree.c" alt="" coords="70,304,207,331"/>
+<area shape="rect" id="node10" href="$main_8c.html" title="src/main.c" alt="" coords="384,379,467,405"/>
+<area shape="rect" id="node12" href="$ui_8c.html" title="src/ui.c" alt="" coords="539,155,605,181"/>
 </map>

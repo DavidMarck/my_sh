@@ -3,13 +3,21 @@
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}var.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}typedef.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}history.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}built-\/in.\+h\char`\"{}}\newline
 Include dependency graph for commands.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=312pt]{commands_8h__incl}
+\includegraphics[width=350pt]{commands_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -17,137 +25,561 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=268pt]{commands_8h__dep__incl}
+\includegraphics[width=350pt]{commands_8h__dep__incl}
 \end{center}
 \end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{commands_8h_a369266c24eacffb87046522897a570d5}{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{commands_8h_a21579a20737c3b2b24e18bb5e51d8140}{print\+\_\+prompt}} ()
+char $\ast$$\ast$ \mbox{\hyperlink{commands_8h_ae367a171f268adff2bdb4a848aa263ac}{parse\+\_\+to\+\_\+argv}} (char $\ast$, int $\ast$)
 \item 
-void \mbox{\hyperlink{commands_8h_a54c8e7cbf6402612c0d796eaf3056c1f}{parse\+Command}} (char $\ast$)
+int \mbox{\hyperlink{commands_8h_a5cdbb99fa3ac8fa9ab9394f4e563995f}{execute\+\_\+command}} (char $\ast$$\ast$argv, int argc)
 \item 
-void \mbox{\hyperlink{commands_8h_a7a6e0b05379c0db9c20a599404ad1bb1}{clean}} (const char $\ast$)
+int \mbox{\hyperlink{commands_8h_a285e8f723dfabc46fc69f11d23bca682}{execute\+\_\+builtin}} (char $\ast$$\ast$args, int argc)
 \item 
-void \mbox{\hyperlink{commands_8h_a49f28c3d69f2302f5b4a5da84b24c581}{read\+Command}} (char $\ast$)
+int \mbox{\hyperlink{commands_8h_aea90c4618f1ea3d250aa2189888b0829}{isbuiltin}} (char $\ast$command\+Line)
+\item 
+char $\ast$$\ast$ \mbox{\hyperlink{commands_8h_aeb88ec8a1adef5cbcd9d8de252aa5475}{interpret\+\_\+heard\+\_\+file}} (char $\ast$$\ast$argv, int args\+\_\+count)
+\item 
+int \mbox{\hyperlink{commands_8h_a75057c1eff6e3decd05f01997f381b5e}{includes\+\_\+multplie\+\_\+commands}} (char $\ast$$\ast$argv, int argc)
+\item 
+char $\ast$$\ast$ \mbox{\hyperlink{commands_8h_ad0a7668bf0100523d1bc449de6ab123c}{get\+\_\+next\+\_\+command\+\_\+args}} (char $\ast$$\ast$argv, int argc, int $\ast$nxt\+\_\+argc, int $\ast$nxt\+Cmd\+Line\+Index)
+\item 
+char $\ast$$\ast$ \mbox{\hyperlink{commands_8h_a36a2466ea1a146371efe4974eb5d4b22}{get\+\_\+last\+\_\+command\+\_\+args}} (char $\ast$$\ast$argv, int argc, int $\ast$last\+\_\+argc, int start\+Index)
 \end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
-\mbox{\Hypertarget{commands_8h_a7a6e0b05379c0db9c20a599404ad1bb1}\label{commands_8h_a7a6e0b05379c0db9c20a599404ad1bb1}} 
-\index{commands.\+h@{commands.\+h}!clean@{clean}}
-\index{clean@{clean}!commands.\+h@{commands.\+h}}
-\subsubsection{\texorpdfstring{clean()}{clean()}}
-{\footnotesize\ttfamily void clean (\begin{DoxyParamCaption}\item[{const char $\ast$}]{buffer }\end{DoxyParamCaption})}
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{commands_8h_a369266c24eacffb87046522897a570d5}\label{commands_8h_a369266c24eacffb87046522897a570d5}} 
+\index{commands.\+h@{commands.\+h}!\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\index{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}{\_GNU\_SOURCE}}
+{\footnotesize\ttfamily \#define \+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}
 
-Clean result of fgets, remove \char`\"{}\textbackslash{}n\char`\"{} and flush stdin 
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{commands_8h_a285e8f723dfabc46fc69f11d23bca682}\label{commands_8h_a285e8f723dfabc46fc69f11d23bca682}} 
+\index{commands.\+h@{commands.\+h}!execute\+\_\+builtin@{execute\+\_\+builtin}}
+\index{execute\+\_\+builtin@{execute\+\_\+builtin}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{execute\+\_\+builtin()}{execute\_builtin()}}
+{\footnotesize\ttfamily int execute\+\_\+builtin (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{args,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Executes a buitl-\/in command using argv and argc
+
+
 \begin{DoxyParams}{Parameters}
-{\em buffer} & string to clean \\
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on failure 
+\end{DoxyReturn}
 
 \begin{DoxyCode}
-60 \{
-61     \textcolor{keywordtype}{char} *p = strchr(buffer,\textcolor{charliteral}{'\(\backslash\)n'});
-62     \textcolor{keywordflow}{if} (p != NULL)
-63         *p = 0;
-64     \textcolor{keywordflow}{else}
-65     \{
-66         \textcolor{keywordtype}{int} c;
-67         \textcolor{keywordflow}{while} ((c = fgetc(stdin)) != \textcolor{charliteral}{'\(\backslash\)n'} && c != EOF);
-68     \}
-69 \}
+257 \{
+258     \textcolor{keywordtype}{int} returnCode;
+259 
+260     \textcolor{keywordflow}{if}(!\mbox{\hyperlink{commands_8c_aea90c4618f1ea3d250aa2189888b0829}{isbuiltin}}(argv[0]))
+261     \{
+262         returnCode = -1;
+263     \}
+264     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(strcmp(argv[0],\textcolor{stringliteral}{"cd"}) == 0)
+265     \{
+266         returnCode = \mbox{\hyperlink{built-in_8c_a6e03260ed7d8b2ac33c1116c55c2cec7}{cd}}(argv,argc);
+267     \}
+268     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(strcmp(argv[0],\textcolor{stringliteral}{"pwd"}) == 0)
+269     \{
+270         returnCode = \mbox{\hyperlink{built-in_8c_a7f540865bf44effc4cd5f843a0d29388}{pwd}}(argv,argc);
+271     \}
+272     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(strcmp(argv[0],\textcolor{stringliteral}{"echo"}) == 0)
+273     \{
+274         returnCode = \mbox{\hyperlink{built-in_8c_ae985125913017d37bb75b1ab7b977950}{echo}}(argv,argc);
+275     \}
+276     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(strcmp(argv[0],\textcolor{stringliteral}{"exit"}) == 0)
+277     \{
+278         \mbox{\hyperlink{built-in_8c_a203155f52ab90e655b8040e61130dbcc}{builtin\_exit}}(argv,argc);
+279     \}
+280 
+281     printf(\textcolor{stringliteral}{"\(\backslash\)n"});
+282 
+283     \textcolor{keywordflow}{return} returnCode;
+284 \}
 \end{DoxyCode}
-\mbox{\Hypertarget{commands_8h_a54c8e7cbf6402612c0d796eaf3056c1f}\label{commands_8h_a54c8e7cbf6402612c0d796eaf3056c1f}} 
-\index{commands.\+h@{commands.\+h}!parse\+Command@{parse\+Command}}
-\index{parse\+Command@{parse\+Command}!commands.\+h@{commands.\+h}}
-\subsubsection{\texorpdfstring{parse\+Command()}{parseCommand()}}
-{\footnotesize\ttfamily void parse\+Command (\begin{DoxyParamCaption}\item[{char $\ast$}]{command }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{commands_8h_a5cdbb99fa3ac8fa9ab9394f4e563995f}\label{commands_8h_a5cdbb99fa3ac8fa9ab9394f4e563995f}} 
+\index{commands.\+h@{commands.\+h}!execute\+\_\+command@{execute\+\_\+command}}
+\index{execute\+\_\+command@{execute\+\_\+command}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{execute\+\_\+command()}{execute\_command()}}
+{\footnotesize\ttfamily int execute\+\_\+command (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
 
-Parse the text of the command\+Line
+Executes a command using argv and argc
 
-Parse the text of the command\+Line 
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the exit code of process 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+165 \{
+166     \textcolor{comment}{// case built-in command}
+167     \textcolor{keywordflow}{if}(\mbox{\hyperlink{commands_8c_aea90c4618f1ea3d250aa2189888b0829}{isbuiltin}}(argv[0]))
+168     \{
+169         \textcolor{keywordflow}{return} \mbox{\hyperlink{commands_8c_a1586f3c18d7c2dc8c65687c90678b6fe}{execute\_builtin}}(argv, argc);
+170     \}
+171     \textcolor{comment}{// other commands}
+172     \textcolor{keywordflow}{else}
+173     \{
+174         \textcolor{comment}{// fork}
+175         \textcolor{keywordtype}{int} pid;
+176         \textcolor{keywordtype}{int} status;
+177         \textcolor{keywordflow}{if} ((pid = fork()) < 0)
+178         \{
+179             perror(\textcolor{stringliteral}{"fork"});
+180             exit(EXIT\_FAILURE);
+181         \}
+182 
+183         \textcolor{comment}{// child}
+184         \textcolor{keywordflow}{if}(pid == 0)
+185         \{
+186             \textcolor{comment}{// buidling the path}
+187             \textcolor{keywordtype}{char}* bin = \textcolor{stringliteral}{"/bin/"};
+188             \textcolor{keywordtype}{char}* path = malloc(strlen(bin) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})) + ((strlen(argv[0]) + 1) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));
+189             *path = \textcolor{charliteral}{'\(\backslash\)0'};
+190             path = strcat(path,bin);
+191             path = strcat(path,argv[0]);
+192             
+193             \textcolor{comment}{// execution}
+194             \textcolor{keywordflow}{if} (execvp(path, argv) == -1) \{
+195                 \textcolor{keywordflow}{if}(errno == ENOENT)
+196                 \{
+197                     fprintf(stderr,\textcolor{stringliteral}{"%s: Command not found\(\backslash\)n"},argv[0]);
+198                 \}
+199                 \textcolor{keywordflow}{else}
+200                 \{
+201                     perror(argv[0]);
+202                 \}
+203                 exit(-1);
+204             \}
+205         \}
+206         \textcolor{comment}{// parent}
+207         \textcolor{keywordflow}{else}
+208         \{
+209             wait(&status);
+210             \textcolor{keywordflow}{if}(WIFEXITED(status) && WEXITSTATUS(status) == 0) 
+211             \{
+212                 \textcolor{keywordflow}{return} status;
+213             \}
+214             \textcolor{keywordflow}{return} -1;
+215         \}
+216         
+217     \}
+218     \textcolor{keywordflow}{return} -1;
+219     
+220     \textcolor{comment}{/*if(argv[0] == NULL)}
+221 \textcolor{comment}{    \{}
+222 \textcolor{comment}{        return;}
+223 \textcolor{comment}{    \}}
+224 \textcolor{comment}{    }
+225 \textcolor{comment}{    else if(isbuiltin(argv[0]))}
+226 \textcolor{comment}{    \{}
+227 \textcolor{comment}{        if(execute\_builtin(argv,argc) == 0) exit(EXIT\_SUCCESS);}
+228 \textcolor{comment}{        else exit(EXIT\_FAILURE);}
+229 \textcolor{comment}{    \}}
+230 \textcolor{comment}{}
+231 \textcolor{comment}{    char* bin = "/bin/";}
+232 \textcolor{comment}{    char* path = malloc(strlen(bin) * sizeof(char)) + ((strlen(argv[0]) + 1) * sizeof(char));}
+233 \textcolor{comment}{    strcat(path,bin);}
+234 \textcolor{comment}{    strcat(path,argv[0]);}
+235 \textcolor{comment}{}
+236 \textcolor{comment}{    if (execvp(path, argv) == -1) \{}
+237 \textcolor{comment}{        if(errno == ENOENT)}
+238 \textcolor{comment}{        \{}
+239 \textcolor{comment}{            fprintf(stderr,"%s: Command not found\(\backslash\)n",argv[0]);}
+240 \textcolor{comment}{        \}}
+241 \textcolor{comment}{        else}
+242 \textcolor{comment}{        \{}
+243 \textcolor{comment}{            perror(argv[0]);}
+244 \textcolor{comment}{        \}}
+245 \textcolor{comment}{        free(path);}
+246 \textcolor{comment}{        exit(EXIT\_FAILURE);}
+247 \textcolor{comment}{    \}}
+248 \textcolor{comment}{}
+249 \textcolor{comment}{    printf("\(\backslash\)n\(\backslash\)n");}
+250 \textcolor{comment}{}
+251 \textcolor{comment}{    free(path);}
+252 \textcolor{comment}{    */}
+253 
+254 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_a36a2466ea1a146371efe4974eb5d4b22}\label{commands_8h_a36a2466ea1a146371efe4974eb5d4b22}} 
+\index{commands.\+h@{commands.\+h}!get\+\_\+last\+\_\+command\+\_\+args@{get\+\_\+last\+\_\+command\+\_\+args}}
+\index{get\+\_\+last\+\_\+command\+\_\+args@{get\+\_\+last\+\_\+command\+\_\+args}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{get\+\_\+last\+\_\+command\+\_\+args()}{get\_last\_command\_args()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ get\+\_\+last\+\_\+command\+\_\+args (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc,  }\item[{int $\ast$}]{last\+\_\+argc,  }\item[{int}]{start\+Index }\end{DoxyParamCaption})}
+
+Gets the last sequence of commands that has to be ran (i.\+e. if there were any \textquotesingle{};\textquotesingle{}, gets the last sequence after the last \textquotesingle{};\textquotesingle{})
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count (input arguments array) \\
+\hline
+{\em last\+\_\+argc} & arguments count (output arguments array) \\
+\hline
+{\em start\+Index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sub-\/array of arguments to be used 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+343 \{
+344     \textcolor{keywordtype}{char}** last\_argv = NULL;
+345 
+346     \textcolor{keywordtype}{int} n\_args = 0;
+347 
+348     \textcolor{comment}{// We copy all the arguments at the end (after all the ; operators)}
+349     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = startIndex; i < argc; i++)
+350     \{
+351         \textcolor{comment}{// reallocating memory}
+352         last\_argv = realloc(last\_argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * ++n\_args);
+353         \textcolor{keywordflow}{if} (last\_argv == NULL) exit (-1); \textcolor{comment}{/* memory allocation failed */}
+354 
+355         last\_argv[n\_args - 1] = argv[i];
+356     \}
+357 
+358     \textcolor{comment}{/* realloc one extra element for the last NULL }
+359 \textcolor{comment}{     (necessary for exec fucntion)*/}
+360     last\_argv = realloc (last\_argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * (n\_args+1));
+361     last\_argv[n\_args] = 0;
+362 
+363     *last\_argc = n\_args;
+364 
+365     \textcolor{keywordflow}{return} last\_argv;
+366 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_ad0a7668bf0100523d1bc449de6ab123c}\label{commands_8h_ad0a7668bf0100523d1bc449de6ab123c}} 
+\index{commands.\+h@{commands.\+h}!get\+\_\+next\+\_\+command\+\_\+args@{get\+\_\+next\+\_\+command\+\_\+args}}
+\index{get\+\_\+next\+\_\+command\+\_\+args@{get\+\_\+next\+\_\+command\+\_\+args}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{get\+\_\+next\+\_\+command\+\_\+args()}{get\_next\_command\_args()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ get\+\_\+next\+\_\+command\+\_\+args (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc,  }\item[{int $\ast$}]{nxt\+\_\+argc,  }\item[{int $\ast$}]{nxt\+Cmd\+Line\+Index }\end{DoxyParamCaption})}
+
+Gets the next sequence of commands after \textquotesingle{};\textquotesingle{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count (input arguments array) \\
+\hline
+{\em nxt\+\_\+argc} & arguments count (output arguments array) \\
+\hline
+{\em nxt\+Cmd\+Line\+Index} & index of the next command line (after \& operator)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array of arguments to be used 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+312 \{
+313     \textcolor{keywordtype}{char}** nxt\_argv = NULL;
+314 
+315     \textcolor{keywordtype}{int} n\_args = 0;
+316     \textcolor{keywordtype}{int} i = *nxtCmdLineIndex;
+317 
+318     \textcolor{comment}{// We copy all the arguments to get only the ones concerned by the next ; operator}
+319     \textcolor{keywordflow}{while}(strcmp(argv[i],\textcolor{stringliteral}{";"}) != 0)
+320     \{
+321         \textcolor{comment}{// reallocating memory}
+322         nxt\_argv = realloc(nxt\_argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * ++n\_args);
+323         \textcolor{keywordflow}{if} (nxt\_argv == NULL) exit (-1); \textcolor{comment}{/* memory allocation failed */}
+324 
+325         nxt\_argv[n\_args - 1] = argv[i];
+326         i++;
+327     \}
+328     \textcolor{comment}{// Sets ";" to "" in argv}
+329     argv[i] = \textcolor{stringliteral}{""};
+330     *nxtCmdLineIndex = i + 1;
+331 
+332     \textcolor{comment}{/* realloc one extra element for the last NULL }
+333 \textcolor{comment}{     (necessary for exec fucntion)*/}
+334     nxt\_argv = realloc (nxt\_argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * (n\_args+1));
+335     nxt\_argv[n\_args] = 0;
+336 
+337     *nxt\_argc = n\_args;
+338 
+339     \textcolor{keywordflow}{return} nxt\_argv;
+340 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_a75057c1eff6e3decd05f01997f381b5e}\label{commands_8h_a75057c1eff6e3decd05f01997f381b5e}} 
+\index{commands.\+h@{commands.\+h}!includes\+\_\+multplie\+\_\+commands@{includes\+\_\+multplie\+\_\+commands}}
+\index{includes\+\_\+multplie\+\_\+commands@{includes\+\_\+multplie\+\_\+commands}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{includes\+\_\+multplie\+\_\+commands()}{includes\_multplie\_commands()}}
+{\footnotesize\ttfamily int includes\+\_\+multplie\+\_\+commands (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc }\end{DoxyParamCaption})}
+
+Indicates wether or not a command line (parsed into argv) includes multiple command(s) (i.\+e. separated by ;).
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if argv contains at least one ; and false otherwise 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+299 \{
+300     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < argc; i++)
+301     \{
+302         \textcolor{keywordflow}{if}(strcmp(argv[i],\textcolor{stringliteral}{";"}) == 0)
+303         \{
+304             \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+305         \}
+306     \}
+307 
+308     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+309 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_aeb88ec8a1adef5cbcd9d8de252aa5475}\label{commands_8h_aeb88ec8a1adef5cbcd9d8de252aa5475}} 
+\index{commands.\+h@{commands.\+h}!interpret\+\_\+heard\+\_\+file@{interpret\+\_\+heard\+\_\+file}}
+\index{interpret\+\_\+heard\+\_\+file@{interpret\+\_\+heard\+\_\+file}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{interpret\+\_\+heard\+\_\+file()}{interpret\_heard\_file()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ interpret\+\_\+heard\+\_\+file (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{args\+\_\+count }\end{DoxyParamCaption})}
+
+Interprets symbols \char`\"{}$<$$<$\char`\"{} of the command line, creates a tmp file it pattern is \+: \char`\"{}/tmp/tmp\+Shell\+X\+X\+X\+X\+X\+X.\+tmp\char`\"{} it contains what the user typed until he wrote the delimiter the delimiter is replace by the tmp file path
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em args\+\_\+count} & arguments count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new array of arguments 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+85 \{
+86     \textcolor{keywordtype}{int} index = 0;
+87     
+88     \textcolor{comment}{// brownsing the entire command}
+89     \textcolor{keywordflow}{while}(index < args\_count)
+90     \{
+91         \textcolor{comment}{// case a "<<" is find}
+92         \textcolor{keywordflow}{if}(strcmp(\textcolor{stringliteral}{"<<"}, argv[index]) == 0)
+93         \{
+94             
+95             \textcolor{keywordtype}{char} line\_input[\mbox{\hyperlink{var_8h_a0592dba56693fad79136250c11e5a7fe}{MAX\_SIZE}}];
+96             \textcolor{keywordtype}{char}* stdin\_text = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));
+97             *stdin\_text = \textcolor{charliteral}{'\(\backslash\)0'};
+98 
+99             \textcolor{keywordflow}{if}(argv[index+1] == NULL)
+100             \{
+101                 fprintf(stderr,\textcolor{stringliteral}{"bash: syntax error near unexpected token '<<'\(\backslash\)n"});
+102                 \textcolor{keywordflow}{return} argv;
+103             \}
+104             \textcolor{keywordtype}{char}* delimiter = malloc(strlen(argv[index+1])*\textcolor{keyword}{sizeof}((\textcolor{keywordtype}{char}) + 1));
+105             
+106             delimiter = strcpy(delimiter, argv[index+1]);
+107             delimiter = strcat(delimiter,\textcolor{stringliteral}{"\(\backslash\)n"});  \textcolor{comment}{// adding a \(\backslash\)n to the delimiter  (in order to be able to
+       compare it with fget)}
+108             
+109             \textcolor{comment}{// letting the user write some lines until he writes the delimiter after << }
+110             \textcolor{keywordflow}{do}
+111             \{
+112                 printf(\textcolor{stringliteral}{" > "});
+113                 fgets(line\_input, \textcolor{keyword}{sizeof}(line\_input), stdin);
+114                 
+115                 \textcolor{keywordflow}{if}(strcmp(delimiter, line\_input) != 0)
+116                 \{
+117                     \textcolor{keywordtype}{int} spaceNeeded = ((strlen(stdin\_text)) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})) + ((strlen(line\_input) + 3) * \textcolor{keyword}{
+      sizeof}(\textcolor{keywordtype}{char}));
+118                     stdin\_text = realloc(stdin\_text,spaceNeeded);
+119                     stdin\_text = strcat(stdin\_text, line\_input);
+120                 \}   
+121             \} \textcolor{keywordflow}{while}(strcmp(delimiter, line\_input) != 0);
+122             
+123             \mbox{\hyperlink{history_8c_ad048e165fa6cd1fbc4bbc3fc8baac839}{write\_to\_history}}(stdin\_text);
+124             free(delimiter);
+125             
+126             \textcolor{comment}{// creating a temporary files (which will be readed during the execution of the tree    }
+127             \textcolor{keywordtype}{int} descTemp;
+128             \textcolor{keyword}{static} \textcolor{keywordtype}{char} \textcolor{keyword}{template}[] = \textcolor{stringliteral}{"/tmp/tmpShellXXXXXX.txt"};
+129             \textcolor{keywordtype}{char} fileName[23];
+130             
+131             strcpy(fileName, \textcolor{keyword}{template});
+132             
+133             descTemp = mkstemps(fileName,4);
+134             \textcolor{keywordflow}{if}(descTemp == -1) \{
+135                 perror(\textcolor{stringliteral}{"error !"});
+136                 dprintf(\mbox{\hyperlink{var_8h_a3a540e3eef339eec06aff31c4ba1eb25}{STDERR}}, \textcolor{stringliteral}{"Error in mkstemp.\(\backslash\)n"});
+137                 exit(EXIT\_FAILURE);
+138             \}
+139             
+140             \textcolor{comment}{// writing what the user wrote before into the tmp file}
+141             FILE *fp = fdopen(descTemp, \textcolor{stringliteral}{"w"});
+142             \textcolor{keywordflow}{if} (fp == NULL)
+143             \{
+144                 perror(\textcolor{stringliteral}{"Error when opening temp file"});
+145                 exit(EXIT\_FAILURE);
+146             \}
+147             
+148             fputs(stdin\_text, fp);
+149             
+150             \textcolor{comment}{// replacing  the delimiter by the tmp file path}
+151             \textcolor{keywordtype}{char}* tmp = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}) * strlen(fileName));
+152             strcpy(tmp, fileName);
+153             argv = \mbox{\hyperlink{util_8c_a3709c4cfc029c088669541f01f7434b2}{str\_array\_replace}}(argv, args\_count,(index+1), tmp);
+154             
+155             fclose(fp);
+156             close(descTemp);
+157             free(stdin\_text);
+158         \}
+159         index++;
+160     \}
+161     \textcolor{keywordflow}{return} argv;
+162 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_aea90c4618f1ea3d250aa2189888b0829}\label{commands_8h_aea90c4618f1ea3d250aa2189888b0829}} 
+\index{commands.\+h@{commands.\+h}!isbuiltin@{isbuiltin}}
+\index{isbuiltin@{isbuiltin}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{isbuiltin()}{isbuiltin()}}
+{\footnotesize\ttfamily int isbuiltin (\begin{DoxyParamCaption}\item[{char $\ast$}]{command\+Line }\end{DoxyParamCaption})}
+
+Indicates wether or not the command is a built-\/in command
+
+
+\begin{DoxyParams}{Parameters}
+{\em command\+Line} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+287 \{
+288     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < \mbox{\hyperlink{commands_8c_a1a7dcdfeabbc3dc651e199403984d99e}{n\_built\_in}}; i++)
+289     \{
+290         \textcolor{keywordflow}{if}(strcmp(commandLine,\mbox{\hyperlink{commands_8c_ab6e3c2ad539285b3027db5fa1903ee00}{built\_in\_commands}}[i]) == 0)
+291         \{
+292             \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+293         \}
+294     \}
+295     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+296 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{commands_8h_ae367a171f268adff2bdb4a848aa263ac}\label{commands_8h_ae367a171f268adff2bdb4a848aa263ac}} 
+\index{commands.\+h@{commands.\+h}!parse\+\_\+to\+\_\+argv@{parse\+\_\+to\+\_\+argv}}
+\index{parse\+\_\+to\+\_\+argv@{parse\+\_\+to\+\_\+argv}!commands.\+h@{commands.\+h}}
+\subsubsection{\texorpdfstring{parse\+\_\+to\+\_\+argv()}{parse\_to\_argv()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ parse\+\_\+to\+\_\+argv (\begin{DoxyParamCaption}\item[{char $\ast$}]{,  }\item[{int $\ast$}]{ }\end{DoxyParamCaption})}
+
+Parses the text of the command\+Line
+
+
 \begin{DoxyParams}{Parameters}
 {\em command} & command line to parse \\
 \hline
-\end{DoxyParams}
-
-\begin{DoxyCode}
-16 \{   
-17 
-18     \textcolor{comment}{// Returns first token }
-19     \textcolor{keywordtype}{char} *token = strtok(command, \textcolor{stringliteral}{" "});
-20    
-21     \textcolor{comment}{// Keep printing tokens while one of the}
-22     \textcolor{comment}{// delimiters present in str[].}
-23     \textcolor{keywordflow}{while} (token != NULL)
-24     \{
-25         printf(\textcolor{stringliteral}{"%s\(\backslash\)n"}, token);
-26         token = strtok(NULL, \textcolor{stringliteral}{" "});
-27     \}
-28     \textcolor{comment}{//Début d'amélioration pour le parser}
-29     \textcolor{comment}{/*}
-30 \textcolor{comment}{    char* word;}
-31 \textcolor{comment}{    int len = 0;}
-32 \textcolor{comment}{    printf("Caractère actuel");}
-33 \textcolor{comment}{    }
-34 \textcolor{comment}{    while(*command != '\(\backslash\)0')}
-35 \textcolor{comment}{    \{}
-36 \textcolor{comment}{        printf("Caractère actuel : %c", *command);}
-37 \textcolor{comment}{        if(*command != ' ') }
-38 \textcolor{comment}{        \{}
-39 \textcolor{comment}{            word[len] = *command;}
-40 \textcolor{comment}{            word[len+1] = '\(\backslash\)0';}
-41 \textcolor{comment}{            len = strlen(word);}
-42 \textcolor{comment}{        \}}
-43 \textcolor{comment}{        else\{}
-44 \textcolor{comment}{            word[len+1] = '\(\backslash\)0';}
-45 \textcolor{comment}{            printf("%s\(\backslash\)n", word);}
-46 \textcolor{comment}{            len = 0;}
-47 \textcolor{comment}{            word = "";}
-48 \textcolor{comment}{        \}}
-49 \textcolor{comment}{        }
-50 \textcolor{comment}{        *command++; }
-51 \textcolor{comment}{    \} }
-52 \textcolor{comment}{    */}
-53 \}
-\end{DoxyCode}
-\mbox{\Hypertarget{commands_8h_a21579a20737c3b2b24e18bb5e51d8140}\label{commands_8h_a21579a20737c3b2b24e18bb5e51d8140}} 
-\index{commands.\+h@{commands.\+h}!print\+\_\+prompt@{print\+\_\+prompt}}
-\index{print\+\_\+prompt@{print\+\_\+prompt}!commands.\+h@{commands.\+h}}
-\subsubsection{\texorpdfstring{print\+\_\+prompt()}{print\_prompt()}}
-{\footnotesize\ttfamily void print\+\_\+prompt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-Prints the command lines starter 
-\begin{DoxyCode}
-7 \{
-8     printf(\textcolor{stringliteral}{"my\_sh > "});
-9 \}
-\end{DoxyCode}
-\mbox{\Hypertarget{commands_8h_a49f28c3d69f2302f5b4a5da84b24c581}\label{commands_8h_a49f28c3d69f2302f5b4a5da84b24c581}} 
-\index{commands.\+h@{commands.\+h}!read\+Command@{read\+Command}}
-\index{read\+Command@{read\+Command}!commands.\+h@{commands.\+h}}
-\subsubsection{\texorpdfstring{read\+Command()}{readCommand()}}
-{\footnotesize\ttfamily void read\+Command (\begin{DoxyParamCaption}\item[{char $\ast$}]{command }\end{DoxyParamCaption})}
-
-Reads a string as a command 
-\begin{DoxyParams}{Parameters}
-{\em command} & string to be read as a command \\
+{\em argc} & argument count \\
 \hline
 \end{DoxyParams}
 
 \begin{DoxyCode}
-76 \{
-77     \textcolor{keywordtype}{int} commandLength = strlen(command);
+7 \{
+8     \textcolor{keywordtype}{char}** argv  = NULL; \textcolor{comment}{// args array}
+9     \textcolor{keywordtype}{char} *  p    = strtok (command, \textcolor{stringliteral}{" "}); \textcolor{comment}{// token}
+10     \textcolor{keywordtype}{int} n\_spaces = 0; \textcolor{comment}{// args counter}
+11 
+12     \textcolor{keywordtype}{int} awaitingClosingQuote = \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}}; \textcolor{comment}{// indicates wether or not quote is opened and not closed}
+13     \textcolor{keywordtype}{char}* tmp = \textcolor{stringliteral}{""}; \textcolor{comment}{// hold between quotes string until closing quote reached}
+14 
+15 
+16     \textcolor{comment}{/* split string and append tokens to 'argv' */}
+17 
+18     \textcolor{keywordflow}{while} (p) \{
+19         \textcolor{comment}{// reallocating memory as the arg count augments}
+20         \textcolor{comment}{// (only reallocating once if arg between quotes, i.e. spaces ignored)}
+21         \textcolor{keywordflow}{if}(awaitingClosingQuote != \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}) argv = realloc (argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * ++n\_spaces);
+22 
+23         \textcolor{keywordflow}{if} (argv == NULL) exit (-1); \textcolor{comment}{/* memory allocation failed */}
+24 
+25         \textcolor{comment}{// if still waiting for closing quote}
+26         \textcolor{keywordflow}{if}(awaitingClosingQuote == \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}})
+27         \{
+28             \textcolor{keywordtype}{int} spaceNeeded = (strlen(tmp) * \textcolor{keyword}{sizeof}(char)) + ((strlen(p) + 1) * \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})) + 1;
+29             tmp = realloc(tmp,spaceNeeded);
+30             strcat(tmp,\textcolor{stringliteral}{" "});
+31             strcat(tmp,p);
+32         \}
+33 
+34         \textcolor{comment}{// if current argument starts with quotes}
+35         \textcolor{keywordflow}{if}((p[0] == \textcolor{charliteral}{'"'}) && (awaitingClosingQuote != \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}))
+36         \{
+37             \textcolor{comment}{// only one word between quotes = normal token}
+38             \textcolor{keywordflow}{if}(p[strlen(p) - 1] == \textcolor{charliteral}{'"'})
+39             \{
+40                 p = \mbox{\hyperlink{util_8c_a7af2652d06ce1e0c36cbee5eaca5d68c}{str\_replace}}(\textcolor{stringliteral}{"\(\backslash\)""},\textcolor{stringliteral}{""},p);
+41                 argv[n\_spaces-1] = p;
+42                 p = strtok (NULL, \textcolor{stringliteral}{" "});
+43                 \textcolor{keywordflow}{continue};
+44             \}
+45 
+46             \textcolor{comment}{// initiates tmp string to hold string between quotes}
+47             awaitingClosingQuote = \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+48             tmp = strdup(p);
+49             p = strtok(NULL, \textcolor{stringliteral}{" "});
+50             \textcolor{keywordflow}{continue};
+51         \}
+52         \textcolor{comment}{// if closing quote is reached}
+53         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}((p[strlen(p) - 1] == \textcolor{charliteral}{'"'}) && (awaitingClosingQuote == \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}))
+54         \{
+55             awaitingClosingQuote = \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+56             tmp = \mbox{\hyperlink{util_8c_a7af2652d06ce1e0c36cbee5eaca5d68c}{str\_replace}}(\textcolor{stringliteral}{"\(\backslash\)""},\textcolor{stringliteral}{""},tmp);
+57             argv[n\_spaces-1] = tmp;
+58             p = strtok(NULL, \textcolor{stringliteral}{" "});
+59             tmp = \textcolor{stringliteral}{""};
+60             \textcolor{keywordflow}{continue};
+61         \}
+62         \textcolor{comment}{// end of command string is reached while still waiting for closing quote}
+63         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}((awaitingClosingQuote == \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}) && (p[strlen(p)] == \textcolor{charliteral}{'\(\backslash\)0'}))
+64         \{
+65             argv[n\_spaces-1] = tmp;
+66             p = strtok(NULL, \textcolor{stringliteral}{" "});
+67             \textcolor{keywordflow}{continue};
+68         \}   
+69         
+70         argv[n\_spaces-1] = p;
+71         p = strtok (NULL, \textcolor{stringliteral}{" "});
+72     \}
+73 
+74     \textcolor{comment}{/* realloc one extra element for the last NULL }
+75 \textcolor{comment}{     (necessary for exec fucntion)*/}
+76     argv = realloc (argv, \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * (n\_spaces+1));
+77     argv[n\_spaces] = 0;
 78 
-79     \textcolor{keywordflow}{if}(commandLength > 255)
-80     \{
-81         printf(\textcolor{stringliteral}{"Your command exceeds 255 characters. Please enter a shorter command."});
-82         exit(EXIT\_FAILURE);
-83     \}
-84     \textcolor{keywordflow}{else}
-85     \{
-86         printf(\textcolor{stringliteral}{"Your entered command: %s\(\backslash\)n"}, \mbox{\hyperlink{util_8c_ac3baffacb2ab73c47735eb93071f52c7}{stringToLower}}(command));
-87     \}
-88 \}
+79     *argc = n\_spaces;
+80     
+81     \textcolor{keywordflow}{return} argv;
+82 \}
 \end{DoxyCode}

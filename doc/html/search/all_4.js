@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readcommand',['readCommand',['../commands_8c.html#a843d7e1ae89c521fe1b1187ed4c0bf8e',1,'readCommand(char *command):&#160;commands.c'],['../commands_8h.html#a49f28c3d69f2302f5b4a5da84b24c581',1,'readCommand(char *):&#160;commands.c']]]
+  ['dup_5foptarg_5fstr',['dup_optarg_str',['../main_8c.html#a3003fdfd0b79fc3effcf9cd81d2f5890',1,'dup_optarg_str():&#160;main.c'],['../main_8h.html#a3003fdfd0b79fc3effcf9cd81d2f5890',1,'dup_optarg_str():&#160;main.c']]]
 ];

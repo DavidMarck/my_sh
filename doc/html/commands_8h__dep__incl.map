@@ -1,5 +1,7 @@
 <map id="include/commands.h" name="include/commands.h">
 <area shape="rect" id="node2" href="$commands_8c.html" title="src/commands.c" alt="" coords="5,80,124,107"/>
-<area shape="rect" id="node3" href="$main_8h.html" title="include/main.h" alt="" coords="149,80,255,107"/>
-<area shape="rect" id="node4" href="$main_8c.html" title="src/main.c" alt="" coords="161,155,243,181"/>
+<area shape="rect" id="node3" href="$commandTree_8h.html" title="include/commandTree.h" alt="" coords="147,80,307,107"/>
+<area shape="rect" id="node5" href="$main_8h.html" title="include/main.h" alt="" coords="291,155,398,181"/>
+<area shape="rect" id="node4" href="$commandTree_8c.html" title="src/commandTree.c" alt="" coords="129,155,267,181"/>
+<area shape="rect" id="node6" href="$main_8c.html" title="src/main.c" alt="" coords="303,229,386,256"/>
 </map>

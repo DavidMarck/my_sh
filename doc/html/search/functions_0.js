@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['clean',['clean',['../commands_8c.html#acce1050daf9e9625b1f56bd366ee3282',1,'clean(const char *buffer):&#160;commands.c'],['../commands_8h.html#a7a6e0b05379c0db9c20a599404ad1bb1',1,'clean(const char *):&#160;commands.c']]]
+  ['add_5fleft',['add_left',['../commandTree_8c.html#a04e9ef8c773c3e390cc65c40d9165256',1,'commandTree.c']]],
+  ['add_5fright',['add_right',['../commandTree_8c.html#a45797c5e8ca83590732fafa4a86213cc',1,'commandTree.c']]]
 ];

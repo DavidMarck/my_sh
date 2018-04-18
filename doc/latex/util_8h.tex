@@ -1,13 +1,16 @@
 \hypertarget{util_8h}{}\section{include/util.h File Reference}
 \label{util_8h}\index{include/util.\+h@{include/util.\+h}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}var.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}typedef.\+h\char`\"{}}\newline
 Include dependency graph for util.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=196pt]{util_8h__incl}
+\includegraphics[width=350pt]{util_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -15,38 +18,441 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=328pt]{util_8h__dep__incl}
+\includegraphics[width=350pt]{util_8h__dep__incl}
 \end{center}
 \end{figure}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-char $\ast$ \mbox{\hyperlink{util_8h_aad64c4f968f08a586219a998eeec3b0b}{string\+To\+Lower}} (char $\ast$)
+char $\ast$ \mbox{\hyperlink{util_8h_af309ee5385d78f13de63461ce6886a85}{string\+\_\+to\+\_\+lower}} (char $\ast$)
+\item 
+int \mbox{\hyperlink{util_8h_a680166b74b76fefd0e2fcf1542f950a8}{contains}} (char $\ast$str, char $\ast$seq)
+\item 
+int \mbox{\hyperlink{util_8h_a10bf8832498599571c7c3f108f8c41ee}{is\+Numeric}} (const char $\ast$s)
+\item 
+int \mbox{\hyperlink{util_8h_a2c685c7c2e8ad02b73daea6caecdf7f6}{strtonum}} (const char $\ast$str)
+\item 
+int \mbox{\hyperlink{util_8h_ac3d573d6edbc018dadc3e3a252444546}{strcount}} (char $\ast$str, char $\ast$search)
+\item 
+char $\ast$ \mbox{\hyperlink{util_8h_a7af2652d06ce1e0c36cbee5eaca5d68c}{str\+\_\+replace}} (char $\ast$search, char $\ast$replace, char $\ast$subject)
+\item 
+void \mbox{\hyperlink{util_8h_abee5c83f6dff2667822efe705f4d62a6}{insert\+\_\+substring}} (char $\ast$str, char $\ast$insert, int position)
+\item 
+char $\ast$ \mbox{\hyperlink{util_8h_a6267c19ae253842dbeeed10b3a846eb2}{substring}} (char $\ast$string, int position, int length)
+\item 
+char $\ast$$\ast$ \mbox{\hyperlink{util_8h_a3709c4cfc029c088669541f01f7434b2}{str\+\_\+array\+\_\+replace}} (char $\ast$$\ast$array, int size, int index\+\_\+to\+\_\+replace, char $\ast$string)
+\item 
+void \mbox{\hyperlink{util_8h_a6686d2dbd69aebb81a27fd296e132b07}{free\+\_\+array}} (char $\ast$$\ast$array, int array\+\_\+size)
 \end{DoxyCompactItemize}
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{util_8h_aad64c4f968f08a586219a998eeec3b0b}\label{util_8h_aad64c4f968f08a586219a998eeec3b0b}} 
-\index{util.\+h@{util.\+h}!string\+To\+Lower@{string\+To\+Lower}}
-\index{string\+To\+Lower@{string\+To\+Lower}!util.\+h@{util.\+h}}
-\subsubsection{\texorpdfstring{string\+To\+Lower()}{stringToLower()}}
-{\footnotesize\ttfamily char$\ast$ string\+To\+Lower (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{util_8h_a680166b74b76fefd0e2fcf1542f950a8}\label{util_8h_a680166b74b76fefd0e2fcf1542f950a8}} 
+\index{util.\+h@{util.\+h}!contains@{contains}}
+\index{contains@{contains}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily int contains (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{char $\ast$}]{seq }\end{DoxyParamCaption})}
 
-Returns the string in lower case
+Indicates wether or not a string contains a certain sequence
 
-Returns a string in lower case 
+@ param str string in which the sequence has to be searched @ param seq sequence to look for in string
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+15 \{
+16     \textcolor{keywordflow}{if} (strstr(str, seq) != NULL) \{
+17         \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};
+18     \}
+19     \textcolor{keywordflow}{return} \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};
+20 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a6686d2dbd69aebb81a27fd296e132b07}\label{util_8h_a6686d2dbd69aebb81a27fd296e132b07}} 
+\index{util.\+h@{util.\+h}!free\+\_\+array@{free\+\_\+array}}
+\index{free\+\_\+array@{free\+\_\+array}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{free\+\_\+array()}{free\_array()}}
+{\footnotesize\ttfamily void free\+\_\+array (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{array,  }\item[{int}]{array\+\_\+size }\end{DoxyParamCaption})}
+
+Free a char$\ast$$\ast$
+
+
 \begin{DoxyParams}{Parameters}
-{\em string} & string to be returned in lower case \\
+{\em array} & the array to free \\
+\hline
+{\em size} & the size of the array \\
 \hline
 \end{DoxyParams}
 
 \begin{DoxyCode}
-8 \{
-9     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < strlen(\textcolor{keywordtype}{string}); i++)
-10     \{
-11         \textcolor{keywordtype}{string}[i] = tolower(\textcolor{keywordtype}{string}[i]);
-12     \}
-13 
-14     \textcolor{keywordflow}{return} string;
-15 \}
+230 \{
+231     \textcolor{comment}{// Here we only free the array pointer}
+232     \textcolor{comment}{// (we tried to free each element but we don't know why, it dumps)}
+233     \textcolor{comment}{// that's why function is unsused for the moment}
+234     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < array\_size; i++)
+235     \{
+236         free(array[i]);
+237     \}
+238     free(array);
+239 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_abee5c83f6dff2667822efe705f4d62a6}\label{util_8h_abee5c83f6dff2667822efe705f4d62a6}} 
+\index{util.\+h@{util.\+h}!insert\+\_\+substring@{insert\+\_\+substring}}
+\index{insert\+\_\+substring@{insert\+\_\+substring}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{insert\+\_\+substring()}{insert\_substring()}}
+{\footnotesize\ttfamily void insert\+\_\+substring (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{char $\ast$}]{insert,  }\item[{int}]{position }\end{DoxyParamCaption})}
+
+Inserts a string into another string at a given position
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & \\
+\hline
+{\em insert} & \\
+\hline
+{\em position} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+156 \{
+157    \textcolor{keywordtype}{char} *f, *e;
+158    \textcolor{keywordtype}{int} length;
+159  
+160    length = strlen(str);
+161  
+162    f = \mbox{\hyperlink{util_8c_a6267c19ae253842dbeeed10b3a846eb2}{substring}}(str, 1, position - 1 ); 
+163    e = \mbox{\hyperlink{util_8c_a6267c19ae253842dbeeed10b3a846eb2}{substring}}(str, position, length-position+1);
+164  
+165    strcpy(str, \textcolor{stringliteral}{""});
+166    strcat(str, f);
+167    free(f);
+168    strcat(str, insert);
+169    strcat(str, e);
+170    free(e);
+171 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a10bf8832498599571c7c3f108f8c41ee}\label{util_8h_a10bf8832498599571c7c3f108f8c41ee}} 
+\index{util.\+h@{util.\+h}!is\+Numeric@{is\+Numeric}}
+\index{is\+Numeric@{is\+Numeric}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{is\+Numeric()}{isNumeric()}}
+{\footnotesize\ttfamily int is\+Numeric (\begin{DoxyParamCaption}\item[{const char $\ast$}]{s }\end{DoxyParamCaption})}
+
+Indicates wether or not a string represents a signed or unsigner numeric
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to test\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if string is numeric, false otherwise 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+23 \{
+24     \textcolor{keywordflow}{if} (s == NULL || *s == \textcolor{charliteral}{'\(\backslash\)0'} || isspace(*s))
+25       \textcolor{keywordflow}{return} 0;
+26     \textcolor{keywordtype}{char} * p;
+27     strtod (s, &p);
+28     \textcolor{keywordflow}{return} *p == \textcolor{charliteral}{'\(\backslash\)0'};
+29 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a3709c4cfc029c088669541f01f7434b2}\label{util_8h_a3709c4cfc029c088669541f01f7434b2}} 
+\index{util.\+h@{util.\+h}!str\+\_\+array\+\_\+replace@{str\+\_\+array\+\_\+replace}}
+\index{str\+\_\+array\+\_\+replace@{str\+\_\+array\+\_\+replace}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{str\+\_\+array\+\_\+replace()}{str\_array\_replace()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ str\+\_\+array\+\_\+replace (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{array,  }\item[{int}]{size,  }\item[{int}]{index\+\_\+to\+\_\+replace,  }\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Replaces the value of an index into a char$\ast$$\ast$
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & the array to change \\
+\hline
+{\em size} & the size of the array \\
+\hline
+{\em index\+\_\+to\+\_\+replace} & the index of the array to change \\
+\hline
+{\em string} & the new string to put into the index\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new array with the modifications 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+192 \{
+193     \textcolor{keywordtype}{char}** newArray  = NULL; \textcolor{comment}{// args array}
+194     \textcolor{keywordtype}{int} index = 0;
+195     newArray = malloc (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}*) * (size+1));
+196     \textcolor{keywordflow}{if} (newArray == NULL) exit (-1); \textcolor{comment}{/* memory allocation failed */} 
+197         
+198     \textcolor{keywordtype}{char}* tmp = NULL;
+199     \textcolor{comment}{// we browse the old array}
+200     \textcolor{keywordflow}{while}(index < size)
+201     \{
+202         \textcolor{comment}{// if we aren't at the specified index, we just get the same element}
+203         \textcolor{keywordflow}{if}(index != index\_to\_replace)
+204         \{
+205             tmp = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})*strlen(array[index]));
+206             *tmp =\textcolor{charliteral}{'\(\backslash\)0'}; 
+207             tmp = strcpy(tmp,array[index]);
+208         \}
+209         \textcolor{comment}{// else we get the new string}
+210         \textcolor{keywordflow}{else} 
+211         \{
+212             tmp = malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})*strlen(\textcolor{keywordtype}{string}));
+213             *tmp = \textcolor{charliteral}{'\(\backslash\)0'};
+214             tmp = strcpy(tmp,\textcolor{keywordtype}{string});
+215         \}
+216         
+217         \textcolor{comment}{// we add the right element to the new array}
+218         newArray[index] = tmp;
+219         index++;    
+220     \}   
+221     
+222     \textcolor{comment}{// we add the null, and we free the old array before to return the new one}
+223     newArray[index] = 0;
+224     \textcolor{comment}{//free(array);}
+225 
+226     \textcolor{keywordflow}{return} newArray;    
+227 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a7af2652d06ce1e0c36cbee5eaca5d68c}\label{util_8h_a7af2652d06ce1e0c36cbee5eaca5d68c}} 
+\index{util.\+h@{util.\+h}!str\+\_\+replace@{str\+\_\+replace}}
+\index{str\+\_\+replace@{str\+\_\+replace}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{str\+\_\+replace()}{str\_replace()}}
+{\footnotesize\ttfamily char$\ast$ str\+\_\+replace (\begin{DoxyParamCaption}\item[{char $\ast$}]{search,  }\item[{char $\ast$}]{replace,  }\item[{char $\ast$}]{subject }\end{DoxyParamCaption})}
+
+Replaces all found instances of the passed substring in the passed string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em search} & The substring to look for \\
+\hline
+{\em replace} & The substring with which to replace the found substrings \\
+\hline
+{\em subject} & The string in which to look\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new string with the search/replacement performed 
+\end{DoxyReturn}
+Double the size of the allocated space if it\textquotesingle{}s possible for us to surpass it
+
+If there is a hit in characters of the substring, let\textquotesingle{}s add it to the character buffer
+
+If the found character\textquotesingle{}s bugger\textquotesingle{}s counter has reached the searched substring\textquotesingle{}s length, then there\textquotesingle{}s a hit. Let\textquotesingle{}s copy the replace substring\textquotesingle{}s characters onto the return string.
+
+If the character is a miss, let\textquotesingle{}s put everything back from the buffer to the return string, and set the found character buffer counter to 0.
+
+Add the current character in the subject string to the return string.
+
+Free memory
+\begin{DoxyCode}
+79                                                               \{
+80     \textcolor{keywordtype}{int} i, j, k;
+81     
+82     \textcolor{keywordtype}{int} searchSize = strlen(search);
+83     \textcolor{keywordtype}{int} replaceSize = strlen(replace);
+84     \textcolor{keywordtype}{int} size = strlen(subject);
+85 
+86     \textcolor{keywordtype}{char}* ret;
+87 
+88     \textcolor{keywordflow}{if} (!searchSize) \{
+89         ret = malloc(size + 1);
+90         \textcolor{keywordflow}{for} (i = 0; i <= size; i++) \{
+91             ret[i] = subject[i];
+92         \}
+93         \textcolor{keywordflow}{return} ret;
+94     \}
+95     
+96     \textcolor{keywordtype}{int} retAllocSize = (strlen(subject) + 1) * 2; \textcolor{comment}{// Allocation size of the return string.}
+97     \textcolor{comment}{// let the allocation size be twice as that of the subject initially}
+98     ret = malloc(retAllocSize);
+99 
+100     \textcolor{keywordtype}{int} bufferSize = 0; \textcolor{comment}{// Found characters buffer counter}
+101     \textcolor{keywordtype}{char}* foundBuffer = malloc(searchSize); \textcolor{comment}{// Found character bugger}
+102     
+103     \textcolor{keywordflow}{for} (i = 0, j = 0; i <= size; i++) \{
+107         \textcolor{keywordflow}{if} (retAllocSize <= j + replaceSize) \{
+108             retAllocSize *= 2;
+109             ret = (\textcolor{keywordtype}{char}*) realloc(ret, retAllocSize);
+110         \}
+115         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (subject[i] == search[bufferSize]) \{
+116             foundBuffer[bufferSize] = subject[i];
+117             bufferSize++;
+118 
+124             \textcolor{keywordflow}{if} (bufferSize == searchSize) \{
+125                 bufferSize = 0;
+126                 \textcolor{keywordflow}{for} (k = 0; k < replaceSize; k++) \{
+127                     ret[j++] = replace[k];
+128                 \}
+129             \}
+130         \}
+135         \textcolor{keywordflow}{else} \{
+136             \textcolor{keywordflow}{for} (k = 0; k < bufferSize; k++) \{
+137                 ret[j++] = foundBuffer[k];
+138             \}
+139             bufferSize = 0;
+143             ret[j++] = subject[i];
+144         \}
+145     \}
+146 
+150     free(foundBuffer);
+151     
+152     \textcolor{keywordflow}{return} ret;
+153 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_ac3d573d6edbc018dadc3e3a252444546}\label{util_8h_ac3d573d6edbc018dadc3e3a252444546}} 
+\index{util.\+h@{util.\+h}!strcount@{strcount}}
+\index{strcount@{strcount}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{strcount()}{strcount()}}
+{\footnotesize\ttfamily int strcount (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{char $\ast$}]{search }\end{DoxyParamCaption})}
+
+Count occurences of a certain character in a string
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to look into \\
+\hline
+{\em search} & char seq to find and count\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+count 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+48 \{
+49     \textcolor{keywordtype}{int} i, j, found, count;
+50     \textcolor{keywordtype}{int} stringLen, searchLen;
+51 
+52     stringLen = strlen(str);      \textcolor{comment}{// length of string}
+53     searchLen = strlen(search); \textcolor{comment}{// length of word to be searched}
+54 
+55     count = 0;
+56 
+57     \textcolor{keywordflow}{for}(i=0; i <= stringLen-searchLen; i++)
+58     \{
+59         \textcolor{comment}{/* Match word with string */}
+60         found = 1;
+61         \textcolor{keywordflow}{for}(j=0; j<searchLen; j++)
+62         \{
+63             \textcolor{keywordflow}{if}(str[i + j] != search[j])
+64             \{
+65                 found = 0;
+66                 \textcolor{keywordflow}{break};
+67             \}
+68         \}
+69 
+70         \textcolor{keywordflow}{if}(found == 1)
+71         \{
+72             count++;
+73         \}
+74     \}
+75 
+76     \textcolor{keywordflow}{return} count;
+77 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_af309ee5385d78f13de63461ce6886a85}\label{util_8h_af309ee5385d78f13de63461ce6886a85}} 
+\index{util.\+h@{util.\+h}!string\+\_\+to\+\_\+lower@{string\+\_\+to\+\_\+lower}}
+\index{string\+\_\+to\+\_\+lower@{string\+\_\+to\+\_\+lower}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{string\+\_\+to\+\_\+lower()}{string\_to\_lower()}}
+{\footnotesize\ttfamily char$\ast$ string\+\_\+to\+\_\+lower (\begin{DoxyParamCaption}\item[{char $\ast$}]{ }\end{DoxyParamCaption})}
+
+Returns a string in lower case
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & string to be returned in lower case\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string in lower-\/case 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+5 \{
+6     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < strlen(\textcolor{keywordtype}{string}); i++)
+7     \{
+8         \textcolor{keywordtype}{string}[i] = tolower(\textcolor{keywordtype}{string}[i]);
+9     \}
+10 
+11     \textcolor{keywordflow}{return} string;
+12 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a2c685c7c2e8ad02b73daea6caecdf7f6}\label{util_8h_a2c685c7c2e8ad02b73daea6caecdf7f6}} 
+\index{util.\+h@{util.\+h}!strtonum@{strtonum}}
+\index{strtonum@{strtonum}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{strtonum()}{strtonum()}}
+{\footnotesize\ttfamily int strtonum (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str }\end{DoxyParamCaption})}
+
+Converts a string to an integer
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to convert\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+resulting integer 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+32 \{
+33     \textcolor{keywordtype}{int}  i, len;
+34 
+35     \textcolor{keywordtype}{int} result = 0;
+36 
+37     len = strlen(str);
+38 
+39     \textcolor{keywordflow}{for}(i = 0; i < len; i++)
+40     \{
+41         result = result * 10 + ( str[i] - \textcolor{charliteral}{'0'} );
+42     \}
+43 
+44     \textcolor{keywordflow}{return} result;
+45 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{util_8h_a6267c19ae253842dbeeed10b3a846eb2}\label{util_8h_a6267c19ae253842dbeeed10b3a846eb2}} 
+\index{util.\+h@{util.\+h}!substring@{substring}}
+\index{substring@{substring}!util.\+h@{util.\+h}}
+\subsubsection{\texorpdfstring{substring()}{substring()}}
+{\footnotesize\ttfamily char$\ast$ substring (\begin{DoxyParamCaption}\item[{char $\ast$}]{string,  }\item[{int}]{position,  }\item[{int}]{length }\end{DoxyParamCaption})}
+
+Gets substring
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & string from which we want a substring \\
+\hline
+{\em position} & start index \\
+\hline
+{\em length} & end index from position\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+substring 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+174 \{
+175    \textcolor{keywordtype}{char} *pointer;
+176    \textcolor{keywordtype}{int} c;
+177  
+178    pointer = malloc(length+1);
+179  
+180    \textcolor{keywordflow}{if}( pointer == NULL )
+181        exit(EXIT\_FAILURE);
+182  
+183    \textcolor{keywordflow}{for}( c = 0 ; c < length ; c++ ) 
+184       *(pointer+c) = *((\textcolor{keywordtype}{string}+position-1)+c);       
+185  
+186    *(pointer+c) = \textcolor{charliteral}{'\(\backslash\)0'};
+187  
+188    \textcolor{keywordflow}{return} pointer;
+189 \}
 \end{DoxyCode}

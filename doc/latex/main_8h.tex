@@ -7,8 +7,13 @@
 {\ttfamily \#include $<$unistd.\+h$>$}\newline
 {\ttfamily \#include $<$sys/types.\+h$>$}\newline
 {\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$getopt.\+h$>$}\newline
+{\ttfamily \#include $<$termios.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}commands.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}command\+Tree.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ui.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}history.\+h\char`\"{}}\newline
 Include dependency graph for main.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -28,14 +33,321 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
-\#define \mbox{\hyperlink{main_8h_ad0317e5f6fe6b1e06e91cbc06dcc849d}{E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG}}~\char`\"{}exit\char`\"{}
+\#define \mbox{\hyperlink{main_8h_a369266c24eacffb87046522897a570d5}{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\item 
+\#define \mbox{\hyperlink{main_8h_ada0893a7c87d28b0b8e30533fd38d089}{U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX}}~\char`\"{}\mbox{[}O\+P\+T\+I\+O\+NS\mbox{]}\char`\"{}
+\item 
+\#define \mbox{\hyperlink{main_8h_ab829cec66c234c0a96e7878a89e6cbe6}{U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS}}~\char`\"{}O\+P\+T\+I\+O\+N\+S\+:\textbackslash{}n\textbackslash{}  -\/c, -\/-\/command  C\+O\+M\+M\+A\+ND  \+: command line\textbackslash{}n\textbackslash{}  -\/h, -\/-\/help    \+: display this help\textbackslash{}n\textbackslash{}\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8h_a2ceab08439bad173313751f2f3b6475c}{print\+\_\+usage}} (char $\ast$bin\+\_\+name)
+\item 
+void \mbox{\hyperlink{main_8h_a21a43e2b75ce805de38950c1f4ccdc91}{free\+\_\+if\+\_\+needed}} (void $\ast$to\+\_\+free)
+\item 
+char $\ast$ \mbox{\hyperlink{main_8h_a3003fdfd0b79fc3effcf9cd81d2f5890}{dup\+\_\+optarg\+\_\+str}} ()
+\item 
+void \mbox{\hyperlink{main_8h_ab5e54de1ad77145e82c60a2fdbb80c86}{process\+\_\+command\+\_\+line}} (char $\ast$command\+Line)
+\item 
+void \mbox{\hyperlink{main_8h_ae22e556dbb94b941317c1e93265c2bb4}{execute\+\_\+command\+\_\+line}} (char $\ast$$\ast$argv, int argc, int is\+Background)
+\item 
+void \mbox{\hyperlink{main_8h_a9b9d7c6b417dcda5bd5d53d11fcaa2d8}{exit\+\_\+prog}} (char $\ast$bin\+\_\+command\+\_\+param, int code)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static struct option \mbox{\hyperlink{main_8h_a853665eee6ed9fc2ad8d5f44956e5e3f}{binary\+\_\+opts}} \mbox{[}$\,$\mbox{]}
+\item 
+const char $\ast$ \mbox{\hyperlink{main_8h_a97fc43177532913a1d7408f2bca3b7ef}{binary\+\_\+optstr}} = \char`\"{}hc\+:\char`\"{}
 \end{DoxyCompactItemize}
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{main_8h_ad0317e5f6fe6b1e06e91cbc06dcc849d}\label{main_8h_ad0317e5f6fe6b1e06e91cbc06dcc849d}} 
-\index{main.\+h@{main.\+h}!E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG@{E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG}}
-\index{E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG@{E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG}!main.\+h@{main.\+h}}
-\subsubsection{\texorpdfstring{E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG}{EXIT\_STRING}}
-{\footnotesize\ttfamily \#define E\+X\+I\+T\+\_\+\+S\+T\+R\+I\+NG~\char`\"{}exit\char`\"{}}
+\mbox{\Hypertarget{main_8h_a369266c24eacffb87046522897a570d5}\label{main_8h_a369266c24eacffb87046522897a570d5}} 
+\index{main.\+h@{main.\+h}!\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}}
+\index{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE@{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}{\_GNU\_SOURCE}}
+{\footnotesize\ttfamily \#define \+\_\+\+G\+N\+U\+\_\+\+S\+O\+U\+R\+CE}
 
+\mbox{\Hypertarget{main_8h_ab829cec66c234c0a96e7878a89e6cbe6}\label{main_8h_ab829cec66c234c0a96e7878a89e6cbe6}} 
+\index{main.\+h@{main.\+h}!U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS@{U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS}}
+\index{U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS@{U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS}{USAGE\_PARAMS}}
+{\footnotesize\ttfamily \#define U\+S\+A\+G\+E\+\_\+\+P\+A\+R\+A\+MS~\char`\"{}O\+P\+T\+I\+O\+N\+S\+:\textbackslash{}n\textbackslash{}  -\/c, -\/-\/command  C\+O\+M\+M\+A\+ND  \+: command line\textbackslash{}n\textbackslash{}  -\/h, -\/-\/help    \+: display this help\textbackslash{}n\textbackslash{}\char`\"{}}
+
+\mbox{\Hypertarget{main_8h_ada0893a7c87d28b0b8e30533fd38d089}\label{main_8h_ada0893a7c87d28b0b8e30533fd38d089}} 
+\index{main.\+h@{main.\+h}!U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX@{U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX}}
+\index{U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX@{U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX}{USAGE\_SYNTAX}}
+{\footnotesize\ttfamily \#define U\+S\+A\+G\+E\+\_\+\+S\+Y\+N\+T\+AX~\char`\"{}\mbox{[}O\+P\+T\+I\+O\+NS\mbox{]}\char`\"{}}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8h_a3003fdfd0b79fc3effcf9cd81d2f5890}\label{main_8h_a3003fdfd0b79fc3effcf9cd81d2f5890}} 
+\index{main.\+h@{main.\+h}!dup\+\_\+optarg\+\_\+str@{dup\+\_\+optarg\+\_\+str}}
+\index{dup\+\_\+optarg\+\_\+str@{dup\+\_\+optarg\+\_\+str}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{dup\+\_\+optarg\+\_\+str()}{dup\_optarg\_str()}}
+{\footnotesize\ttfamily char$\ast$ dup\+\_\+optarg\+\_\+str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxySeeAlso}{See also}
+man 3 strndup 
+
+man 3 perror 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+14 \{
+15   \textcolor{keywordtype}{char}* str = NULL;
+16 
+17   \textcolor{keywordflow}{if} (optarg != NULL)
+18   \{
+19     str = strndup(optarg, \mbox{\hyperlink{var_8h_a0592dba56693fad79136250c11e5a7fe}{MAX\_SIZE}});
+20     
+21     \textcolor{comment}{// Checking if ERRNO is set}
+22     \textcolor{keywordflow}{if} (str == NULL) 
+23       perror(strerror(errno));
+24   \}
+25 
+26   \textcolor{keywordflow}{return} str;
+27 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8h_ae22e556dbb94b941317c1e93265c2bb4}\label{main_8h_ae22e556dbb94b941317c1e93265c2bb4}} 
+\index{main.\+h@{main.\+h}!execute\+\_\+command\+\_\+line@{execute\+\_\+command\+\_\+line}}
+\index{execute\+\_\+command\+\_\+line@{execute\+\_\+command\+\_\+line}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{execute\+\_\+command\+\_\+line()}{execute\_command\_line()}}
+{\footnotesize\ttfamily void execute\+\_\+command\+\_\+line (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv,  }\item[{int}]{argc,  }\item[{int}]{is\+Background }\end{DoxyParamCaption})}
+
+Execute a command line 
+\begin{DoxyParams}{Parameters}
+{\em argv} & array of arguments \\
+\hline
+{\em argc} & arguments count \\
+\hline
+{\em is\+Background} & wether or not the process has to be ran in background \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+111 \{
+112     \mbox{\hyperlink{structcommandNode}{commandNode}}* tree\_arguments = \mbox{\hyperlink{commandTree_8c_a26b3f0fbe7d40e8de4f2900641a30ef4}{parse\_to\_tree}}(argv, argc);
+113     
+114     \mbox{\hyperlink{commandTree_8c_a56ed6b9afd9134e7d57be5fd60562d5d}{execute\_tree}}(tree\_arguments,isBackground);
+115 
+116     \textcolor{comment}{// int status;}
+117     \textcolor{comment}{// pid\_t pid;}
+118     \textcolor{comment}{// while((pid = waitpid(-1, NULL, WNOHANG)) > 0) \{}
+119     \textcolor{comment}{//     printf("[process %d exited with code %d]\(\backslash\)n",}
+120     \textcolor{comment}{//     pid, WEXITSTATUS(status));}
+121     \textcolor{comment}{//     /* here you can remove the pid from your jobs list */}
+122     \textcolor{comment}{//     int i = 0;}
+123     \textcolor{comment}{//     while(BG\_PIDS\_ARRAY[i] != 0)}
+124     \textcolor{comment}{//     \{}
+125     \textcolor{comment}{//         if(BG\_PIDS\_ARRAY[i] == pid)}
+126     \textcolor{comment}{//         \{}
+127     \textcolor{comment}{//             BG\_PIDS\_ARRAY[i] = 0;}
+128     \textcolor{comment}{//             break;}
+129     \textcolor{comment}{//         \}}
+130     \textcolor{comment}{//         i++;}
+131     \textcolor{comment}{//     \}}
+132     \textcolor{comment}{// \}}
+133 
+134     \mbox{\hyperlink{commandTree_8c_ab553fb78bed7105079a8c557226b9676}{free\_tree}}(tree\_arguments);
+135 
+136     free(argv);
+137 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8h_a9b9d7c6b417dcda5bd5d53d11fcaa2d8}\label{main_8h_a9b9d7c6b417dcda5bd5d53d11fcaa2d8}} 
+\index{main.\+h@{main.\+h}!exit\+\_\+prog@{exit\+\_\+prog}}
+\index{exit\+\_\+prog@{exit\+\_\+prog}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{exit\+\_\+prog()}{exit\_prog()}}
+{\footnotesize\ttfamily void exit\+\_\+prog (\begin{DoxyParamCaption}\item[{char $\ast$}]{bin\+\_\+command\+\_\+param,  }\item[{int}]{code }\end{DoxyParamCaption})}
+
+Exits the program 
+\begin{DoxyCode}
+140 \{
+141    \textcolor{comment}{// Freeing allocated data}
+142     \mbox{\hyperlink{main_8c_a21a43e2b75ce805de38950c1f4ccdc91}{free\_if\_needed}}(bin\_command\_param);
+143     \textcolor{comment}{// Exiting with a failure ERROR CODE (== 1)}
+144     exit(code);
+145 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8h_a21a43e2b75ce805de38950c1f4ccdc91}\label{main_8h_a21a43e2b75ce805de38950c1f4ccdc91}} 
+\index{main.\+h@{main.\+h}!free\+\_\+if\+\_\+needed@{free\+\_\+if\+\_\+needed}}
+\index{free\+\_\+if\+\_\+needed@{free\+\_\+if\+\_\+needed}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{free\+\_\+if\+\_\+needed()}{free\_if\_needed()}}
+{\footnotesize\ttfamily void free\+\_\+if\+\_\+needed (\begin{DoxyParamCaption}\item[{void $\ast$}]{to\+\_\+free }\end{DoxyParamCaption})}
+
+Procedure checks if variable must be free (check\+: ptr != N\+U\+LL)
+
+
+\begin{DoxyParams}{Parameters}
+{\em void$\ast$} & to\+\_\+free pointer to an allocated mem \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+man 3 free 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+9 \{
+10   \textcolor{keywordflow}{if} (to\_free != NULL) free(to\_free);  
+11 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8h_a2ceab08439bad173313751f2f3b6475c}\label{main_8h_a2ceab08439bad173313751f2f3b6475c}} 
+\index{main.\+h@{main.\+h}!print\+\_\+usage@{print\+\_\+usage}}
+\index{print\+\_\+usage@{print\+\_\+usage}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+usage()}{print\_usage()}}
+{\footnotesize\ttfamily void print\+\_\+usage (\begin{DoxyParamCaption}\item[{char $\ast$}]{bin\+\_\+name }\end{DoxyParamCaption})}
+
+Procedure which displays binary usage by printing on stdout all available options
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+\begin{DoxyCode}
+4 \{
+5   dprintf(1, \textcolor{stringliteral}{"USAGE: %s %s\(\backslash\)n\(\backslash\)n%s\(\backslash\)n"}, bin\_name, \mbox{\hyperlink{main_8h_ada0893a7c87d28b0b8e30533fd38d089}{USAGE\_SYNTAX}}, 
+      \mbox{\hyperlink{main_8h_ab829cec66c234c0a96e7878a89e6cbe6}{USAGE\_PARAMS}});
+6 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8h_ab5e54de1ad77145e82c60a2fdbb80c86}\label{main_8h_ab5e54de1ad77145e82c60a2fdbb80c86}} 
+\index{main.\+h@{main.\+h}!process\+\_\+command\+\_\+line@{process\+\_\+command\+\_\+line}}
+\index{process\+\_\+command\+\_\+line@{process\+\_\+command\+\_\+line}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{process\+\_\+command\+\_\+line()}{process\_command\_line()}}
+{\footnotesize\ttfamily void process\+\_\+command\+\_\+line (\begin{DoxyParamCaption}\item[{char $\ast$}]{command\+Line }\end{DoxyParamCaption})}
+
+Run all the necessary functions to interpret a command (proxy method) 
+\begin{DoxyParams}{Parameters}
+{\em command\+Line} & \\
+\hline
+{\em batch\+\_\+mode} & value 1 if in batch mode, 0 otherwise (default) \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}
+30 \{
+31     \textcolor{keywordtype}{char}* saved\_command\_line = strdup(commandLine);
+32 
+33     \textcolor{keywordtype}{int} argc = 0;
+34     \textcolor{keywordtype}{char}** argv = \mbox{\hyperlink{commands_8c_ac08a987d5042f86c1de985c6c24fe300}{parse\_to\_argv}}(commandLine,&argc);
+35 
+36     \textcolor{comment}{// if any << in command line}
+37     \textcolor{keywordflow}{if}(\mbox{\hyperlink{util_8c_a680166b74b76fefd0e2fcf1542f950a8}{contains}}(saved\_command\_line,\textcolor{stringliteral}{"<<"}))
+38     \{
+39         \textcolor{keywordtype}{char}** argv\_heard\_file = \mbox{\hyperlink{commands_8c_aeb88ec8a1adef5cbcd9d8de252aa5475}{interpret\_heard\_file}}(argv, argc);
+40 
+41         \textcolor{comment}{// if the two arrays are identical, syntax error in use of << operator exists}
+42         \textcolor{comment}{/*}
+43 \textcolor{comment}{        int is\_identical = TRUE;}
+44 \textcolor{comment}{        }
+45 \textcolor{comment}{        for(int i = 0; i < argc; i++)}
+46 \textcolor{comment}{        \{}
+47 \textcolor{comment}{            if((strcmp(argv[i], argv\_heard\_file[i])) == 0)}
+48 \textcolor{comment}{            \{}
+49 \textcolor{comment}{                is\_identical = FALSE;}
+50 \textcolor{comment}{            \}}
+51 \textcolor{comment}{        \}}
+52 \textcolor{comment}{        if(is\_identical == TRUE)}
+53 \textcolor{comment}{        \{}
+54 \textcolor{comment}{            return;}
+55 \textcolor{comment}{        \}}
+56 \textcolor{comment}{        argv = argv\_heard\_file;}
+57 \textcolor{comment}{        */}
+58         
+59         \textcolor{keywordflow}{if}(argv == argv\_heard\_file)
+60         \{
+61             \textcolor{keywordflow}{return};
+62         \}
+63         argv = argv\_heard\_file;
+64     \}
+65 
+66     \textcolor{keywordtype}{int} last\_argc = 0;
+67     \textcolor{keywordtype}{char}** last\_argv = NULL;
+68 
+69     \textcolor{comment}{// empty command line}
+70     \textcolor{keywordflow}{if}(argc == 0)
+71     \{
+72         \textcolor{keywordflow}{return};
+73     \}
+74 
+75     \textcolor{comment}{// syntax error : operator at the beginning}
+76     \textcolor{keywordflow}{if}(\mbox{\hyperlink{commandTree_8c_ac345078b1e4f67d6e156578800a78473}{is\_special\_string}}(argv[0]))
+77     \{
+78         printf(\textcolor{stringliteral}{"my\_sh: syntax error near unexpected token '%s'\(\backslash\)n"},argv[0]);
+79         \textcolor{keywordflow}{return};
+80     \}
+81 
+82     \textcolor{keywordtype}{int} nxtCmdLineIndex = 0;
+83     \textcolor{keywordflow}{while}(\mbox{\hyperlink{commands_8c_a75057c1eff6e3decd05f01997f381b5e}{includes\_multplie\_commands}}(argv,argc))
+84     \{
+85         \textcolor{keywordtype}{int} nxt\_argc = 0;
+86         \textcolor{keywordtype}{char}** nxt\_argv = \mbox{\hyperlink{commands_8c_ad0a7668bf0100523d1bc449de6ab123c}{get\_next\_command\_args}}(argv,argc,&nxt\_argc,&nxtCmdLineIndex);
+87 
+88         \mbox{\hyperlink{main_8c_ae22e556dbb94b941317c1e93265c2bb4}{execute\_command\_line}}(nxt\_argv,nxt\_argc,\mbox{\hyperlink{var_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}});
+89     \}
+90 
+91     \textcolor{comment}{// if there were any ; and if there is still a last command}
+92     \textcolor{keywordflow}{if}((nxtCmdLineIndex != 0) && (argv[nxtCmdLineIndex]!= NULL))
+93     \{
+94         \textcolor{comment}{// we get only the foreground command's arguments}
+95         last\_argv = \mbox{\hyperlink{commands_8c_a36a2466ea1a146371efe4974eb5d4b22}{get\_last\_command\_args}}(argv,argc,&last\_argc,nxtCmdLineIndex);
+96     \}
+97 
+98     \textcolor{comment}{// if after all the commands separated by ; there was another command to run...}
+99     \textcolor{keywordflow}{if}(last\_argc > 0)
+100     \{
+101         \mbox{\hyperlink{main_8c_ae22e556dbb94b941317c1e93265c2bb4}{execute\_command\_line}}(last\_argv,last\_argc,\mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}});
+102         \textcolor{keywordflow}{return};
+103     \}
+104 
+105     \textcolor{comment}{// if there were no ; we use the original argv}
+106     \textcolor{keywordflow}{if}(nxtCmdLineIndex == 0) \mbox{\hyperlink{main_8c_ae22e556dbb94b941317c1e93265c2bb4}{execute\_command\_line}}(argv,argc,
+      \mbox{\hyperlink{var_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}});
+107     
+108 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{main_8h_a853665eee6ed9fc2ad8d5f44956e5e3f}\label{main_8h_a853665eee6ed9fc2ad8d5f44956e5e3f}} 
+\index{main.\+h@{main.\+h}!binary\+\_\+opts@{binary\+\_\+opts}}
+\index{binary\+\_\+opts@{binary\+\_\+opts}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{binary\+\_\+opts}{binary\_opts}}
+{\footnotesize\ttfamily struct option binary\+\_\+opts\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= 
+\{
+  \{ \textcolor{stringliteral}{"help"},    no\_argument,       0, \textcolor{charliteral}{'h'} \},
+  \{ \textcolor{stringliteral}{"command"},   required\_argument, 0, \textcolor{charliteral}{'c'} \},
+  \{ 0,         0,                 0,  0  \} 
+\}
+\end{DoxyCode}
+Binary options declaration (must end with \{0,0,0,0\})
+
+\begin{DoxySeeAlso}{See also}
+man 3 getopt\+\_\+long or getopt 
+
+struct option definition 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{main_8h_a97fc43177532913a1d7408f2bca3b7ef}\label{main_8h_a97fc43177532913a1d7408f2bca3b7ef}} 
+\index{main.\+h@{main.\+h}!binary\+\_\+optstr@{binary\+\_\+optstr}}
+\index{binary\+\_\+optstr@{binary\+\_\+optstr}!main.\+h@{main.\+h}}
+\subsubsection{\texorpdfstring{binary\+\_\+optstr}{binary\_optstr}}
+{\footnotesize\ttfamily const char$\ast$ binary\+\_\+optstr = \char`\"{}hc\+:\char`\"{}}
+
+Binary options string (linked to optionn declaration)
+
+\begin{DoxySeeAlso}{See also}
+man 3 getopt\+\_\+long or getopt 
+\end{DoxySeeAlso}
